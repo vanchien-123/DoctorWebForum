@@ -1,0 +1,55 @@
+﻿@media screen and (max-width: 782px) {
+    html {
+        margin-top: 46px !important;
+    }
+
+    .bb-grid .site-content-grid {
+        display: flex;
+        flex-direction: column-reverse;
+    }
+}
+
+
+@media screen and (max-width:767px) {
+    .bb-mobile-header {
+        height: 76px;
+    }
+
+    #learndash-content .lms-topic-sidebar-wrapper {
+        width: 100%;
+    }
+
+        #learndash-content .lms-topic-sidebar-wrapper .lms-topic-sidebar-data {
+            width: 100%;
+            height: calc(90vh - 76px);
+            max-width: 350px;
+        }
+}
+
+@font-face {
+    font-family: Caladea;
+    src: url(https://demos.buddyboss.com/online-communities/wp-content/uploads/2020/02/Caladea-Bold.ttf) format('truetype');
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: Caladea;
+    src: url(https://demos.buddyboss.com/online-communities/wp-content/uploads/2020/02/Caladea-BoldItalic.ttf) format('truetype');
+    font-weight: 700;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: Caladea;
+    src: url(https://demos.buddyboss.com/online-communities/wp-content/uploads/2020/02/Caladea-Italic.ttf) format('truetype');
+    font-weight: 400;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: Caladea;
+    src: url(https://demos.buddyboss.com/online-communities/wp-content/uploads/2020/02/Caladea-Regular.ttf) format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}

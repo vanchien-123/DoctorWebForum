@@ -1,0 +1,87 @@
+﻿@using DoctorWebForum.DTOs;
+@model FeedbackModel;
+@{
+    var something = Model;
+}
+
+<h2>@ViewBag.Data</h2>
+
+<form asp-controller="Home" asp-action="CreateFeedback" method="post">
+    @Html.AntiForgeryToken()
+    <div class="bp-ac-form-cotainer">
+
+        <div class="ac-reply-avatar">
+            @*<img src="~/Uploads/@Model.User.ProfilePicture"
+                 class="avatar user-2-avatar avatar-150 photo"
+                 width="150" height="150"
+                 alt="">*@
+        </div>
+
+        <div class="ac-reply-content" style="display:flex">
+            <div class="ac-textarea">
+                <label for="ac-input-194622"
+                       class="bp-screen-reader-text">
+                    Comment
+                </label>
+                <textarea rows="1" cols="50" contenteditable="true"
+                          id="ac-input-194622"
+                          class="ac-input bp-suggestions"
+                          name="Content" style="resize: none;height: auto"></textarea> 
+                <input type="hidden" asp-for="PostId" name="PostId" />
+                <div id="ac-reply-attachments-194622"
+                     class="ac-reply-attachments">
+                </div>
+            </div>
+            <input type="submit" 
+                   class="button" value="Post" />
+            @*<button type="button"
+                    class="ac-reply-cancel">
+                Cancel
+            </button>*@
+        </div>
+
+    </div>
+</form>
+
+@*<form asp-controller="Feedbacks" asp-action="Create" method="post" id="ac-form" asp-route-id="@Model.Id"
+      class="ac-form events-initiated root"
+      style="display: none;">
+
+    <div class="bp-ac-form-cotainer">
+
+        <div class="ac-reply-avatar">
+            <img src="https://vuainnhanh.com/wp-content/uploads/2023/02/logo-chu-thap-do.png"
+                 class="avatar user-2-avatar avatar-150 photo"
+                 width="150" height="150"
+                 alt="">
+        </div>
+
+        <div class="ac-reply-content">
+            <div class="ac-textarea">
+                <label for="ac-input-194622"
+                       class="bp-screen-reader-text">
+                    Comment
+                </label>
+                <textarea rows="1" contenteditable="true"
+                     id="ac-input-194622"
+                     class="ac-input bp-suggestions"
+                          name="Content" style="resize: none;height: auto"></textarea>  input
+
+                <div id="ac-reply-attachments-194622"
+                     class="ac-reply-attachments">
+                </div>
+            </div>
+            <input type="hidden"
+                   name="Content"
+                   >
+
+            <input type="submit"
+                   class="button" value="Post" />
+            <button type="button"
+                    class="ac-reply-cancel">
+                Cancel
+            </button>
+        </div>
+
+    </div>
+</form>*@

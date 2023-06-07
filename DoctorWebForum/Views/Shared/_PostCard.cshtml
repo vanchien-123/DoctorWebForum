@@ -1,0 +1,244 @@
+﻿@using DoctorWebForum.DTOs;
+@model PostDisplayModel
+@{
+    var feedback = new FeedbackModel();
+    feedback.PostId = Model.Id;
+}
+
+<li class="activity activity_update activity-item date-recorded-1683607555"
+    id="activity"
+    data-bp-timestamp="1683607555"
+    data-bp-activity="{&quot;id&quot;:194622,&quot;can_edit_privacy&quot;:true,&quot;album_id&quot;:0,&quot;group_id&quot;:0,&quot;group_name&quot;:&quot;&quot;,&quot;folder_id&quot;:0,&quot;content&quot;:&quot;<p>\u00e1dasd<\/p>&quot;,&quot;item_id&quot;:0,&quot;object&quot;:&quot;activity&quot;,&quot;privacy&quot;:&quot;public&quot;,&quot;group_avatar&quot;:&quot;&quot;,&quot;link_image_index_save&quot;:&quot;&quot;,&quot;profile_video&quot;:true,&quot;group_video&quot;:true,&quot;profile_media&quot;:true,&quot;group_media&quot;:true,&quot;profile_document&quot;:true,&quot;group_document&quot;:true}">
+
+    @if (@Model.currentUserId == @Model.UserId)
+    {
+        <div class="bb-activity-more-options-wrap action">
+            <span class="bb-activity-more-options-action" data-balloon-pos="up" data-balloon="More Options">
+                <i class="bb-icon-f bb-icon-ellipsis-h"></i>
+            </span>
+            <div class="bb-activity-more-options">
+                <div class="generic-button">
+                    <a style="padding:0 0 0 15px" id="report-content-activity-194593" class="button item-button bp-secondary-action report-content" >
+                        @*<span class="bp-screen-reader-text">Edit</span>
+                        <span class="report-label">Edit</span>*@
+                        <form asp-controller="Home" asp-action="EditPost" style="margin:0;">
+                            <input type="submit" value="Edit" asp-controller="Home" asp-action="EditPost" asp-route-id="@Model.Id" style="background: #fff; color:black; padding:0; border:none; font-weight:400; font-size:13px;" />
+                        </form>
+                    </a>
+                </div>
+                <div class="generic-button">
+                    <a style="padding:0 0 0 15px" class="button item-button bp-secondary-action delete-activity confirm">
+                        @*<span class="bp-screen-reader-text">Delete</span>
+                    <span class="delete-label">Delete</span>*@
+                        <form asp-controller="Home" asp-action="DeletePost" style="margin:0;">
+                            <input type="submit" value="Delete" asp-controller="Home" asp-action="DeletePost" asp-route-id="@Model.Id" style="background: #fff; color:black; padding:0; border:none; font-weight:400; font-size:13px;" />
+                        </form>
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+    <div class="bp-activity-head">
+        <div class="activity-avatar item-avatar">
+            <a asp-controller="User" asp-action="Details" asp-route-id="@Model.UserId">
+                <img src="~/Uploads/@Model.User.ProfilePicture"
+                     class="avatar user-2-avatar avatar-300 photo"
+                     width="300" height="300"
+                     alt="Profile photo of Admin" style="height:35px;">
+            </a>
+        </div>
+
+        <div class="activity-header" style="margin-top: -0.2rem;">
+            <p>
+                <a asp-controller="User" asp-action="Details" asp-route-id="@Model.User.Id">@Model.User.Name</a>
+                posted an update
+                <a href=""
+                   class="view activity-time-since">
+                    <span class="time-since">
+                        32 minutes
+                        ago
+                    </span>
+                </a>
+            </p>
+            <p class="activity-date">
+                <a href="">
+                    a
+                    second
+                    ago
+                </a>
+            </p>
+            <div class="bb-media-privacy-wrap">
+                <span class="bp-tooltip privacy-wrap"
+                      data-bp-tooltip-pos="up"
+                      data-bp-tooltip="Public">
+                    <span class="privacy selected public"></span>
+                </span>
+                <ul class="activity-privacy">
+                    <li data-value="public"
+                        class="public selected">Public</li>
+                    <li data-value="loggedin"
+                        class="loggedin ">All Members</li>
+                    <li data-value="friends"
+                        class="friends ">My Connections</li>
+                    <li data-value="onlyme" class="onlyme ">
+                        Only Me
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="activity-content ">
+        <div class="activity-inner ">
+            <p>@Model.Title</p>
+        </div>
+        <div class="activity-inner ">
+            <p>@Model.Description</p>
+        </div>
+
+        <div class="activity-state  ">
+            <a href="javascript:void(0);"
+               class="activity-state-likes">
+                <span class="like-text hint--bottom hint--medium hint--multiline"
+                      data-hint="">
+                </span>
+            </a>
+            <span class="ac-state-separator">·</span>
+            <a href="#" class="activity-state-comments">
+                <span class="comments-count">
+                    0 Comment
+                </span>
+            </a>
+        </div>
+    </div>
+
+    <div class="bp-generic-meta activity-meta action">
+        <div class="generic-button">
+            <a href=""
+               class="button fav bp-secondary-action"
+               aria-pressed="false">
+                <span class="bp-screen-reader-text">Like</span>
+                <span class="like-count">Like</span>
+            </a>
+        </div>
+        <div class="generic-button">
+            <a id="acomment-comment" class="button acomment-reply bp-primary-action">
+                <span class="bp-screen-reader-text">Comment</span>
+                <span class="comment-count">Comment</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="activity-comments">
+        <ul>
+            @foreach (var feedbacks in Model.Feedbacks)
+            {
+                <li id="acomment" class=" comment-item">
+                    @if (Model.currentUserId == @feedbacks.UserId)
+                    {
+                        <div class="bb-activity-more-options-wrap action">
+                            <span class="bb-activity-more-options-action" data-balloon-pos="up" data-balloon="More Options">
+                                <i class="bb-icon-f bb-icon-ellipsis-h"></i>
+                            </span>
+                            <div class="bb-activity-more-options">
+                                @*<div class="generic-button">
+                                    <a class="delete acomment-delete confirm bp-secondary-action" rel="nofollow" style="padding: 0 0 0 15px">
+                                        <form asp-controller="Home" asp-action="EditFeedback" style="margin:0;padding:0">
+                                            <input type="submit" value="Edit" asp-controller="Home" asp-action="EditFeedback" asp-route-id="@feedbacks.Id" style="background: #fff; color:black; padding:0; border:none; font-weight:400; font-size:13px;" />
+                                        </form>
+                                    </a>
+                                </div>*@
+                                <div class="generic-button">
+                                    <a class="delete acomment-delete confirm bp-secondary-action" rel="nofollow" style="padding: 0 0 0 15px">
+                                        <form asp-controller="Home" asp-action="DeleteFeedback" style="margin:0;padding:0">
+                                            <input type="submit" value="Delete" asp-controller="Home" asp-action="DeleteFeedback" asp-route-id="@feedbacks.Id" style="background: #fff; color:black; padding:0; border:none; font-weight:400; font-size:13px;" />
+                                        </form>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                    }
+                    <div class="acomment-avatar item-avatar">
+                        <a asp-controller="User" asp-action="Details" asp-route-id="@feedbacks.User.Id">
+                            <img src="~/Uploads/@feedbacks.User.ProfilePicture" style="height:35px;" class="avatar user-4-avatar avatar-150 photo" width="150" height="150" alt="">
+                        </a>
+                    </div>
+
+                    <div class="acomment-meta">
+                        <a class="author-name" asp-controller="User" asp-action="Details" asp-route-id="@feedbacks.User.Id">@feedbacks.User.Name</a>
+                    </div>
+
+                    <div class="acomment-content">
+                        <p><span>@feedbacks.Content</span></p>
+                    </div>
+
+                    <div class="bp-generic-meta activity-meta action"><div class="generic-button"><a class="acomment-reply bp-primary-action" id="acomment-reply-194597-from-194599" href="#acomment-194599" aria-expanded="false">Reply</a></div></div>
+                </li>
+            }
+        </ul>
+        <partial name="_Feedback" model="feedback" />
+        @*<partial name="_FeedbackReply"/>*@
+    </div>
+</li>
+
+
+
+@*<div class="bb-activity-more-options-wrap action">
+    <span class="bb-activity-more-options-action"
+    data-balloon-pos="up"
+    data-balloon="More Options">
+    <i class="bb-icon-f bb-icon-ellipsis-h"></i>
+    </span>
+    <div class="bb-activity-more-options">
+    <div class="generic-button">
+    <a href="#"
+    class="button edit edit-activity bp-secondary-action bp-tooltip"
+    title="Edit Activity">
+    <span class="bp-screen-reader-text">
+    Edit
+    Activity
+    </span><span class="edit-label">Edit</span>
+    </a>
+    </div>
+    <div class="generic-button">
+    <a href=""
+    class="button item-button bp-secondary-action delete-activity confirm">
+    <span class="bp-screen-reader-text">Delete</span><span class="delete-label">Delete</span>
+    </a>
+    </div>
+    </div>
+    </div>*@
+
+@*<div class="bb-activity-more-options-wrap action">
+                <span class="bb-activity-more-options-action" data-balloon-pos="up" data-balloon="More Options">
+                <i class="bb-icon-f bb-icon-ellipsis-h"></i>
+                </span>
+                <div class="bb-activity-more-options">
+                <div class="generic-button">
+                <a id="report-content-activity_comment" href="#content-report" class="button item-button bp-secondary-action report-content"  data-bp-content-type="activity_comment" data-bp-nonce="eb3f3122ad" reported_type="Comment"><span class="bp-screen-reader-text">Report Comment</span><span class="report-label">Report Comment</span></a></div> <div class="generic-button"><a class="delete acomment-delete confirm bp-secondary-action" rel="nofollow" href="https://demos.buddyboss.com/online-communities/activity-feed/delete/194599/?cid=194599&amp;_wpnonce=5f3d318edd">Delete</a></div></div></div>*@
+
+@*<ul>
+
+                <li id="acomment" class=" comment-item" >
+
+                <div class="bb-activity-more-options-wrap action"><span class="bb-activity-more-options-action" data-balloon-pos="up" data-balloon="More Options"><i class="bb-icon-f bb-icon-ellipsis-h"></i></span><div class="bb-activity-more-options"><div class="generic-button"><a class="delete acomment-delete confirm bp-secondary-action" rel="nofollow" href="https://demos.buddyboss.com/online-communities/activity-feed/delete/194600/?cid=194600&amp;_wpnonce=5f3d318edd">Delete</a></div></div></div>
+                <div class="acomment-avatar item-avatar">
+                <a href="">
+                <img src="https://demos.buddyboss.com/online-communities/wp-content/sandbox188778-uploads/avatars/2/621e2ce4392dd-bpthumb.png" class="avatar user-2-avatar avatar-150 photo" width="150" height="150" alt="Profile photo of John">
+                </a>
+                </div>
+
+                <div class="acomment-meta">
+
+                <a class="author-name" href="https://demos.buddyboss.com/online-communities/members/john/">John</a> <a href="https://demos.buddyboss.com/online-communities/activity-feed/p/194597/#acomment-194600" class="activity-time-since"><time class="time-since" datetime="2021-07-01 06:24:17" data-bp-timestamp="1625120657">a year ago</time></a>
+                </div>
+
+                <div class="acomment-content">
+                <p><span>Our trip from last summer</span></p>
+
+                </div>
+
+                <div class="bp-generic-meta activity-meta action"><div class="generic-button"><a class="acomment-reply bp-primary-action" id="acomment-reply-194597-from-194600" href="#acomment-194600" aria-expanded="false">Reply</a></div></div>
+                </li>
+                </ul>*@

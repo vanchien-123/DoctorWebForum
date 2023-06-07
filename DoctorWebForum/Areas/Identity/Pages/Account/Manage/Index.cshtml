@@ -1,0 +1,87 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Profile";
+    ViewData["ActivePage"] = ManageNavPages.Index;
+}
+
+<h3>@ViewData["Title"]</h3>
+<partial name="_StatusMessage" for="StatusMessage" />
+<div class="row">
+   
+    <div class="col-md-6">
+        <form id="profile-form" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+            <div class="form-floating mb-3">
+                <input asp-for="Username" class="form-control" placeholder="Please choose your username." disabled />
+                <label asp-for="Username" class="form-label"></label>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.PhoneNumber" class="form-control" placeholder="Please enter your phone number."/>
+                <label asp-for="Input.PhoneNumber" class="form-label"></label>
+                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Name" class="form-control" placeholder="Please enter your name " />
+                <label asp-for="Input.Name" class="form-label"></label>
+                <span asp-validation-for="Input.Name" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Location" class="form-control" placeholder="Please enter your address " />
+                <label asp-for="Input.Location" class="form-label"></label>
+                <span asp-validation-for="Input.Location" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.QualificationId" class="control-label"></label>
+                <select asp-for="Input.QualificationId" class="form-control" asp-items="ViewBag.QualificationId"></select>
+                <span asp-validation-for="Input.QualificationId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.ExperienceId" class="control-label"></label>
+                <select asp-for="Input.ExperienceId" class="form-control" asp-items="ViewBag.ExperienceId"></select>
+                <span asp-validation-for="Input.ExperienceId" class="text-danger"></span>
+            </div>
+            <div class="m-2">
+                <label class="form-label" asp-for="Input.ProfilePicture"></label>
+                <input asp-for="Input.ImageFile" type="file" accept="image/*" onchange="previewFile()" />
+            </div>
+            <div class="form-group">
+                <input asp-for="Input.IsShow" class="form-check-input me-2" type="checkbox" id="isShow" style="margin-top:8px; height:15px; width:15px;" />
+                <label asp-for="Input.IsShow" class="form-check-label" id="isShow" style="padding:0; left:20px;">
+                    @Html.DisplayNameFor(m => m.Input.IsShow)
+                </label>
+            </div>
+
+            <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
+        </form>
+        <img id="target" class="img" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIYAAACGCAMAAAAvpwKjAAAAclBMVEX///8eLjMXKS77+/tBTVEbLDEAHiQAAAARJSsACxUAHCMAGB8AEBkIICfc3d6Ok5WVmpyorK4tO0AAAAmvs7S2ubrV19hlbG7o6elVXF+Gi40AFBydoaLMztAAAA7FyMnx8/MeKC43P0N6foFudXgmNDnTI8CMAAAE5UlEQVR4nO1b25KiMBAVBAmEiyAIeEEU/f9fXJyd2R2V7pxonKVqOY9WkTp2+t6d2WzChAkTJvzXaKt9ke6WSbLcpcW+an+eQVwkZRZ4K38rZbCQcuuvvG1WJkX8YxSq4nwUwULYrnULWywCcTz/BJU2Ly9hdE/gG9wovJRp+1YS+y70BcPhk4kI/e7wLg5t4chIReELkXSK9h0scie0URJX2KGTGydxcHwtEh9EfMfs1cS1niT+SqQ2Zzbz1IZ14h6RSOdmWFS1rzQOGq5fVyZYFI14nsQVojGgqhv5gig+BSI3L5KY19tXSVyxrV9SkDh7WjdvEWUvWMz69KJa/IU4rZ9lUQljLHoe0ZMGsxZPuSwKdvSUPGJzN/Ib4vSEfswzwyx6Hpm+vdSGbOQ7olqXxcaIv7jHVtOPFfIdLCxLFjosquZlDz4Mt9Ew23ltXD2/IDTceurr/EH7oVLg4Kcoi/iInutGTXNxnEvTcDXDHWvUe6C26spLd6jmPapDl6EJAWq1hxA7zw6Sb/pWJQHo+0MsT3aw44J73xyfAoy+g7DIMf2UZXv/ZVtiPHwgKWwxYYj6gUX/LWbotjPw7R0KSDPccPCkNoT0NFT7UkwYC0Ku+QL5Wq0deyiY2A7hC+fYv5B7BY0O8hkh6QpT6E6jjmfRYmayIANUBRpLy9LArNWm49O8hm5FYbMlZHGCkWmHnVByLGILMrhFQh+xhGzFvXB5B+Y0rGD5Kg3edZyx2Box0kjAI84MDTDREMwZZyxxc4/0ETGY+zFBAQxJ/V+hs58Cu9fe3kgFi9H8cUErR4LSkKRyJGhlwVgb5jV6uKd2+IT2hOakjOfI4BI+IMqvDebLe9gZxaLVKNW8wRi59/ATJCHQWaVxiGsNaDrohD//CKXm+xV+iCUeu1mxVi9iReUchU6xZtmr3e3naaPVHfIpi001mwnfZxXtwdFsAmyp1Gmn200QW6fL11W1zjsn1K2+5Y6gsdRvathR6PUII/1unaTCdAIbvQkElBvVoWFHQSTu0P+kIRSSBn4pkZdt8v06vsF6n28uHtxhIC8FVdFIdGSndd0JsC1BqihosLJkGyVxiR1DGizkvmxPWYAWHqIipPtCnPmADx8QCOLVSWcOhDb3AvXf1xe1opKhDQj0w/H9EUDEJwO9Ou3hCpRbLFU+iE57lEkg2U94hLLDwCSBqpS40Zh1Fw1/FpMSKwoEppAfEIeitGcKBEW5RPq9QSh8MlMuKYpHT2tIFbPGwhWPfCntWjosZjM2P2ZLabaxwLdGHsE2SdnGQsV5v0hzQrVhRMu3WVjPwfV4hsCZv0KyXAvOJA1FC45rSBql0fLfMu1ZgzRU7VmuWW2QhrJZzbTuzdEABju06zBHAxhk0D00YzSQsQ5ts8ZoIEMuWjuE5r4B5cyxkR89APW1NvwOlFTBASg5DnatfA4jpwIsvMQRU0N3N3QdEC41/MOH48yqgGuDICM1viowlsWJkayRjGWpZiwrRmNZuBrL+tlIlvHMryaKJ1c1zS5qiqc3m8extjqWJd6xrDTPRrLgPTOy7q7pwYcxjuX/F59CHE09hZiN5GHIFQdHb6D3QcL0M5krcs1x2lseDc3G8oTqijE8KPvAKJ7XfSAewWPDP1Qen17Kn316+Qf//iHqhAkTJkwYE34BLCxdACmlXGwAAAAASUVORK5CYII=" alt="your image" style="float:left; width:320px; height:300px;" />
+    </div>
+    @if (!string.IsNullOrEmpty(Model.Input.ProfilePicture))
+    {
+        <div class="col-md-4">
+            <img src="/uploads/@Model.Input.ProfilePicture" style="width:250px;height:300px" />
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        function previewFile() {
+            var preview = document.querySelector("#target");
+            var file = document.querySelector('input[type=file]').files[0];
+    
+            var reader = new FileReader();
+
+            reader.onloadend = function () {
+                preview.src = reader.result;
+            }
+
+            if (file) {
+                reader.readAsDataURL(file);
+            } else {
+                preview.src = "";
+            }
+        }
+    </script>
+}

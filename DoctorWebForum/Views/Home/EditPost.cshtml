@@ -1,0 +1,353 @@
+﻿@model DoctorWebForum.Entities.Post
+
+
+
+<form asp-controller="Home" asp-action="EditPostV2" name="w t" id="whats-new-form" class="activity-form focus-in--empty focus-in">
+    <header id="activity-header" class="bb-model-header" style="margin:0;">
+        <h3>
+            <span class="activity-header-data">
+                Update a post
+                <span>
+                </span>
+            </span>
+        </h3>
+    </header>
+    <div class="whats-new-scroll-view">
+        <div class="whats-new-form-header">
+            <div id="user-status-huddle" class="bp-activity-huddle" style="display: flex;align-content: center;align-items: center;">
+                <div id="whats-new-avatar" style="padding: 0 0 0 20px;  ">
+
+                    <div class="activity-post-avatar-container">
+                        <a class="activity-post-avatar"
+                           href="">
+                            <img src="~/Uploads/@Model.User.ProfilePicture"
+                                 class="avatar user-2-avatar avatar-150 photo" width="150" style="height:50px;"
+                                 alt="Profile photo of John">
+                        </a>
+                    </div>
+
+                </div>
+                <div class="activity-post-name-status">
+                    <div id="whats-new-heading">
+                        <span class="activity-post-user-name-container">
+                            <h5>
+                                <a class="activity-post-user-name"
+                                   href="">
+                                    <span class="user-name">@Model.User.Name</span>
+                                </a>
+                            </h5>
+                        </span>
+                    </div>
+                    <div id="whats-new-status">
+                        <div id="bp-activity-privacy-point" class="public" data-bp-tooltip-pos="up"
+                             data-bp-tooltip="Set by album privacy">
+                            <span class="privacy-point-icon"></span>
+                            <span class="bp-activity-privacy-status">
+                                Public
+                            </span>
+                            <i class="bb-icon-f bb-icon-caret-down"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="whats-new-content" style="padding: 0 0 0 20px;">
+                @*<div id="whats-new-textarea">
+                <div name="Description" cols="50" rows="4" placeholder="Share what's on your mind, Chien"
+                aria-label="Post what&amp;#039;s new" contenteditable="true" autocorrect="off"
+                data-suggestions-group-id="false" id="whats-new"
+                asp-for="Description"
+                class="bp-suggestions medium-editor-element" style="resize: vertical; height: auto; padding:0 0 0 40px;"
+                spellcheck="true" data-medium-editor-element="true" role="textbox" aria-multiline="true"
+                data-medium-editor-editor-index="1"
+                medium-editor-index="575908c3-276d-5389-b019-917eef462a0a" data-placeholder=""
+                data-medium-focused="true"></div>
+                </div>*@
+                <input type="hidden" asp-for="Id" />
+                <textarea asp-for="Description"
+                          placeholder="Share what's on your mind... "
+                          aria-label="Post what&amp;#039;s new" contenteditable="true" autocorrect="off"
+                          data-suggestions-group-id="false" id="whats-new"
+                          class="bp-suggestions medium-editor-element" style="resize: none; height: auto; padding:0 0 0 40px; border:none;"
+                          spellcheck="true" data-medium-editor-element="true" role="textbox" aria-multiline="true"
+                          data-medium-editor-editor-index="1"
+                          medium-editor-index="575908c3-276d-5389-b019-917eef462a0a" data-placeholder=""
+                          data-medium-focused="true" cols="50" rows="4">
+
+                </textarea>
+                <input type="hidden" asp-for="Description" id="whats-new-textarea">
+                @*<input asp-for="Description" name="Description" />*@
+            </div>
+        </div>
+        <div id="whats-new-attachments" class="empty">
+            <div class="activity-url-scrapper-container">
+            </div>
+            <div class="activity-media-container">
+                <div class="dropzone closed media-dropzone" id="activity-post-media-uploader"></div>
+                <div class="activity-post-default-template" style="display:none;">
+                    <div class="dz-preview">
+                        <div class="dz-image">
+                            <img data-dz-thumbnail="">
+                        </div>
+                        <div class="dz-error-title">Upload Failed</div>
+                        <div class="dz-details">
+                            <div class="dz-filename"><span data-dz-name=""></span></div>
+                            <div class="dz-size" data-dz-size=""></div>
+                        </div>
+                        <div class="dz-progress-ring-wrap">
+                            <i class="bb-icon-f bb-icon-camera"></i>
+                            <svg class="dz-progress-ring" width="54" height="54">
+                                <circle class="progress-ring__circle" stroke="white" stroke-width="3"
+                                        fill="transparent" r="24.5" cx="27" cy="27"
+                                        stroke-dasharray="185.354, 185.354" stroke-dashoffset="185"></circle>
+                            </svg>
+                        </div>
+                        <div class="dz-error-message"><span data-dz-errormessage=""></span></div>
+                        <div class="dz-error-mark">
+                            <svg width="54px" height="54px" viewBox="0 0 54 54" version="1.1"
+                                 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                <title>Error</title>
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <g stroke="#747474" stroke-opacity="0.198794158" fill="#FFFFFF"
+                                       fill-opacity="0.816519475">
+                                        <path d="M32.6568542,29 L38.3106978,23.3461564 C39.8771021,21.7797521 39.8758057,19.2483887 38.3137085,17.6862915 C36.7547899,16.1273729 34.2176035,16.1255422 32.6538436,17.6893022 L27,23.3431458 L21.3461564,17.6893022 C19.7823965,16.1255422 17.2452101,16.1273729 15.6862915,17.6862915 C14.1241943,19.2483887 14.1228979,21.7797521 15.6893022,23.3461564 L21.3431458,29 L15.6893022,34.6538436 C14.1228979,36.2202479 14.1241943,38.7516113 15.6862915,40.3137085 C17.2452101,41.8726271 19.7823965,41.8744578 21.3461564,40.3106978 L27,34.6568542 L32.6538436,40.3106978 C34.2176035,41.8744578 36.7547899,41.8726271 38.3137085,40.3137085 C39.8758057,38.7516113 39.8771021,36.2202479 38.3106978,34.6538436 L32.6568542,29 Z M27,53 C41.3594035,53 53,41.3594035 53,27 C53,12.6405965 41.3594035,1 27,1 C12.6405965,1 1,12.6405965 1,27 C1,41.3594035 12.6405965,53 27,53 Z">
+                                        </path>
+                                    </g>
+                                </g>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="activity-document-container">
+                <div class="dropzone closed document-dropzone" id="activity-post-document-uploader"></div>
+                <div class="activity-post-document-template" style="display:none;">
+                    <div class="dz-preview dz-file-preview">
+                        <div class="dz-error-title">Upload Failed</div>
+                        <div class="dz-details">
+                            <div class="dz-icon"><span class="bb-icon-l bb-icon-file"></span></div>
+                            <div class="dz-filename"><span data-dz-name=""></span></div>
+                            <div class="dz-size" data-dz-size=""></div>
+                        </div>
+                        <div class="dz-progress-ring-wrap">
+                            <i class="bb-icon-f bb-icon-file-attach"></i>
+                            <svg class="dz-progress-ring" width="54" height="54">
+                                <circle class="progress-ring__circle" stroke="white" stroke-width="3"
+                                        fill="transparent" r="24.5" cx="27" cy="27"
+                                        stroke-dasharray="185.354, 185.354" stroke-dashoffset="185"></circle>
+                            </svg>
+                        </div>
+                        <div class="dz-error-message"><span data-dz-errormessage=""></span></div>
+                        <div class="dz-error-mark">
+                            <svg width="54px" height="54px" viewBox="0 0 54 54" version="1.1"
+                                 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                <title>Error</title>
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <g stroke="#747474" stroke-opacity="0.198794158" fill="#FFFFFF"
+                                       fill-opacity="0.816519475">
+                                        <path d="M32.6568542,29 L38.3106978,23.3461564 C39.8771021,21.7797521 39.8758057,19.2483887 38.3137085,17.6862915 C36.7547899,16.1273729 34.2176035,16.1255422 32.6538436,17.6893022 L27,23.3431458 L21.3461564,17.6893022 C19.7823965,16.1255422 17.2452101,16.1273729 15.6862915,17.6862915 C14.1241943,19.2483887 14.1228979,21.7797521 15.6893022,23.3461564 L21.3431458,29 L15.6893022,34.6538436 C14.1228979,36.2202479 14.1241943,38.7516113 15.6862915,40.3137085 C17.2452101,41.8726271 19.7823965,41.8744578 21.3461564,40.3106978 L27,34.6568542 L32.6538436,40.3106978 C34.2176035,41.8744578 36.7547899,41.8726271 38.3137085,40.3137085 C39.8758057,38.7516113 39.8771021,36.2202479 38.3106978,34.6538436 L32.6568542,29 Z M27,53 C41.3594035,53 53,41.3594035 53,27 C53,12.6405965 41.3594035,1 27,1 C12.6405965,1 1,12.6405965 1,27 C1,41.3594035 12.6405965,53 27,53 Z">
+                                        </path>
+                                    </g>
+                                </g>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="activity-video-container">
+                <div class="dropzone closed video-dropzone" id="activity-post-video-uploader"></div>
+                <div class="activity-post-video-template" style="display:none;">
+                    <div class="dz-preview dz-file-preview well" id="dz-preview-template">
+                        <div class="dz-details">
+                            <div class="dz-filename"><span data-dz-name=""></span></div>
+                        </div>
+                        <div class="dz-error-title">Upload Failed</div>
+                        <div class="dz-progress-ring-wrap">
+                            <i class="bb-icon-f bb-icon-video"></i>
+                            <svg class="dz-progress-ring" width="54" height="54">
+                                <circle class="progress-ring__circle" stroke="white" stroke-width="3"
+                                        fill="transparent" r="24.5" cx="27" cy="27"
+                                        stroke-dasharray="185.354, 185.354" stroke-dashoffset="185"></circle>
+                            </svg>
+                        </div>
+                        <!-- <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div> -->
+                        <div class="dz-error-message"><span data-dz-errormessage=""></span></div>
+                        <div class="dz-success-mark">
+                            <svg width="54px" height="54px" viewBox="0 0 54 54" version="1.1"
+                                 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                <title>Check</title>
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <path d="M23.5,31.8431458 L17.5852419,25.9283877 C16.0248253,24.3679711 13.4910294,24.366835 11.9289322,25.9289322 C10.3700136,27.4878508 10.3665912,30.0234455 11.9283877,31.5852419 L20.4147581,40.0716123 C20.5133999,40.1702541 20.6159315,40.2626649 20.7218615,40.3488435 C22.2835669,41.8725651 24.794234,41.8626202 26.3461564,40.3106978 L43.3106978,23.3461564 C44.8771021,21.7797521 44.8758057,19.2483887 43.3137085,17.6862915 C41.7547899,16.1273729 39.2176035,16.1255422 37.6538436,17.6893022 L23.5,31.8431458 Z M27,53 C41.3594035,53 53,41.3594035 53,27 C53,12.6405965 41.3594035,1 27,1 C12.6405965,1 1,12.6405965 1,27 C1,41.3594035 12.6405965,53 27,53 Z"
+                                          stroke-opacity="0.198794158" stroke="#747474" fill-opacity="0.816519475"
+                                          fill="#FFFFFF"></path>
+                                </g>
+                            </svg>
+                        </div>
+                        <div class="dz-error-mark">
+                            <svg width="54px" height="54px" viewBox="0 0 54 54" version="1.1"
+                                 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                <title>Error</title>
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <g stroke="#747474" stroke-opacity="0.198794158" fill="#FFFFFF"
+                                       fill-opacity="0.816519475">
+                                        <path d="M32.6568542,29 L38.3106978,23.3461564 C39.8771021,21.7797521 39.8758057,19.2483887 38.3137085,17.6862915 C36.7547899,16.1273729 34.2176035,16.1255422 32.6538436,17.6893022 L27,23.3431458 L21.3461564,17.6893022 C19.7823965,16.1255422 17.2452101,16.1273729 15.6862915,17.6862915 C14.1241943,19.2483887 14.1228979,21.7797521 15.6893022,23.3461564 L21.3431458,29 L15.6893022,34.6538436 C14.1228979,36.2202479 14.1241943,38.7516113 15.6862915,40.3137085 C17.2452101,41.8726271 19.7823965,41.8744578 21.3461564,40.3106978 L27,34.6568542 L32.6538436,40.3106978 C34.2176035,41.8744578 36.7547899,41.8726271 38.3137085,40.3137085 C39.8758057,38.7516113 39.8771021,36.2202479 38.3106978,34.6538436 L32.6568542,29 Z M27,53 C41.3594035,53 53,41.3594035 53,27 C53,12.6405965 41.3594035,1 27,1 C12.6405965,1 1,12.6405965 1,27 C1,41.3594035 12.6405965,53 27,53 Z">
+                                        </path>
+                                    </g>
+                                </g>
+                            </svg>
+                        </div>
+                        <div class="dz-progress-count">0% Uploaded</div>
+                        <div class="dz-video-thumbnail"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="activity-attached-gif-container">
+            </div>
+        </div>
+    </div>
+    <div id="whats-new-privacy-stage" class="bp-activity-privacy-stage">
+        <div id="whats-new-privacy-stage-body" class="privacy-status-form-body">
+            <div id="activity-post-form-privacy">
+                <div class="bp-activity-privacy__list">
+
+                    <label for="public"
+                           class="bb-radio-style bp-activity-privacy__label bp-activity-privacy__label-public">
+                        <div class="privacy-tag-wrapper">
+                            <span class="privacy-figure privacy-figure--public"></span>
+                            <div class="privacy-tag">
+                                <div class="privacy-label">Public</div>
+                                <span class="privacy-sub-label">
+                                    Visible to anyone, on or off this site
+                                </span>
+                            </div>
+                        </div>
+                        <span class="privacy-radio">
+                            <input type="radio" id="public" class="bp-activity-privacy__input" name="privacy"
+                                   value="public" data-title="Public" checked="checked">
+                            <span></span>
+                        </span>
+                    </label>
+
+                    <label for="loggedin"
+                           class="bb-radio-style bp-activity-privacy__label bp-activity-privacy__label-loggedin">
+                        <div class="privacy-tag-wrapper">
+                            <span class="privacy-figure privacy-figure--loggedin"></span>
+                            <div class="privacy-tag">
+                                <div class="privacy-label">All Members</div>
+                                <span class="privacy-sub-label">
+                                    Visible to all members on this site
+                                </span>
+                            </div>
+                        </div>
+                        <span class="privacy-radio">
+                            <input type="radio" id="loggedin" class="bp-activity-privacy__input" name="privacy"
+                                   value="loggedin" data-title="All Members">
+                            <span></span>
+                        </span>
+                    </label>
+
+                    <label for="friends"
+                           class="bb-radio-style bp-activity-privacy__label bp-activity-privacy__label-friends">
+                        <div class="privacy-tag-wrapper">
+                            <span class="privacy-figure privacy-figure--friends"></span>
+                            <div class="privacy-tag">
+                                <div class="privacy-label">My Connections</div>
+                                <span class="privacy-sub-label">
+                                    Visible only to your connections
+                                </span>
+                            </div>
+                        </div>
+                        <span class="privacy-radio">
+                            <input type="radio" id="friends" class="bp-activity-privacy__input" name="privacy"
+                                   value="friends" data-title="My Connections">
+                            <span></span>
+                        </span>
+                    </label>
+
+                    <label for="onlyme"
+                           class="bb-radio-style bp-activity-privacy__label bp-activity-privacy__label-onlyme">
+                        <div class="privacy-tag-wrapper">
+                            <span class="privacy-figure privacy-figure--onlyme"></span>
+                            <div class="privacy-tag">
+                                <div class="privacy-label">Only Me</div>
+                                <span class="privacy-sub-label">
+                                    Visible only to you
+                                </span>
+                            </div>
+                        </div>
+                        <span class="privacy-radio">
+                            <input type="radio" id="onlyme" class="bp-activity-privacy__input" name="privacy"
+                                   value="onlyme" data-title="Only Me">
+                            <span></span>
+                        </span>
+                    </label>
+
+                    <label for="group"
+                           class="bb-radio-style bp-activity-privacy__label bp-activity-privacy__label-group">
+                        <div class="privacy-tag-wrapper">
+                            <span class="privacy-figure privacy-figure--group"></span>
+                            <div class="privacy-tag">
+                                <div class="privacy-label">
+                                    Post in Group<i class="bb-icon-l bb-icon-angle-right"></i>
+                                </div>
+                                <span class="privacy-sub-label">Visible to members of a group</span>
+                            </div>
+                        </div>
+                        <span class="privacy-radio">
+                            <input type="radio" id="group"
+                                   class="bp-activity-privacy__input" name="privacy" value="group"
+                                   data-title="Group"><span></span>
+                        </span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div id="whats-new-privacy-stage-footer" class="privacy-status-form-footer">
+            <div class="privacy-status-actions">
+                <input type="button" id="privacy-status-back" class="text-button small" value="Back">
+                <input type="button" id="privacy-status-group-back" class="text-button small" value="Back">
+                <input type="submit" id="privacy-status-submit" class="button" name="privacy-status-submit"
+                       value="Save">
+            </div>
+        </div>
+    </div>
+    <div class="whats-new-form-footer">
+        <div id="whats-new-toolbar">
+            <div class="post-elements-buttons-item post-media media-support">
+                <a href="#" id="activity-media-button" class="toolbar-button bp-tooltip"
+                   data-bp-tooltip-pos="up-left" data-bp-tooltip="Attach photo">
+                    <i class="bb-icon-l bb-icon-camera"></i>
+                </a>
+            </div>
+            <div class="post-elements-buttons-item post-video video-support">
+                <a href="#" id="activity-video-button" class="toolbar-button bp-tooltip"
+                   data-bp-tooltip-pos="up" data-bp-tooltip="Attach video">
+                    <i class="bb-icon-l bb-icon-video"></i>
+                </a>
+            </div>
+            <div class="post-elements-buttons-item post-media document-support">
+                <a href="#" id="activity-document-button" class="toolbar-button bp-tooltip"
+                   data-bp-tooltip-pos="up" data-bp-tooltip="Attach document">
+                    <i class="bb-icon-l bb-icon-attach"></i>
+                </a>
+            </div>
+
+            <div class="post-elements-buttons-item post-gif">
+                <div class="gif-media-search">
+                    <a href="#" id="activity-gif-button" class="toolbar-button bp-tooltip"
+                       data-bp-tooltip-pos="up" data-bp-tooltip="Choose a GIF">
+                        <i class="bb-icon-l bb-icon-gif"></i>
+                    </a>
+                    <div class="gif-media-search-dropdown"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="activity-form-submit-wrapper">
+            <div id="whats-new-submit" class="in-profile">
+                <input type="submit"
+                       class="button" value="Update"/>
+            </div>
+        </div>
+    </div>
+</form>
+

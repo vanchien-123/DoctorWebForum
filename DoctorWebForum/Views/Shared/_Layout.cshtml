@@ -1,0 +1,2053 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - DoctorWebForum</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/format.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/DoctorWebForum.styles.css" asp-append-version="true" />
+    <script>(function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':
+                    new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-NB2BV5J');</script>
+
+    <title>Online Communities &#8211; BuddyBoss for Online Communities</title>
+    <script type="text/html" id="tmpl-activity-attached-gif">
+	<# if ( ! _.isUndefined( data.gif_data.images ) ) { #>
+	<div class="gif-image-container">
+		<img src="{{data.gif_data.images.original.url}}" alt="">
+	</div>
+	<div class="gif-image-remove gif-image-overlay">
+		<i class="bb-icon-l bb-icon-times"></i>
+	</div>
+	<# } #>
+</script>
+    <script type="text/html" id="tmpl-activity-link-preview">
+	<# if ( data.link_scrapping ) { #>
+	<# if ( data.link_loading ) { #>
+	<span class="activity-url-scrapper-loading activity-ajax-loader"><i class="bb-icon-l bb-icon-spinner animate-spin"></i>Loading preview...</span>
+	<# } #>
+	<# if ( data.link_success || data.link_error ) { #>
+	<a title="Cancel Preview" href="#" id="activity-close-link-suggestion">Remove Preview</i></a>
+	<div class="activity-link-preview-container">
+
+		<# if ( data.link_images && data.link_images.length && data.link_success && ! data.link_error && '' !== data.link_image_index ) { #>
+		<div id="activity-url-scrapper-img-holder">
+			<div class="activity-link-preview-image">
+				<div class="activity-link-preview-image-cover">
+					<img src="{{{data.link_images[data.link_image_index]}}}"/>
+				</div>
+				<!-- <a title="Cancel Preview Image" href="#" id="activity-link-preview-close-image">
+					<i class="bb-icon-l bb-icon-times"></i>
+				</a>-->
+				<div class="activity-link-preview-icons">
+					<#
+					if ( data.link_images.length > 1 ) { #>
+						<a data-bp-tooltip-pos="up" data-bp-tooltip="Change image" href="#" class="icon-exchange toolbar-button bp-tooltip" id="icon-exchange"><i class="bb-icon-l bb-icon-exchange"></i></a>
+					<# } #>
+					<# if ( data.link_images.length ) { #>
+						<a data-bp-tooltip-pos="up" data-bp-tooltip="Remove image" href="#" class="icon-image-slash toolbar-button bp-tooltip" id="activity-link-preview-remove-image"><i class="bb-icon-l bb-icon-image-slash"></i></a>
+					<# } #>
+					<a data-bp-tooltip-pos="up" data-bp-tooltip="Confirm" class="toolbar-button bp-tooltip" href="#" id="activity-link-preview-select-image">
+						<i class="bb-icon-check bb-icon-l"></i>
+					</a>
+				</div>
+			</div>
+			<# if ( data.link_images.length > 1 ) { #>
+			<div class="activity-url-thumb-nav">
+				<button type="button" id="activity-url-prevPicButton"><span class="bb-icon-l bb-icon-angle-left"></span></button>
+				<button type="button" id="activity-url-nextPicButton"><span class="bb-icon-l bb-icon-angle-right"></span></button>
+				<div id="activity-url-scrapper-img-count">
+					Image <# print(data.link_image_index + 1) #>&nbsp;of&nbsp;<# print(data.link_images.length) #>
+				</div>
+			</div>
+			<# } #>
+		</div>
+		<# } #>
+
+		<# if ( data.link_success && ! data.link_error && data.link_url ) {#>
+		<div class="activity-link-preview-info">
+			<# var a = document.createElement('a');
+				a.href = data.link_url;
+				var hostname = a.hostname;
+				var domainName = hostname.replace('www.', '' );
+			#>
+
+			<# if ( $.trim( data.link_title ) && data.link_description ) { #>
+				<p class="activity-link-preview-link-name">{{domainName}}</p>
+			<# } #>
+
+			<# if ( data.link_success && ! data.link_error ) { #>
+			<p class="activity-link-preview-title">{{{data.link_title}}}</p>
+			<# } #>
+
+			<# if ( data.link_success && ! data.link_error ) { #>
+			<div class="activity-link-preview-excerpt"><p>{{{data.link_description}}}</p></div>
+			<# } #>
+		</div>
+	</div>
+	<# } #>
+	<# if ( data.link_error && ! data.link_success ) { #>
+		<div id="activity-url-error" class="activity-url-error">{{data.link_error_msg}}</div>
+	<# } #>
+	<# } #>
+	<# } #>
+</script>
+    <script type="text/html" id="tmpl-activity-media">
+    <div class="dropzone closed media-dropzone" id="activity-post-media-uploader"></div>
+    <div class="activity-post-default-template" style="display:none;">
+        <div class="dz-preview">
+            <div class="dz-image">
+                <img data-dz-thumbnail/>
+            </div>
+            <div class="dz-error-title">Upload Failed</div>
+            <div class="dz-details">
+                <div class="dz-filename"><span data-dz-name></span></div>
+                <div class="dz-size" data-dz-size></div>
+            </div>
+            <div class="dz-progress-ring-wrap">
+                <i class="bb-icon-f bb-icon-camera"></i>
+                <svg class="dz-progress-ring" width="54" height="54">
+                    <circle class="progress-ring__circle" stroke="white" stroke-width="3" fill="transparent" r="24.5" cx="27" cy="27" stroke-dasharray="185.354, 185.354" stroke-dashoffset="185" />
+                </svg>
+            </div>
+            <div class="dz-error-message"><span data-dz-errormessage></span></div>
+            <div class="dz-error-mark">
+                <svg width="54px" height="54px" viewBox="0 0 54 54" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><title>Error</title>
+                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                        <g stroke="#747474" stroke-opacity="0.198794158" fill="#FFFFFF" fill-opacity="0.816519475">
+                            <path d="M32.6568542,29 L38.3106978,23.3461564 C39.8771021,21.7797521 39.8758057,19.2483887 38.3137085,17.6862915 C36.7547899,16.1273729 34.2176035,16.1255422 32.6538436,17.6893022 L27,23.3431458 L21.3461564,17.6893022 C19.7823965,16.1255422 17.2452101,16.1273729 15.6862915,17.6862915 C14.1241943,19.2483887 14.1228979,21.7797521 15.6893022,23.3461564 L21.3431458,29 L15.6893022,34.6538436 C14.1228979,36.2202479 14.1241943,38.7516113 15.6862915,40.3137085 C17.2452101,41.8726271 19.7823965,41.8744578 21.3461564,40.3106978 L27,34.6568542 L32.6538436,40.3106978 C34.2176035,41.8744578 36.7547899,41.8726271 38.3137085,40.3137085 C39.8758057,38.7516113 39.8771021,36.2202479 38.3106978,34.6538436 L32.6568542,29 Z M27,53 C41.3594035,53 53,41.3594035 53,27 C53,12.6405965 41.3594035,1 27,1 C12.6405965,1 1,12.6405965 1,27 C1,41.3594035 12.6405965,53 27,53 Z"></path>
+                        </g>
+                    </g>
+                </svg>
+            </div>
+        </div>
+    </div>
+</script>
+    <script type="text/html" id="tmpl-activity-document">
+    <div class="dropzone closed document-dropzone" id="activity-post-document-uploader"></div>
+    <div class="activity-post-document-template" style="display:none;">
+        <div class="dz-preview dz-file-preview">
+            <div class="dz-error-title">Upload Failed</div>
+            <div class="dz-details">
+                <div class="dz-icon"><span class="bb-icon-l bb-icon-file"></span></div>    
+                <div class="dz-filename"><span data-dz-name></span></div>
+                <div class="dz-size" data-dz-size></div>
+            </div>
+            <div class="dz-progress-ring-wrap">
+                <i class="bb-icon-f bb-icon-file-attach"></i>
+                <svg class="dz-progress-ring" width="54" height="54">
+                    <circle class="progress-ring__circle" stroke="white" stroke-width="3" fill="transparent" r="24.5" cx="27" cy="27" stroke-dasharray="185.354, 185.354" stroke-dashoffset="185" />
+                </svg>
+            </div>
+            <div class="dz-error-message"><span data-dz-errormessage></span></div>
+            <div class="dz-error-mark">
+                <svg width="54px" height="54px" viewBox="0 0 54 54" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><title>Error</title>
+                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                        <g stroke="#747474" stroke-opacity="0.198794158" fill="#FFFFFF" fill-opacity="0.816519475">
+                            <path d="M32.6568542,29 L38.3106978,23.3461564 C39.8771021,21.7797521 39.8758057,19.2483887 38.3137085,17.6862915 C36.7547899,16.1273729 34.2176035,16.1255422 32.6538436,17.6893022 L27,23.3431458 L21.3461564,17.6893022 C19.7823965,16.1255422 17.2452101,16.1273729 15.6862915,17.6862915 C14.1241943,19.2483887 14.1228979,21.7797521 15.6893022,23.3461564 L21.3431458,29 L15.6893022,34.6538436 C14.1228979,36.2202479 14.1241943,38.7516113 15.6862915,40.3137085 C17.2452101,41.8726271 19.7823965,41.8744578 21.3461564,40.3106978 L27,34.6568542 L32.6538436,40.3106978 C34.2176035,41.8744578 36.7547899,41.8726271 38.3137085,40.3137085 C39.8758057,38.7516113 39.8771021,36.2202479 38.3106978,34.6538436 L32.6568542,29 Z M27,53 C41.3594035,53 53,41.3594035 53,27 C53,12.6405965 41.3594035,1 27,1 C12.6405965,1 1,12.6405965 1,27 C1,41.3594035 12.6405965,53 27,53 Z"></path>
+                        </g>
+                    </g>
+                </svg>
+            </div>
+        </div>
+    </div>
+</script>
+    <script type="text/html" id="tmpl-activity-video">
+    <div class="dropzone closed video-dropzone" id="activity-post-video-uploader"></div>
+    <div class="activity-post-video-template" style="display:none;">
+        <div class="dz-preview dz-file-preview well" id="dz-preview-template">
+            <div class="dz-details">
+				<div class="dz-filename"><span data-dz-name></span></div>
+			</div>
+            <div class="dz-error-title">Upload Failed</div>
+            <div class="dz-progress-ring-wrap">
+				<i class="bb-icon-f bb-icon-video"></i>
+                <svg class="dz-progress-ring" width="54" height="54">
+                    <circle class="progress-ring__circle" stroke="white" stroke-width="3" fill="transparent" r="24.5" cx="27" cy="27" stroke-dasharray="185.354, 185.354" stroke-dashoffset="185" />
+                </svg>
+			</div>
+            <!-- <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div> -->
+            <div class="dz-error-message"><span data-dz-errormessage></span></div>
+            <div class="dz-success-mark">
+                <svg width="54px" height="54px" viewBox="0 0 54 54" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><title>Check</title>
+                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                        <path d="M23.5,31.8431458 L17.5852419,25.9283877 C16.0248253,24.3679711 13.4910294,24.366835 11.9289322,25.9289322 C10.3700136,27.4878508 10.3665912,30.0234455 11.9283877,31.5852419 L20.4147581,40.0716123 C20.5133999,40.1702541 20.6159315,40.2626649 20.7218615,40.3488435 C22.2835669,41.8725651 24.794234,41.8626202 26.3461564,40.3106978 L43.3106978,23.3461564 C44.8771021,21.7797521 44.8758057,19.2483887 43.3137085,17.6862915 C41.7547899,16.1273729 39.2176035,16.1255422 37.6538436,17.6893022 L23.5,31.8431458 Z M27,53 C41.3594035,53 53,41.3594035 53,27 C53,12.6405965 41.3594035,1 27,1 C12.6405965,1 1,12.6405965 1,27 C1,41.3594035 12.6405965,53 27,53 Z" stroke-opacity="0.198794158" stroke="#747474" fill-opacity="0.816519475" fill="#FFFFFF"></path>
+                    </g>
+                </svg>
+            </div>
+            <div class="dz-error-mark">
+                <svg width="54px" height="54px" viewBox="0 0 54 54" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><title>Error</title>
+                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                        <g stroke="#747474" stroke-opacity="0.198794158" fill="#FFFFFF" fill-opacity="0.816519475">
+                            <path d="M32.6568542,29 L38.3106978,23.3461564 C39.8771021,21.7797521 39.8758057,19.2483887 38.3137085,17.6862915 C36.7547899,16.1273729 34.2176035,16.1255422 32.6538436,17.6893022 L27,23.3431458 L21.3461564,17.6893022 C19.7823965,16.1255422 17.2452101,16.1273729 15.6862915,17.6862915 C14.1241943,19.2483887 14.1228979,21.7797521 15.6893022,23.3461564 L21.3431458,29 L15.6893022,34.6538436 C14.1228979,36.2202479 14.1241943,38.7516113 15.6862915,40.3137085 C17.2452101,41.8726271 19.7823965,41.8744578 21.3461564,40.3106978 L27,34.6568542 L32.6538436,40.3106978 C34.2176035,41.8744578 36.7547899,41.8726271 38.3137085,40.3137085 C39.8758057,38.7516113 39.8771021,36.2202479 38.3106978,34.6538436 L32.6568542,29 Z M27,53 C41.3594035,53 53,41.3594035 53,27 C53,12.6405965 41.3594035,1 27,1 C12.6405965,1 1,12.6405965 1,27 C1,41.3594035 12.6405965,53 27,53 Z"></path>
+                        </g>
+                    </g>
+                </svg>
+            </div>
+            <div class="dz-progress-count">0% Uploaded</span></div>
+            <div class="dz-video-thumbnail"></span></div>
+        </div>
+    </div>
+</script>
+    <script type="text/html" id="tmpl-activity-post-case-avatar">
+	<# if ( data.display_avatar ) {  #>
+	<div class="activity-post-avatar-container">
+		<a class="activity-post-avatar" href="{{data.user_domain}}"><img src="{{{data.avatar_url}}}" class="avatar user-{{data.user_id}}-avatar avatar-{{data.avatar_width}} photo" width="{{data.avatar_width}}" height="{{data.avatar_width}}" alt="{{data.avatar_alt}}" /></a>
+	</div>
+	<# } #>
+</script>
+    <script type="text/html" id="tmpl-activity-post-case-heading">
+	<# if ( data.display_avatar ) {  #>
+		<span class="activity-post-user-name-container">
+			<h5><a class="activity-post-user-name" href="{{data.user_domain}}"><span class="user-name">{{data.user_display_name}}</span></a></h5>
+		</span>
+	<# } #>
+</script>
+    <script type="text/html" id="tmpl-activity-post-case-privacy">
+	<div id="bp-activity-privacy-point" class="{{data.privacy}}" data-bp-tooltip-pos="up" data-bp-tooltip="Set by album privacy">
+		<span class="privacy-point-icon"></span>
+		<span class="bp-activity-privacy-status">
+			<# if ( data.privacy === 'public' ) {  #>
+				Public			<# } else if ( data.privacy === 'loggedin' ) { #>
+				All Members			<# } else if ( data.privacy === 'friends' ) { #>
+				My Connections			<# } else if ( data.privacy === 'onlyme' ) { #>
+				Only Me			<# } else { #>
+				Group			<# } #>
+		</span>
+		<i class="bb-icon-f bb-icon-caret-down"></i>
+	</div>
+</script>
+    <script type="text/html" id="tmpl-activity-post-form-buttons">
+	<button type="button" class="button dashicons {{data.icon}}" data-button="{{data.id}}"><span class="bp-screen-reader-text">{{data.caption}}</span></button>
+</script>
+    <script type="text/html" id="tmpl-activity-post-form-feedback">
+	<span class="bp-icon" aria-hidden="true"></span><p>{{{data.message}}}</p>
+</script>
+    <script type="text/html" id="tmpl-activity-post-form-options">
+	</script>
+    <script type="text/html" id="tmpl-activity-header">
+	<h3>
+		<span class="activity-header-data">
+			<# if ( data.privacy_modal === 'profile' ) {  #>
+				Who can see your post?			<# } else if ( data.privacy_modal === 'group' ) { #>
+				Select a group			<# } else { #>
+				<# if ( data.edit_activity === true ) {  #>
+					Edit post				<# } else { #>
+					Create a post				<# } #>
+			<# } #>
+		<span>
+	</h3>
+	<a class="bb-model-close-button" href="#">
+		<span class="bb-icon-l bb-icon-times"></span>
+	</a>
+</script>
+    <script type="text/html" id="tmpl-activity-target-item">
+	<label for="bp-item-opt-{{data.id}}">
+		<# if ( data.selected ) { #>
+		<input type="hidden" value="{{data.id}}">
+		<# } #>
+
+		<# if ( data.avatar_url ) { #>
+		<img src="{{data.avatar_url}}" class="avatar {{data.object_type}}-{{data.id}}-avatar photo" alt="" />
+		<# } #>
+
+		<span class="bp-item-name">{{data.name}}</span>
+
+		<span class="bb-radio-style privacy-radio <# if ( data.selected ) { #>selected<# } #>">
+			<input type="radio" id="bp-item-opt-{{data.id}}" class="bp-activity-object__radio" name="group-privacy" data-title="{{data.name}}" data-id="{{data.id}}" value="opt-value-{{data.id}}" <# if ( data.selected ) { #> checked <# } #>><span></span>
+		</span>
+	</label>
+</script>
+    <script type="text/html" id="tmpl-gif-media-search-dropdown">
+	<div class="gif-search-content">
+		<div class="gif-search-query">
+			<input type="search" placeholder="Search GIPHY..." class="search-query-input" />
+			<span class="search-icon"></span>
+		</div>
+		<div class="gif-search-results" id="gif-search-results">
+			<ul class="gif-search-results-list" >
+			</ul>
+			<div class="gif-alert gif-no-results">
+				<i class="bb-icon-l bb-icon-image-slash"></i>
+				<p>No results found</p>
+			</div>
+
+			<div class="gif-alert gif-no-connection">
+				<i class="bb-icon-l bb-icon-cloud-slash"></i>
+				<p>Could not connect to GIPHY</p>
+			</div>
+
+		</div>
+	</div>
+</script>
+    <script type="text/html" id="tmpl-gif-result-item">
+	<a class="found-media-item" href="{{{data.images.original.url}}}" data-id="{{data.id}}">
+		<img src="{{{data.images.fixed_width.url}}}" />
+	</a>
+</script>
+    <script type="text/html" id="tmpl-whats-new-toolbar">
+
+			<div class="post-elements-buttons-item post-media media-support">
+			<a href="#" id="activity-media-button" class="toolbar-button bp-tooltip" data-bp-tooltip-pos="up-left" data-bp-tooltip="Attach photo">
+				<i class="bb-icon-l bb-icon-camera"></i>
+			</a>
+		</div>
+				<div class="post-elements-buttons-item post-video video-support">
+			<a href="#" id="activity-video-button" class="toolbar-button bp-tooltip" data-bp-tooltip-pos="up" data-bp-tooltip="Attach video">
+				<i class="bb-icon-l bb-icon-video"></i>
+			</a>
+		</div>
+				<div class="post-elements-buttons-item post-media document-support">
+			<a href="#" id="activity-document-button" class="toolbar-button bp-tooltip" data-bp-tooltip-pos="up" data-bp-tooltip="Attach document">
+				<i class="bb-icon-l bb-icon-attach"></i>
+			</a>
+		</div>
+	
+			<div class="post-elements-buttons-item post-gif">
+			<div class="gif-media-search">
+				<a href="#" id="activity-gif-button" class="toolbar-button bp-tooltip" data-bp-tooltip-pos="up" data-bp-tooltip="Choose a GIF"><i class="bb-icon-l bb-icon-gif"></i></a>
+				<div class="gif-media-search-dropdown"></div>
+			</div>
+		</div>
+	</script>
+    <script type="text/html" id="tmpl-editor-toolbar">
+		<div class="post-elements-buttons-item show-toolbar" data-bp-tooltip-pos="up" data-bp-tooltip="Show formatting" data-bp-tooltip-hide="Hide formatting" data-bp-tooltip-show="Show formatting">
+			<a href="#" id="show-toolbar-button" class="toolbar-button bp-tooltip">
+				<span class="bb-icon-l bb-icon-font"></span>
+			</a>
+		</div>
+	<div class="post-elements-buttons-item post-mention bp-tooltip" data-bp-tooltip-pos="up-right" data-bp-tooltip="Mention someone">
+		<span class="toolbar-button">
+			<i class="bb-icon-l bb-icon-at"></i>
+		</span>
+	</div>
+			<div class="post-elements-buttons-item post-emoji bp-tooltip" data-bp-tooltip-pos="up-right" data-bp-tooltip="Emoji"></div>
+	</script>
+    <script type="text/html" id="tmpl-activity-post-form-privacy">
+	<div class="bp-activity-privacy__list">
+		
+			<label for="public" class="bb-radio-style bp-activity-privacy__label bp-activity-privacy__label-public">
+				<div class="privacy-tag-wrapper">
+					<span class="privacy-figure privacy-figure--public"></span>
+					<div class="privacy-tag">
+						<div class="privacy-label">Public</div>
+						<span class="privacy-sub-label">
+							Visible to anyone, on or off this site						</span>
+					</div>
+				</div>
+				<span class="privacy-radio">
+					<input type="radio" id="public" class="bp-activity-privacy__input" name="privacy" value="public" data-title="Public"  checked='checked'>
+					<span></span>
+				</span>
+			</label>
+		
+			<label for="loggedin" class="bb-radio-style bp-activity-privacy__label bp-activity-privacy__label-loggedin">
+				<div class="privacy-tag-wrapper">
+					<span class="privacy-figure privacy-figure--loggedin"></span>
+					<div class="privacy-tag">
+						<div class="privacy-label">All Members</div>
+						<span class="privacy-sub-label">
+							Visible to all members on this site						</span>
+					</div>
+				</div>
+				<span class="privacy-radio">
+					<input type="radio" id="loggedin" class="bp-activity-privacy__input" name="privacy" value="loggedin" data-title="All Members" >
+					<span></span>
+				</span>
+			</label>
+		
+			<label for="friends" class="bb-radio-style bp-activity-privacy__label bp-activity-privacy__label-friends">
+				<div class="privacy-tag-wrapper">
+					<span class="privacy-figure privacy-figure--friends"></span>
+					<div class="privacy-tag">
+						<div class="privacy-label">My Connections</div>
+						<span class="privacy-sub-label">
+							Visible only to your connections						</span>
+					</div>
+				</div>
+				<span class="privacy-radio">
+					<input type="radio" id="friends" class="bp-activity-privacy__input" name="privacy" value="friends" data-title="My Connections" >
+					<span></span>
+				</span>
+			</label>
+		
+			<label for="onlyme" class="bb-radio-style bp-activity-privacy__label bp-activity-privacy__label-onlyme">
+				<div class="privacy-tag-wrapper">
+					<span class="privacy-figure privacy-figure--onlyme"></span>
+					<div class="privacy-tag">
+						<div class="privacy-label">Only Me</div>
+						<span class="privacy-sub-label">
+							Visible only to you						</span>
+					</div>
+				</div>
+				<span class="privacy-radio">
+					<input type="radio" id="onlyme" class="bp-activity-privacy__input" name="privacy" value="onlyme" data-title="Only Me" >
+					<span></span>
+				</span>
+			</label>
+		
+						<label for="group" class="bb-radio-style bp-activity-privacy__label bp-activity-privacy__label-group">
+					<div class="privacy-tag-wrapper">
+						<span class="privacy-figure privacy-figure--group"></span>
+						<div class="privacy-tag">
+							<div class="privacy-label">Post in Group<i class="bb-icon-l bb-icon-angle-right"></i></div>
+							<span class="privacy-sub-label">Visible to members of a group</span>
+						</div>
+					</div>
+					<span class="privacy-radio"><input type="radio" id="group" class="bp-activity-privacy__input" name="privacy" value="group" data-title="Group"><span></span></span>
+				</label>
+					</div>
+</script>
+    <script type="text/html" id="tmpl-activity-edit-postin">
+	<div id="whats-new-post-in-box">
+		<select disabled id="whats-new-post-in">
+			<# if ( data.object !== 'user' ) { #>
+			<option>Post in: Group</option>
+			<# } #>
+			<# if ( data.object === 'user' ) { #>
+			<option>Post in: Profile</option>
+			<# } #>
+		</select>
+
+		<# if ( data.group_name ) { #>
+			<div id="whats-new-post-in-box-items">
+				<input disabled type="text" id="activity-autocomplete" value="{{{data.group_name}}}" />
+			</div>
+		<# } #>
+	</div>
+</script>
+    <script type="text/html" id="tmpl-activity-post-privacy-stage-footer">
+	<div class="privacy-status-actions">
+		<input type="button" id="privacy-status-back" class="text-button small" value="Back">
+		<input type="button" id="privacy-status-group-back" class="text-button small" value="Back">
+		<input type="submit" id="privacy-status-submit" class="button" name="privacy-status-submit" value="Save">
+	</div>
+</script>
+    <style id="bb_learndash_30_custom_colors">
+
+
+
+
+    </style>
+    <meta name='robots' content='noindex, nofollow' />
+    <link rel="alternate" type="application/rss+xml" title="Online Communities &raquo; Feed"
+        href="https://demos.buddyboss.com/online-communities/feed/" />
+    <link rel="alternate" type="application/rss+xml" title="Online Communities &raquo; Comments Feed"
+        href="https://demos.buddyboss.com/online-communities/comments/feed/" />
+    <link rel="alternate" type="text/calendar" title="Online Communities &raquo; iCal Feed"
+        href="https://demos.buddyboss.com/online-communities/events/?ical=1" />
+    <script type="text/javascript">
+        window._wpemojiSettings = { "baseUrl": "https:\/\/s.w.org\/images\/core\/emoji\/14.0.0\/72x72\/", "ext": ".png", "svgUrl": "https:\/\/s.w.org\/images\/core\/emoji\/14.0.0\/svg\/", "svgExt": ".svg", "source": { "concatemoji": "https:\/\/demos.buddyboss.com\/online-communities\/wp-includes\/js\/wp-emoji-release.min.js" } };
+        /*! This file is auto-generated */
+        !function (e, a, t) { var n, r, o, i = a.createElement("canvas"), p = i.getContext && i.getContext("2d"); function s(e, t) { p.clearRect(0, 0, i.width, i.height), p.fillText(e, 0, 0); e = i.toDataURL(); return p.clearRect(0, 0, i.width, i.height), p.fillText(t, 0, 0), e === i.toDataURL() } function c(e) { var t = a.createElement("script"); t.src = e, t.defer = t.type = "text/javascript", a.getElementsByTagName("head")[0].appendChild(t) } for (o = Array("flag", "emoji"), t.supports = { everything: !0, everythingExceptFlag: !0 }, r = 0; r < o.length; r++)t.supports[o[r]] = function (e) { if (p && p.fillText) switch (p.textBaseline = "top", p.font = "600 32px Arial", e) { case "flag": return s("\ud83c\udff3\ufe0f\u200d\u26a7\ufe0f", "\ud83c\udff3\ufe0f\u200b\u26a7\ufe0f") ? !1 : !s("\ud83c\uddfa\ud83c\uddf3", "\ud83c\uddfa\u200b\ud83c\uddf3") && !s("\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc65\udb40\udc6e\udb40\udc67\udb40\udc7f", "\ud83c\udff4\u200b\udb40\udc67\u200b\udb40\udc62\u200b\udb40\udc65\u200b\udb40\udc6e\u200b\udb40\udc67\u200b\udb40\udc7f"); case "emoji": return !s("\ud83e\udef1\ud83c\udffb\u200d\ud83e\udef2\ud83c\udfff", "\ud83e\udef1\ud83c\udffb\u200b\ud83e\udef2\ud83c\udfff") }return !1 }(o[r]), t.supports.everything = t.supports.everything && t.supports[o[r]], "flag" !== o[r] && (t.supports.everythingExceptFlag = t.supports.everythingExceptFlag && t.supports[o[r]]); t.supports.everythingExceptFlag = t.supports.everythingExceptFlag && !t.supports.flag, t.DOMReady = !1, t.readyCallback = function () { t.DOMReady = !0 }, t.supports.everything || (n = function () { t.readyCallback() }, a.addEventListener ? (a.addEventListener("DOMContentLoaded", n, !1), e.addEventListener("load", n, !1)) : (e.attachEvent("onload", n), a.attachEvent("onreadystatechange", function () { "complete" === a.readyState && t.readyCallback() })), (e = t.source || {}).concatemoji ? c(e.concatemoji) : e.wpemoji && e.twemoji && (c(e.twemoji), c(e.wpemoji))) }(window, document, window._wpemojiSettings);
+    </script>
+    <link rel='stylesheet' id='dashicons-css'
+        href='https://demos.buddyboss.com/online-communities/wp-includes/css/dashicons.min.css' type='text/css'
+        media='all' />
+    <link rel='stylesheet' id='admin-bar-css'
+        href='https://demos.buddyboss.com/online-communities/wp-includes/css/admin-bar.min.css' type='text/css'
+        media='all' />
+    <link rel='stylesheet' id='gamipress-admin-bar-css-css'
+        href='https://demos.buddyboss.com/online-communities/wp-content/plugins/gamipress/assets/css/gamipress-admin-bar.min.css?ver=2.5.9.1'
+        type='text/css' media='all' />
+    <link rel='stylesheet' id='bp-nouveau-icons-map-css'
+        href='https://demos.buddyboss.com/online-communities/wp-content/plugins/buddyboss-platform/bp-templates/bp-nouveau/icons/css/icons-map.min.css?ver=2.3.3'
+        type='text/css' media='screen' />
+    <link rel='stylesheet' id='bp-nouveau-bb-icons-css'
+        href='https://demos.buddyboss.com/online-communities/wp-content/plugins/buddyboss-platform/bp-templates/bp-nouveau/icons/css/bb-icons.min.css?ver=1.0.3'
+        type='text/css' media='screen' />
+    <link rel='stylesheet' id='bp-nouveau-css'
+        href='https://demos.buddyboss.com/online-communities/wp-content/plugins/buddyboss-platform/bp-templates/bp-nouveau/css/buddypress.min.css?ver=2.3.3'
+        type='text/css' media='screen' />
+    <style id='bp-nouveau-inline-css' type='text/css'>
+        .list-wrap .bs-group-cover a:before {
+            background: unset;
+        }
+
+        body .bp-member-type.bb-current-member-students {
+            background-color: #84a981;
+        }
+
+        body .bp-member-type.bb-current-member-students {
+            color: #ffffff;
+        }
+
+        body .bp-member-type.bb-current-member-teachers {
+            background-color: #87a6d4;
+        }
+
+        body .bp-member-type.bb-current-member-teachers {
+            color: #ffffff;
+        }
+
+        body .bp-member-type.bb-current-member-coaches {
+            background-color: #cf80a4;
+        }
+
+        body .bp-member-type.bb-current-member-coaches {
+            color: #ffffff;
+        }
+
+        body .bp-member-type.bb-current-member-admins {
+            background-color: #595899;
+        }
+
+        body .bp-member-type.bb-current-member-admins {
+            color: #ffffff;
+        }
+
+        body .bp-group-meta .group-type.bb-current-group-meetups {
+            background-color: #db7ba5;
+        }
+
+        body .bp-group-meta .group-type.bb-current-group-meetups {
+            color: #ffffff;
+        }
+
+        body .bp-group-meta .group-type.bb-current-group-clubs {
+            background-color: #db8880;
+        }
+
+        body .bp-group-meta .group-type.bb-current-group-clubs {
+            color: #ffffff;
+        }
+    </style>
+    <link rel='stylesheet' id='tribe-events-admin-menu-css'
+        href='https://demos.buddyboss.com/online-communities/wp-content/plugins/the-events-calendar/src/resources/css/admin-menu.min.css?ver=6.0.12'
+        type='text/css' media='all' />
+    <link rel='stylesheet' id='tribe-events-pro-mini-calendar-block-styles-css'
+        href='https://demos.buddyboss.com/online-communities/wp-content/plugins/events-calendar-pro/src/resources/css/tribe-events-pro-mini-calendar-block.min.css?ver=6.0.11'
+        type='text/css' media='all' />
+    <link rel='stylesheet' id='elementor-icons-css'
+        href='https://demos.buddyboss.com/online-communities/wp-content/plugins/elementor/assets/lib/eicons/css/elementor-icons.min.css?ver=5.18.0'
+        type='text/css' media='all' />
+    <link rel='stylesheet' id='elementor-common-css'
+        href='https://demos.buddyboss.com/online-communities/wp-content/plugins/elementor/assets/css/common.min.css?ver=3.12.2'
+        type='text/css' media='all' />
+    <link rel='stylesheet' id='e-theme-ui-light-css'
+        href='https://demos.buddyboss.com/online-communities/wp-content/plugins/elementor/assets/css/theme-light.min.css?ver=3.12.2'
+        type='text/css' media='all' />
+    <link rel='stylesheet' id='wp-block-library-css'
+        href='https://demos.buddyboss.com/online-communities/wp-includes/css/dist/block-library/style.min.css'
+        type='text/css' media='all' />
+    <link rel='stylesheet' id='wc-blocks-vendors-style-css'
+        href='https://demos.buddyboss.com/online-communities/wp-content/plugins/woocommerce/packages/woocommerce-blocks/build/wc-blocks-vendors-style.css?ver=9.8.5'
+        type='text/css' media='all' />
+    <link rel='stylesheet' id='wc-blocks-style-css'
+        href='https://demos.buddyboss.com/online-communities/wp-content/plugins/woocommerce/packages/woocommerce-blocks/build/wc-blocks-style.css?ver=9.8.5'
+        type='text/css' media='all' />
+    <link rel='stylesheet' id='bb_theme_block-buddypanel-style-css-css'
+        href='https://demos.buddyboss.com/online-communities/wp-content/themes/buddyboss-theme/blocks/buddypanel/build/style-buddypanel.css?ver=a43481f57c3cc73f6cce06223a569c14'
+        type='text/css' media='all' />
+    <link rel='stylesheet' id='classic-theme-styles-css'
+        href='https://demos.buddyboss.com/online-communities/wp-includes/css/classic-themes.min.css' type='text/css'
+        media='all' />
+    <style id='global-styles-inline-css' type='text/css'>
+        body {
+            --wp--preset--color--black: #000000;
+            --wp--preset--color--cyan-bluish-gray: #abb8c3;
+            --wp--preset--color--white: #ffffff;
+            --wp--preset--color--pale-pink: #f78da7;
+            --wp--preset--color--vivid-red: #cf2e2e;
+            --wp--preset--color--luminous-vivid-orange: #ff6900;
+            --wp--preset--color--luminous-vivid-amber: #fcb900;
+            --wp--preset--color--light-green-cyan: #7bdcb5;
+            --wp--preset--color--vivid-green-cyan: #00d084;
+            --wp--preset--color--pale-cyan-blue: #8ed1fc;
+            --wp--preset--color--vivid-cyan-blue: #0693e3;
+            --wp--preset--color--vivid-purple: #9b51e0;
+            --wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg, rgba(6, 147, 227, 1) 0%, rgb(155, 81, 224) 100%);
+            --wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg, rgb(122, 220, 180) 0%, rgb(0, 208, 130) 100%);
+            --wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg, rgba(252, 185, 0, 1) 0%, rgba(255, 105, 0, 1) 100%);
+            --wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg, rgba(255, 105, 0, 1) 0%, rgb(207, 46, 46) 100%);
+            --wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg, rgb(238, 238, 238) 0%, rgb(169, 184, 195) 100%);
+            --wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg, rgb(74, 234, 220) 0%, rgb(151, 120, 209) 20%, rgb(207, 42, 186) 40%, rgb(238, 44, 130) 60%, rgb(251, 105, 98) 80%, rgb(254, 248, 76) 100%);
+            --wp--preset--gradient--blush-light-purple: linear-gradient(135deg, rgb(255, 206, 236) 0%, rgb(152, 150, 240) 100%);
+            --wp--preset--gradient--blush-bordeaux: linear-gradient(135deg, rgb(254, 205, 165) 0%, rgb(254, 45, 45) 50%, rgb(107, 0, 62) 100%);
+            --wp--preset--gradient--luminous-dusk: linear-gradient(135deg, rgb(255, 203, 112) 0%, rgb(199, 81, 192) 50%, rgb(65, 88, 208) 100%);
+            --wp--preset--gradient--pale-ocean: linear-gradient(135deg, rgb(255, 245, 203) 0%, rgb(182, 227, 212) 50%, rgb(51, 167, 181) 100%);
+            --wp--preset--gradient--electric-grass: linear-gradient(135deg, rgb(202, 248, 128) 0%, rgb(113, 206, 126) 100%);
+            --wp--preset--gradient--midnight: linear-gradient(135deg, rgb(2, 3, 129) 0%, rgb(40, 116, 252) 100%);
+            --wp--preset--duotone--dark-grayscale: url('#wp-duotone-dark-grayscale');
+            --wp--preset--duotone--grayscale: url('#wp-duotone-grayscale');
+            --wp--preset--duotone--purple-yellow: url('#wp-duotone-purple-yellow');
+            --wp--preset--duotone--blue-red: url('#wp-duotone-blue-red');
+            --wp--preset--duotone--midnight: url('#wp-duotone-midnight');
+            --wp--preset--duotone--magenta-yellow: url('#wp-duotone-magenta-yellow');
+            --wp--preset--duotone--purple-green: url('#wp-duotone-purple-green');
+            --wp--preset--duotone--blue-orange: url('#wp-duotone-blue-orange');
+            --wp--preset--font-size--small: 13px;
+            --wp--preset--font-size--medium: 20px;
+            --wp--preset--font-size--large: 36px;
+            --wp--preset--font-size--x-large: 42px;
+            --wp--preset--spacing--20: 0.44rem;
+            --wp--preset--spacing--30: 0.67rem;
+            --wp--preset--spacing--40: 1rem;
+            --wp--preset--spacing--50: 1.5rem;
+            --wp--preset--spacing--60: 2.25rem;
+            --wp--preset--spacing--70: 3.38rem;
+            --wp--preset--spacing--80: 5.06rem;
+            --wp--preset--shadow--natural: 6px 6px 9px rgba(0, 0, 0, 0.2);
+            --wp--preset--shadow--deep: 12px 12px 50px rgba(0, 0, 0, 0.4);
+            --wp--preset--shadow--sharp: 6px 6px 0px rgba(0, 0, 0, 0.2);
+            --wp--preset--shadow--outlined: 6px 6px 0px -3px rgba(255, 255, 255, 1), 6px 6px rgba(0, 0, 0, 1);
+            --wp--preset--shadow--crisp: 6px 6px 0px rgba(0, 0, 0, 1);
+        }
+
+        :where(.is-layout-flex) {
+            gap: 0.5em;
+        }
+
+        body .is-layout-flow>.alignleft {
+            float: left;
+            margin-inline-start: 0;
+            margin-inline-end: 2em;
+        }
+
+        body .is-layout-flow>.alignright {
+            float: right;
+            margin-inline-start: 2em;
+            margin-inline-end: 0;
+        }
+
+        body .is-layout-flow>.aligncenter {
+            margin-left: auto !important;
+            margin-right: auto !important;
+        }
+
+        body .is-layout-constrained>.alignleft {
+            float: left;
+            margin-inline-start: 0;
+            margin-inline-end: 2em;
+        }
+
+        body .is-layout-constrained>.alignright {
+            float: right;
+            margin-inline-start: 2em;
+            margin-inline-end: 0;
+        }
+
+        body .is-layout-constrained>.aligncenter {
+            margin-left: auto !important;
+            margin-right: auto !important;
+        }
+
+        body .is-layout-constrained> :where(:not(.alignleft):not(.alignright):not(.alignfull)) {
+            max-width: var(--wp--style--global--content-size);
+            margin-left: auto !important;
+            margin-right: auto !important;
+        }
+
+        body .is-layout-constrained>.alignwide {
+            max-width: var(--wp--style--global--wide-size);
+        }
+
+        body .is-layout-flex {
+            display: flex;
+        }
+
+        body .is-layout-flex {
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        body .is-layout-flex>* {
+            margin: 0;
+        }
+
+        :where(.wp-block-columns.is-layout-flex) {
+            gap: 2em;
+        }
+
+        .has-black-color {
+            color: var(--wp--preset--color--black) !important;
+        }
+
+        .has-cyan-bluish-gray-color {
+            color: var(--wp--preset--color--cyan-bluish-gray) !important;
+        }
+
+        .has-white-color {
+            color: var(--wp--preset--color--white) !important;
+        }
+
+        .has-pale-pink-color {
+            color: var(--wp--preset--color--pale-pink) !important;
+        }
+
+        .has-vivid-red-color {
+            color: var(--wp--preset--color--vivid-red) !important;
+        }
+
+        .has-luminous-vivid-orange-color {
+            color: var(--wp--preset--color--luminous-vivid-orange) !important;
+        }
+
+        .has-luminous-vivid-amber-color {
+            color: var(--wp--preset--color--luminous-vivid-amber) !important;
+        }
+
+        .has-light-green-cyan-color {
+            color: var(--wp--preset--color--light-green-cyan) !important;
+        }
+
+        .has-vivid-green-cyan-color {
+            color: var(--wp--preset--color--vivid-green-cyan) !important;
+        }
+
+        .has-pale-cyan-blue-color {
+            color: var(--wp--preset--color--pale-cyan-blue) !important;
+        }
+
+        .has-vivid-cyan-blue-color {
+            color: var(--wp--preset--color--vivid-cyan-blue) !important;
+        }
+
+        .has-vivid-purple-color {
+            color: var(--wp--preset--color--vivid-purple) !important;
+        }
+
+        .has-black-background-color {
+            background-color: var(--wp--preset--color--black) !important;
+        }
+
+        .has-cyan-bluish-gray-background-color {
+            background-color: var(--wp--preset--color--cyan-bluish-gray) !important;
+        }
+
+        .has-white-background-color {
+            background-color: var(--wp--preset--color--white) !important;
+        }
+
+        .has-pale-pink-background-color {
+            background-color: var(--wp--preset--color--pale-pink) !important;
+        }
+
+        .has-vivid-red-background-color {
+            background-color: var(--wp--preset--color--vivid-red) !important;
+        }
+
+        .has-luminous-vivid-orange-background-color {
+            background-color: var(--wp--preset--color--luminous-vivid-orange) !important;
+        }
+
+        .has-luminous-vivid-amber-background-color {
+            background-color: var(--wp--preset--color--luminous-vivid-amber) !important;
+        }
+
+        .has-light-green-cyan-background-color {
+            background-color: var(--wp--preset--color--light-green-cyan) !important;
+        }
+
+        .has-vivid-green-cyan-background-color {
+            background-color: var(--wp--preset--color--vivid-green-cyan) !important;
+        }
+
+        .has-pale-cyan-blue-background-color {
+            background-color: var(--wp--preset--color--pale-cyan-blue) !important;
+        }
+
+        .has-vivid-cyan-blue-background-color {
+            background-color: var(--wp--preset--color--vivid-cyan-blue) !important;
+        }
+
+        .has-vivid-purple-background-color {
+            background-color: var(--wp--preset--color--vivid-purple) !important;
+        }
+
+        .has-black-border-color {
+            border-color: var(--wp--preset--color--black) !important;
+        }
+
+        .has-cyan-bluish-gray-border-color {
+            border-color: var(--wp--preset--color--cyan-bluish-gray) !important;
+        }
+
+        .has-white-border-color {
+            border-color: var(--wp--preset--color--white) !important;
+        }
+
+        .has-pale-pink-border-color {
+            border-color: var(--wp--preset--color--pale-pink) !important;
+        }
+
+        .has-vivid-red-border-color {
+            border-color: var(--wp--preset--color--vivid-red) !important;
+        }
+
+        .has-luminous-vivid-orange-border-color {
+            border-color: var(--wp--preset--color--luminous-vivid-orange) !important;
+        }
+
+        .has-luminous-vivid-amber-border-color {
+            border-color: var(--wp--preset--color--luminous-vivid-amber) !important;
+        }
+
+        .has-light-green-cyan-border-color {
+            border-color: var(--wp--preset--color--light-green-cyan) !important;
+        }
+
+        .has-vivid-green-cyan-border-color {
+            border-color: var(--wp--preset--color--vivid-green-cyan) !important;
+        }
+
+        .has-pale-cyan-blue-border-color {
+            border-color: var(--wp--preset--color--pale-cyan-blue) !important;
+        }
+
+        .has-vivid-cyan-blue-border-color {
+            border-color: var(--wp--preset--color--vivid-cyan-blue) !important;
+        }
+
+        .has-vivid-purple-border-color {
+            border-color: var(--wp--preset--color--vivid-purple) !important;
+        }
+
+        .has-vivid-cyan-blue-to-vivid-purple-gradient-background {
+            background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;
+        }
+
+        .has-light-green-cyan-to-vivid-green-cyan-gradient-background {
+            background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;
+        }
+
+        .has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background {
+            background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;
+        }
+
+        .has-luminous-vivid-orange-to-vivid-red-gradient-background {
+            background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;
+        }
+
+        .has-very-light-gray-to-cyan-bluish-gray-gradient-background {
+            background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;
+        }
+
+        .has-cool-to-warm-spectrum-gradient-background {
+            background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;
+        }
+
+        .has-blush-light-purple-gradient-background {
+            background: var(--wp--preset--gradient--blush-light-purple) !important;
+        }
+
+        .has-blush-bordeaux-gradient-background {
+            background: var(--wp--preset--gradient--blush-bordeaux) !important;
+        }
+
+        .has-luminous-dusk-gradient-background {
+            background: var(--wp--preset--gradient--luminous-dusk) !important;
+        }
+
+        .has-pale-ocean-gradient-background {
+            background: var(--wp--preset--gradient--pale-ocean) !important;
+        }
+
+        .has-electric-grass-gradient-background {
+            background: var(--wp--preset--gradient--electric-grass) !important;
+        }
+
+        .has-midnight-gradient-background {
+            background: var(--wp--preset--gradient--midnight) !important;
+        }
+
+        .has-small-font-size {
+            font-size: var(--wp--preset--font-size--small) !important;
+        }
+
+        .has-medium-font-size {
+            font-size: var(--wp--preset--font-size--medium) !important;
+        }
+
+        .has-large-font-size {
+            font-size: var(--wp--preset--font-size--large) !important;
+        }
+
+        .has-x-large-font-size {
+            font-size: var(--wp--preset--font-size--x-large) !important;
+        }
+
+        .wp-block-navigation a:where(:not(.wp-element-button)) {
+            color: inherit;
+        }
+
+        :where(.wp-block-columns.is-layout-flex) {
+            gap: 2em;
+        }
+
+        .wp-block-pullquote {
+            font-size: 1.5em;
+            line-height: 1.6;
+        }
+    </style>
+    <link rel='stylesheet' id='bp-admin-bar-css'
+        href='https://demos.buddyboss.com/online-communities/wp-content/plugins/buddyboss-platform/bp-core/css/admin-bar.min.css?ver=2.3.3'
+        type='text/css' media='all' />
+    <link rel='stylesheet' id='bb-pro-enqueue-scripts-css'
+        href='https://demos.buddyboss.com/online-communities/wp-content/plugins/buddyboss-platform-pro/assets/css/index.min.css?ver=2.3.0'
+        type='text/css' media='all' />
+    <link rel='stylesheet' id='bb-access-control-css'
+        href='https://demos.buddyboss.com/online-communities/wp-content/plugins/buddyboss-platform-pro/includes/access-control/assets/css/bb-access-control.min.css?ver=2.3.0'
+        type='text/css' media='all' />
+    <link rel='stylesheet' id='bp-mentions-css-css'
+        href='https://demos.buddyboss.com/online-communities/wp-content/plugins/buddyboss-platform/bp-core/css/mentions.min.css?ver=2.3.3'
+        type='text/css' media='all' />
+    <link rel='stylesheet' id='bp-medium-editor-css'
+        href='https://demos.buddyboss.com/online-communities/wp-content/plugins/buddyboss-platform/bp-core/css/medium-editor.min.css?ver=2.3.3'
+        type='text/css' media='all' />
+    <link rel='stylesheet' id='bp-medium-editor-beagle-css'
+        href='https://demos.buddyboss.com/online-communities/wp-content/plugins/buddyboss-platform/bp-core/css/medium-editor-beagle.min.css?ver=2.3.3'
+        type='text/css' media='all' />
+    <link rel='stylesheet' id='emojionearea-css'
+        href='https://demos.buddyboss.com/online-communities/wp-content/plugins/buddyboss-platform/bp-core/css/emojionearea-edited.min.css?ver=2.3.3'
+        type='text/css' media='all' />
+    <link rel='stylesheet' id='bp-media-videojs-css-css'
+        href='https://demos.buddyboss.com/online-communities/wp-content/plugins/buddyboss-platform/bp-core/css/vendor/video-js.min.css?ver=2.3.3'
+        type='text/css' media='all' />
+    <link rel='stylesheet' id='bp-select2-css'
+        href='https://demos.buddyboss.com/online-communities/wp-content/plugins/buddyboss-platform/bp-core/css/vendor/select2.min.css?ver=2.3.3'
+        type='text/css' media='all' />
+    <link rel='stylesheet' id='gamipress-css-css'
+        href='https://demos.buddyboss.com/online-communities/wp-content/plugins/gamipress/assets/css/gamipress.min.css?ver=2.5.9.1'
+        type='text/css' media='all' />
+    <link rel='stylesheet' id='woocommerce-layout-css'
+        href='https://demos.buddyboss.com/online-communities/wp-content/plugins/woocommerce/assets/css/woocommerce-layout.css?ver=7.6.1'
+        type='text/css' media='all' />
+    <link rel='stylesheet' id='woocommerce-smallscreen-css'
+        href='https://demos.buddyboss.com/online-communities/wp-content/plugins/woocommerce/assets/css/woocommerce-smallscreen.css?ver=7.6.1'
+        type='text/css' media='only screen and (max-width: 768px)' />
+    <link rel='stylesheet' id='woocommerce-general-css'
+        href='https://demos.buddyboss.com/online-communities/wp-content/plugins/woocommerce/assets/css/woocommerce.css?ver=7.6.1'
+        type='text/css' media='all' />
+    <style id='woocommerce-inline-inline-css' type='text/css'>
+        .woocommerce form .form-row .required {
+            visibility: visible;
+        }
+    </style>
+    <link rel='stylesheet' id='wp-job-manager-frontend-css'
+        href='https://demos.buddyboss.com/online-communities/wp-content/plugins/wp-job-manager/assets/dist/css/frontend.css?ver=70bcf98f10f46d76c3ff1baa07f25225'
+        type='text/css' media='all' />
+    <link rel='stylesheet' id='learndash_quiz_front_css-css'
+        href='//demos.buddyboss.com/online-communities/wp-content/plugins/sfwd-lms/themes/legacy/templates/learndash_quiz_front.min.css?ver=4.5.1.2'
+        type='text/css' media='all' />
+    <link rel='stylesheet' id='jquery-dropdown-css-css'
+        href='//demos.buddyboss.com/online-communities/wp-content/plugins/sfwd-lms/assets/css/jquery.dropdown.min.css?ver=4.5.1.2'
+        type='text/css' media='all' />
+    <link rel='stylesheet' id='learndash_lesson_video-css'
+        href='//demos.buddyboss.com/online-communities/wp-content/plugins/sfwd-lms/themes/legacy/templates/learndash_lesson_video.min.css?ver=4.5.1.2'
+        type='text/css' media='all' />
+    <link rel='stylesheet' id='wp-job-manager-applications-frontend-css'
+        href='https://demos.buddyboss.com/online-communities/wp-content/plugins/wp-job-manager-applications/assets/dist/css/frontend.css?ver=2.5.4'
+        type='text/css' media='all' />
+    <link rel='stylesheet' id='select2-css'
+        href='https://demos.buddyboss.com/online-communities/wp-content/plugins/woocommerce/assets/css/select2.css?ver=7.6.1'
+        type='text/css' media='all' />
+    <link rel='stylesheet' id='wp-job-manager-resume-frontend-css'
+        href='https://demos.buddyboss.com/online-communities/wp-content/plugins/wp-job-manager-resumes/assets/dist/css/frontend.css?ver=1.18.4'
+        type='text/css' media='all' />
+    <link rel='stylesheet' id='learndash-front-css'
+        href='//demos.buddyboss.com/online-communities/wp-content/plugins/sfwd-lms/themes/ld30/assets/css/learndash.min.css?ver=4.5.1.2'
+        type='text/css' media='all' />
+    <link rel='stylesheet' id='bp-zoom-css'
+        href='https://demos.buddyboss.com/online-communities/wp-content/plugins/buddyboss-platform-pro/includes/integrations/zoom/assets/css/bp-zoom.min.css?ver=2.3.0'
+        type='text/css' media='all' />
+    <link rel='stylesheet' id='buddyboss-theme-fonts-css'
+        href='https://demos.buddyboss.com/online-communities/wp-content/themes/buddyboss-theme/assets/fonts/fonts.css?ver=2.2.9'
+        type='text/css' media='all' />
+    <link rel='stylesheet' id='buddyboss-theme-magnific-popup-css-css'
+        href='https://demos.buddyboss.com/online-communities/wp-content/themes/buddyboss-theme/assets/css/vendors/magnific-popup.min.css?ver=2.2.9'
+        type='text/css' media='all' />
+    <link rel='stylesheet' id='buddyboss-theme-select2-css-css'
+        href='https://demos.buddyboss.com/online-communities/wp-content/themes/buddyboss-theme/assets/css/vendors/select2.min.css?ver=2.2.9'
+        type='text/css' media='all' />
+    <link rel='stylesheet' id='buddyboss-theme-css-css'
+        href='https://demos.buddyboss.com/online-communities/wp-content/themes/buddyboss-theme/assets/css/theme.css?ver=2.2.9'
+        type='text/css' media='all' />
+    <link rel='stylesheet' id='buddyboss-theme-template-css'
+        href='https://demos.buddyboss.com/online-communities/wp-content/themes/buddyboss-theme/assets/css/template-v2.css?ver=2.2.9'
+        type='text/css' media='all' />
+    <link rel='stylesheet' id='buddyboss-theme-buddypress-css'
+        href='https://demos.buddyboss.com/online-communities/wp-content/themes/buddyboss-theme/assets/css/buddypress.css?ver=2.2.9'
+        type='text/css' media='all' />
+    <link rel='stylesheet' id='buddyboss-theme-forums-css'
+        href='https://demos.buddyboss.com/online-communities/wp-content/themes/buddyboss-theme/assets/css/bbpress.css?ver=2.2.9'
+        type='text/css' media='all' />
+    <link rel='stylesheet' id='buddyboss-theme-learndash-css'
+        href='https://demos.buddyboss.com/online-communities/wp-content/themes/buddyboss-theme/assets/css/learndash.css?ver=2.2.9'
+        type='text/css' media='all' />
+    <link rel='stylesheet' id='buddyboss-theme-woocommerce-css'
+        href='https://demos.buddyboss.com/online-communities/wp-content/themes/buddyboss-theme/assets/css/woocommerce.css?ver=2.2.9'
+        type='text/css' media='all' />
+    <link rel='stylesheet' id='buddyboss-theme-wpjobmanager-css'
+        href='https://demos.buddyboss.com/online-communities/wp-content/themes/buddyboss-theme/assets/css/jobmanager.css?ver=2.2.9'
+        type='text/css' media='all' />
+    <link rel='stylesheet' id='buddyboss-theme-elementor-css'
+        href='https://demos.buddyboss.com/online-communities/wp-content/themes/buddyboss-theme/assets/css/elementor.css?ver=2.2.9'
+        type='text/css' media='all' />
+    <link rel='stylesheet' id='buddyboss-theme-eventscalendar-css'
+        href='https://demos.buddyboss.com/online-communities/wp-content/themes/buddyboss-theme/assets/css/eventscalendar.css?ver=2.2.9'
+        type='text/css' media='all' />
+    <link rel='stylesheet' id='buddyboss-theme-eventscalendar-v2-css'
+        href='https://demos.buddyboss.com/online-communities/wp-content/themes/buddyboss-theme/assets/css/eventscalendar-v2.css?ver=2.2.9'
+        type='text/css' media='all' />
+    <link rel='stylesheet' id='buddyboss-theme-gamipress-css'
+        href='https://demos.buddyboss.com/online-communities/wp-content/themes/buddyboss-theme/assets/css/gamipress.css?ver=2.2.9'
+        type='text/css' media='all' />
+    <link rel='stylesheet' id='parent-style-css'
+        href='https://demos.buddyboss.com/online-communities/wp-content/themes/buddyboss-theme/style.css'
+        type='text/css' media='all' />
+    <link rel='stylesheet' id='custom-style-css'
+        href='https://demos.buddyboss.com/online-communities/wp-content/themes/buddyboss-theme-demo/assets/css/custom.css'
+        type='text/css' media='all' />
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-includes/js/jquery/jquery.min.js?ver=3.6.3'
+        id='jquery-core-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.4.0'
+        id='jquery-migrate-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/plugins/buddyboss-platform/bp-core/js/vendor/magnific-popup.js?ver=2.3.3'
+        id='bp-nouveau-magnific-popup-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/plugins/buddyboss-platform/bp-core/js/widget-members.min.js?ver=2.3.3'
+        id='bp-widget-members-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/plugins/buddyboss-platform/bp-core/js/jquery-query.min.js?ver=2.3.3'
+        id='bp-jquery-query-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/plugins/buddyboss-platform/bp-core/js/vendor/jquery-cookie.min.js?ver=2.3.3'
+        id='bp-jquery-cookie-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/plugins/buddyboss-platform/bp-core/js/vendor/jquery-scroll-to.min.js?ver=2.3.3'
+        id='bp-jquery-scroll-to-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/plugins/buddyboss-platform/bp-core/js/vendor/medium-editor.min.js?ver=2.3.3'
+        id='bp-medium-editor-js'></script>
+    <!--[if lt IE 8]>
+<script type='text/javascript' src='https://demos.buddyboss.com/online-communities/wp-includes/js/json2.min.js?ver=2015-05-03' id='json2-js'></script>
+<![endif]-->
+    <script type='text/javascript' id='bp-media-dropzone-js-extra'>
+        /* <![CDATA[ */
+        var bp_media_dropzone = { "dictDefaultMessage": "Drop files here to upload", "dictFallbackMessage": "Your browser does not support drag'n'drop file uploads.", "dictFallbackText": "Please use the fallback form below to upload your files like in the olden days.", "dictFileTooBig": "File size is too big ({{filesize}} MB). Max file size: {{maxFilesize}} MB.", "dictInvalidFileType": "You can't upload files of this type.", "dictResponseError": "Server responded with {{statusCode}} code.", "dictCancelUpload": "Cancel upload", "dictUploadCanceled": "Upload canceled.", "dictCancelUploadConfirmation": "Are you sure you want to cancel this upload?", "dictRemoveFile": "Remove file", "dictMaxFilesExceeded": "You cannot upload more than 10 files at a time." };
+/* ]]> */
+    </script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/plugins/buddyboss-platform/bp-core/js/vendor/dropzone.min.js?ver=2.3.3'
+        id='bp-media-dropzone-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/plugins/buddyboss-platform/bp-core/js/vendor/exif.js?ver=2.3.3'
+        id='bp-exif-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/plugins/buddyboss-platform/bp-core/js/vendor/video.min.js?ver=2.3.3'
+        id='bp-media-videojs-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/plugins/buddyboss-platform/bp-core/js/vendor/videojs-seek-buttons.min.js?ver=2.3.3'
+        id='bp-media-videojs-seek-buttons-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/plugins/buddyboss-platform/bp-core/js/vendor/flv.js?ver=2.3.3'
+        id='bp-media-videojs-flv-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/plugins/buddyboss-platform/bp-core/js/vendor/videojs-flash.js?ver=2.3.3'
+        id='bp-media-videojs-flash-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/plugins/buddyboss-platform/bp-groups/js/widget-groups.min.js?ver=2.3.3'
+        id='groups_widget_groups_list-js-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/plugins/buddyboss-platform/bp-friends/js/widget-friends.min.js?ver=2.3.3'
+        id='bp_core_widget_friends-js-js'></script>
+    <script type='text/javascript' id='bp-select2-js-extra'>
+        /* <![CDATA[ */
+        var bp_select2 = { "i18n": { "errorLoading": "The results could not be loaded.", "inputTooLong": "Please delete %% character", "inputTooShort": "Please enter %% or more characters", "loadingMore": "Loading more results\u2026", "maximumSelected": "You can only select %% item", "noResults": "No results found", "searching": "Searching\u2026", "removeAllItems": "Remove all items", "msginputTooShort": "Start typing to find members" } };
+/* ]]> */
+    </script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/plugins/buddyboss-platform/bp-core/js/vendor/select2.min.js?ver=2.3.3'
+        id='bp-select2-js'></script>
+    <script type='text/javascript' id='elementor-pro-app-js-before'>
+        var elementorAppProConfig = { "baseUrl": "https:\/\/demos.buddyboss.com\/online-communities\/wp-content\/plugins\/elementor-pro\/", "site-editor": { "urls": { "legacy_view": "https:\/\/demos.buddyboss.com\/online-communities\/wp-admin\/edit.php?post_type=elementor_library&tabs_group=theme" } }, "kit-library": [], "onboarding": [] };
+    </script>
+    <link rel="https://api.w.org/" href="https://demos.buddyboss.com/online-communities/wp-json/" />
+    <link rel="alternate" type="application/json"
+        href="https://demos.buddyboss.com/online-communities/wp-json/wp/v2/pages/5" />
+    <link rel="EditURI" type="application/rsd+xml" title="RSD"
+        href="https://demos.buddyboss.com/online-communities/xmlrpc.php?rsd" />
+    <link rel="wlwmanifest" type="application/wlwmanifest+xml"
+        href="https://demos.buddyboss.com/online-communities/wp-includes/wlwmanifest.xml" />
+    <link rel='shortlink' href='https://demos.buddyboss.com/online-communities/' />
+    <link rel="alternate" type="application/json+oembed"
+        href="https://demos.buddyboss.com/online-communities/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fdemos.buddyboss.com%2Fonline-communities%2F" />
+    <link rel="alternate" type="text/xml+oembed"
+        href="https://demos.buddyboss.com/online-communities/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fdemos.buddyboss.com%2Fonline-communities%2F&#038;format=xml" />
+    <script>var ajaxurl = 'https://demos.buddyboss.com/online-communities/wp-admin/admin-ajax.php';</script>
+    <meta name="tec-api-version" content="v1">
+    <meta name="tec-api-origin" content="https://demos.buddyboss.com/online-communities">
+    <link rel="alternate" href="https://demos.buddyboss.com/online-communities/wp-json/tribe/events/v1/" />
+    <meta name="framework" content="Redux 4.3.1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <style type="text/css">
+        
+    </style>
+    <noscript>
+        <style>
+            .woocommerce-product-gallery {
+                opacity: 1 !important;
+            }
+        </style>
+    </noscript>
+    <meta name="generator"
+        content="Elementor 3.12.2; features: a11y_improvements, additional_custom_breakpoints; settings: css_print_method-external, google_font-enabled, font_display-auto">
+    <style type="text/css" media="print">
+        #wpadminbar {
+            display: none;
+        }
+    </style>
+    <style type="text/css" media="screen">
+        html {
+            margin-top: 32px !important;
+        }
+
+       
+    </style>
+    <link rel="alternate" type="application/rss+xml" title="Online Communities | Site Wide Activity RSS Feed"
+        href="https://demos.buddyboss.com/online-communities/activity-feed/feed/" />
+    <link rel='canonical' href='https://demos.buddyboss.com/online-communities/' />
+    <link rel="icon"
+        href="https://demos.buddyboss.com/online-communities/wp-content/sandbox183188-uploads/2019/06/cropped-logo-round-32x32.png"
+        sizes="32x32" />
+    <link rel="icon"
+        href="https://demos.buddyboss.com/online-communities/wp-content/sandbox183188-uploads/2019/06/cropped-logo-round-192x192.png"
+        sizes="192x192" />
+    <link rel="apple-touch-icon"
+        href="https://demos.buddyboss.com/online-communities/wp-content/sandbox183188-uploads/2019/06/cropped-logo-round-180x180.png" />
+    <meta name="msapplication-TileImage"
+        content="https://demos.buddyboss.com/online-communities/wp-content/sandbox183188-uploads/2019/06/cropped-logo-round-270x270.png" />
+    <style id="buddyboss_theme-style">
+        :root {
+            --bb-primary-color: #ff703d;
+            --bb-primary-color-rgb: 255, 112, 61;
+            --bb-body-background-color: #faf9f7;
+            --bb-body-background-color-rgb: 250, 249, 247;
+            --bb-content-background-color: #FFFFFF;
+            --bb-content-alternate-background-color: #fbfaf9;
+            --bb-content-border-color: #e0dfdb;
+            --bb-content-border-color-rgb: 224, 223, 219;
+            --bb-cover-image-background-color: #647385;
+            --bb-headings-color: #393e41;
+            --bb-headings-color-rgb: 57, 62, 65;
+            --bb-body-text-color: #393e41;
+            --bb-body-text-color-rgb: 57, 62, 65;
+            --bb-alternate-text-color: #aaaaaa;
+            --bb-alternate-text-color-rgb: 170, 170, 170;
+            --bb-primary-button-background-regular: #606099;
+            --bb-primary-button-background-hover: #595999;
+            --bb-primary-button-border-regular: #606099;
+            --bb-primary-button-border-hover: #595999;
+            --bb-primary-button-text-regular: #ffffff;
+            --bb-primary-button-text-regular-rgb: 255, 255, 255;
+            --bb-primary-button-text-hover: #ffffff;
+            --bb-primary-button-text-hover-rgb: 255, 255, 255;
+            --bb-secondary-button-background-regular: #f4f3f2;
+            --bb-secondary-button-background-hover: #595999;
+            --bb-secondary-button-border-regular: #f4f3f2;
+            --bb-secondary-button-border-hover: #595999;
+            --bb-secondary-button-text-regular: #1E2132;
+            --bb-secondary-button-text-hover: #FFFFFF;
+            --bb-header-background: #ffffff;
+            --bb-header-alternate-background: #f4f3f2;
+            --bb-header-links: #393e41;
+            --bb-header-links-hover: #595999;
+            --bb-header-mobile-logo-size: 193px;
+            --bb-header-height: 76px;
+            --bb-sidenav-background: #ffffff;
+            --bb-sidenav-text-regular: #000000;
+            --bb-sidenav-text-hover: #000000;
+            --bb-sidenav-text-active: #ffffff;
+            --bb-sidenav-menu-background-color-regular: #ffffff;
+            --bb-sidenav-menu-background-color-hover: #f4f3f2;
+            --bb-sidenav-menu-background-color-active: #595999;
+            --bb-sidenav-count-text-color-regular: #000000;
+            --bb-sidenav-count-text-color-hover: #ffffff;
+            --bb-sidenav-count-text-color-active: #595999;
+            --bb-sidenav-count-background-color-regular: #f4f3f2;
+            --bb-sidenav-count-background-color-hover: #595999;
+            --bb-sidenav-count-background-color-active: #ffffff;
+            --bb-footer-background: #faf9f7;
+            --bb-footer-widget-background: #faf9f7;
+            --bb-footer-text-color: #5A5A5A;
+            --bb-footer-menu-link-color-regular: #5A5A5A;
+            --bb-footer-menu-link-color-hover: #595999;
+            --bb-footer-menu-link-color-active: #1E2132;
+            --bb-admin-screen-bgr-color: #faf9f7;
+            --bb-admin-screen-txt-color: #000000;
+            --bb-login-register-link-color-regular: #5A5A5A;
+            --bb-login-register-link-color-hover: #595999;
+            --bb-login-register-button-background-color-regular: #606099;
+            --bb-login-register-button-background-color-hover: #595999;
+            --bb-login-register-button-border-color-regular: #606099;
+            --bb-login-register-button-border-color-hover: #595999;
+            --bb-login-register-button-text-color-regular: #FFFFFF;
+            --bb-login-register-button-text-color-hover: #FFFFFF;
+            --bb-label-background-color: #87a6d4;
+            --bb-label-text-color: #ffffff;
+            --bb-tooltip-background: #393e41;
+            --bb-tooltip-background-rgb: 57, 62, 65;
+            --bb-tooltip-color: #ffffff;
+            --bb-default-notice-color: #007CFF;
+            --bb-default-notice-color-rgb: 0, 124, 255;
+            --bb-success-color: #1CD991;
+            --bb-success-color-rgb: 28, 217, 145;
+            --bb-warning-color: #f7ba45;
+            --bb-warning-color-rgb: 247, 186, 69;
+            --bb-danger-color: #EF3E46;
+            --bb-danger-color-rgb: 239, 62, 70;
+            --bb-login-custom-heading-color: #000000;
+            --bb-button-radius: 6px;
+            --bb-block-radius: 10px;
+            --bb-block-radius-inner: 6px;
+            --bb-input-radius: 6px;
+            --bb-label-type-radius: 6px;
+            --bb-checkbox-radius: 5.4px;
+        }
+
+        .bb-style-primary-bgr-color {
+            background-color: #ff703d;
+        }
+
+        .bb-style-border-radius {
+            border-radius: 6px;
+        }
+
+        #site-logo .site-title img {
+            max-height: inherit;
+        }
+
+        .site-header-container .site-branding {
+            min-width: 170px;
+        }
+
+        #site-logo .site-title .bb-logo img,
+        #site-logo .site-title img.bb-logo,
+        .buddypanel .site-title img {
+            width: 170px;
+        }
+
+        .site-header-container #site-logo .bb-logo.bb-logo-dark,
+        .llms-sidebar.bb-dark-theme .site-header-container #site-logo .bb-logo,
+        .site-header-container .ld-focus-custom-logo .bb-logo.bb-logo-dark,
+        .bb-custom-ld-focus-mode-enabled:not(.bb-custom-ld-logo-enabled) .site-header-container .ld-focus-custom-logo .bb-logo.bb-logo-dark,
+        .bb-dark-theme.bb-custom-ld-focus-mode-enabled:not(.bb-custom-ld-logo-enabled) .site-header-container .ld-focus-custom-logo img,
+        .bb-sfwd-aside.bb-dark-theme:not(.bb-custom-ld-logo-enabled) .site-header-container #site-logo .bb-logo,
+        .buddypanel .site-branding div img.bb-logo.bb-logo-dark,
+        .bb-sfwd-aside.bb-dark-theme .buddypanel .site-branding div img.bb-logo,
+        .buddypanel .site-branding h1 img.bb-logo.bb-logo-dark,
+        .bb-sfwd-aside.bb-dark-theme .buddypanel .site-branding h1 img.bb-logo {
+            display: none;
+        }
+
+        .llms-sidebar.bb-dark-theme .site-header-container #site-logo .bb-logo.bb-logo-dark,
+        .bb-dark-theme.bb-custom-ld-focus-mode-enabled:not(.bb-custom-ld-logo-enabled) .site-header-container .ld-focus-custom-logo .bb-logo.bb-logo-dark,
+        .bb-sfwd-aside.bb-dark-theme .site-header-container #site-logo .bb-logo.bb-logo-dark,
+        .buddypanel .site-branding div img.bb-logo,
+        .bb-sfwd-aside.bb-dark-theme .buddypanel .site-branding div img.bb-logo.bb-logo-dark,
+        .buddypanel .site-branding h1 img.bb-logo,
+        .bb-sfwd-aside.bb-dark-theme .buddypanel .site-branding h1 img.bb-logo.bb-logo-dark {
+            display: inline;
+        }
+
+        #site-logo .site-title img {
+            max-height: inherit;
+        }
+
+        .llms-sidebar.bb-dark-theme .site-header-container .site-branding,
+        .bb-sfwd-aside.bb-dark-theme .site-header-container .site-branding {
+            min-width: 193px;
+        }
+
+        .llms-sidebar.bb-dark-theme #site-logo .site-title .bb-logo.bb-logo-dark img,
+        .bb-sfwd-aside.bb-dark-theme #site-logo .site-title .bb-logo.bb-logo-dark img,
+        .llms-sidebar.bb-dark-theme #site-logo .site-title img.bb-logo.bb-logo-dark,
+        .bb-sfwd-aside.bb-dark-theme #site-logo .site-title img.bb-logo.bb-logo-dark,
+        .bb-custom-ld-focus-mode-enabled .site-header-container .ld-focus-custom-logo .bb-logo.bb-logo-dark,
+        .bb-sfwd-aside.bb-dark-theme .buddypanel .site-branding div img.bb-logo.bb-logo-dark {
+            width: 193px;
+        }
+
+        .llms-sidebar.bb-dark-theme .site-title img.bb-mobile-logo.bb-mobile-logo-dark,
+        .bb-sfwd-aside.bb-dark-theme:not(.bb-custom-ld-logo-enabled) .site-title img.bb-mobile-logo.bb-mobile-logo-dark {
+            display: inline;
+        }
+
+        .site-title img.bb-mobile-logo.bb-mobile-logo-dark,
+        .llms-sidebar.bb-dark-theme .site-title img.bb-mobile-logo,
+        .bb-sfwd-aside.bb-dark-theme:not(.bb-custom-ld-logo-enabled) .site-title img.bb-mobile-logo {
+            display: none;
+        }
+
+        .llms-sidebar.bb-dark-theme .site-title img.bb-mobile-logo.bb-mobile-logo-dark,
+        .bb-sfwd-aside.bb-dark-theme .site-title img.bb-mobile-logo.bb-mobile-logo-dark {
+            width: 193px;
+        }
+
+        .site-title img.bb-mobile-logo {
+            width: 193px;
+        }
+
+        .footer-logo img {
+            max-width: 140px;
+        }
+
+        .site-header-container #site-logo .bb-logo img,
+        .site-header-container #site-logo .site-title img.bb-logo,
+        .site-title img.bb-mobile-logo {
+            max-height: 76px
+        }
+
+        .sticky-header .site-header {
+            position: fixed;
+            z-index: 610;
+            width: 100%;
+        }
+
+        .sticky-header .bp-search-ac-header {
+            position: fixed;
+        }
+
+        .sticky-header .site-content,
+        body.buddypress.sticky-header .site-content,
+        .bb-buddypanel.sticky-header .site-content,
+        .single-sfwd-quiz.bb-buddypanel.sticky-header .site-content,
+        .single-sfwd-lessons.bb-buddypanel.sticky-header .site-content,
+        .single-sfwd-topic.bb-buddypanel.sticky-header .site-content {
+            padding-top: 76px
+        }
+
+        .sticky-header .site-content {
+            min-height: 85vh;
+        }
+
+        .site-header .site-header-container,
+        .header-search-wrap,
+        .header-search-wrap input.search-field,
+        .header-search-wrap form.search-form {
+            height: 76px;
+        }
+
+        .sticky-header .bp-feedback.bp-sitewide-notice {
+            top: 76px;
+        }
+
+        
+
+        [data-balloon]:before,
+        [data-bp-tooltip]:before {
+            background: no-repeat url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http://www.w3.org/2000/svg%22%20width%3D%2236px%22%20height%3D%2212px%22%3E%3Cpath%20fill%3D%22rgba( 57,62,65,0.95 )%22%20transform%3D%22rotate(0)%22%20d%3D%22M2.658,0.000%20C-13.615,0.000%2050.938,0.000%2034.662,0.000%20C28.662,0.000%2023.035,12.002%2018.660,12.002%20C14.285,12.002%208.594,0.000%202.658,0.000%20Z%22/%3E%3C/svg%3E");
+            background-size: 100% auto;
+        }
+
+        [data-balloon][data-balloon-pos='right']:before {
+            background: no-repeat url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http://www.w3.org/2000/svg%22%20width%3D%2212px%22%20height%3D%2236px%22%3E%3Cpath%20fill%3D%22rgba( 57,62,65,0.95 )%22%20transform%3D%22rotate(90 6 6)%22%20d%3D%22M2.658,0.000%20C-13.615,0.000%2050.938,0.000%2034.662,0.000%20C28.662,0.000%2023.035,12.002%2018.660,12.002%20C14.285,12.002%208.594,0.000%202.658,0.000%20Z%22/%3E%3C/svg%3E");
+            background-size: 100% auto;
+        }
+
+        [data-balloon][data-balloon-pos='left']:before {
+            background: no-repeat url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http://www.w3.org/2000/svg%22%20width%3D%2212px%22%20height%3D%2236px%22%3E%3Cpath%20fill%3D%22rgba( 57,62,65,0.95 )%22%20transform%3D%22rotate(-90 18 18)%22%20d%3D%22M2.658,0.000%20C-13.615,0.000%2050.938,0.000%2034.662,0.000%20C28.662,0.000%2023.035,12.002%2018.660,12.002%20C14.285,12.002%208.594,0.000%202.658,0.000%20Z%22/%3E%3C/svg%3E");
+            background-size: 100% auto;
+        }
+
+        [data-balloon][data-balloon-pos='down']:before {
+            background: no-repeat url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http://www.w3.org/2000/svg%22%20width%3D%2236px%22%20height%3D%2212px%22%3E%3Cpath%20fill%3D%22rgba( 57,62,65,0.95 )%22%20transform%3D%22rotate(180 18 6)%22%20d%3D%22M2.658,0.000%20C-13.615,0.000%2050.938,0.000%2034.662,0.000%20C28.662,0.000%2023.035,12.002%2018.660,12.002%20C14.285,12.002%208.594,0.000%202.658,0.000%20Z%22/%3E%3C/svg%3E");
+            background-size: 100% auto;
+        }
+    </style>
+    <style id="buddyboss_theme-bp-style">
+        #buddypress #header-cover-image.has-default,
+        #buddypress #header-cover-image.has-default .guillotine-window img,
+        .bs-group-cover.has-default a {
+            background-color: #647385;
+        }
+
+        .login-split {
+            background-image: url(https://demos.buddyboss.com/online-communities/wp-content/uploads/2022/04/Login.png);
+            background-size: cover;
+            background-position: 50% 50%;
+        }
+
+        body.buddypress.register .register-section-logo img,
+        body.buddypress.activation .activate-section-logo img {
+            width: 230px;
+        }
+    </style>
+    <style id="buddyboss_theme-forums-style">
+        .bbpress .widget_display_forums>ul.bb-sidebar-forums>li a:before {
+            border-color: #484a0c;
+        }
+
+        .bbpress .widget_display_forums>ul.bb-sidebar-forums>li a:before {
+            background-color: rgba(72, 74, 12, 0.5);
+        }
+    </style>
+    <style id="buddyboss_theme-learndash-style">
+        .learndash-wrapper .bb-ld-tabs #learndash-course-content {
+            top: -118px;
+        }
+    </style>
+    <style id="buddyboss_theme-custom-style">
+        a.bb-close-panel i {
+            top: 67px;
+        }
+    </style>
+    <script>
+        window.sandbox_timeleft = 1800;
+        setInterval(function () {
+            window.sandbox_timeleft = window.sandbox_timeleft - 3;
+            window.sandbox_timeleft = window.sandbox_timeleft < 0 ? 0 : window.sandbox_timeleft;
+            if (window.sandbox_timeleft == 0) {
+                window.location = jQuery("#wp-admin-bar-reset-sandbox").find("a").attr("href");
+            }
+        }, 3000);
+    </script>
+</head>
+<body>
+    <header id="masthead" style="margin-top:-32px; position:fixed; z-index:10000;width:100%;" class="site-header site-header--bb">
+        <div class="container site-header-container flex default-header header-3">
+            <div style="margin-left: -3rem;" id="site-logo" class="site-branding buddypanel_logo_display_off">
+                <div class="site-title">
+                    <a  asp-controller="Home" asp-action="Index" >
+                        <img src="https://vuainnhanh.com/wp-content/uploads/2023/02/logo-chu-thap-do.png"
+                             class="bb-logo" alt="" decoding="async" loading="lazy" /> <span style="margin-left: -40px;">| Doctor</span>
+                    </a>
+                </div>
+            </div>
+            <nav style="padding:0 0 0 7rem;" id="site-navigation" class="main-navigation" data-menu-space="120">
+                <div id="primary-navbar">
+                    <ul id="primary-menu" class="primary-menu bb-primary-overflow" >
+
+                        <li id="menu-item-27"
+                            class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-5 current_page_item menu-item-27 icon-added"
+                            data-balloon-pos="down" data-balloon="Activity">
+                            <a asp-controller="Home" asp-action="Index" >
+                                <i class="_mi _before bb-icon-l buddyboss bb-icon-activity"
+                                   aria-hidden="true"></i><span>Activity</span>
+                            </a>
+                        </li>
+                        
+                        <li id="menu-item-49"
+                            class="menu-item menu-item-type-post_type menu-item-object-page menu-item-49 icon-added"
+                            data-balloon-pos="down" data-balloon="Members">
+                            <a asp-area="" asp-controller="User" asp-action="Member">
+                                <i class="_mi _before bb-icon-l buddyboss bb-icon-user-friends-alt"
+                                   aria-hidden="true"></i><span>Members</span>
+                            </a>
+                        </li>
+                        <li id="menu-item-50"
+                            class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-50 icon-added"
+                            data-balloon-pos="down" data-balloon="Forums">
+                            <a asp-controller="Home" asp-action="Blog">
+                                <i class="_mi _before bb-icon-l buddyboss bb-icon-comment-square-dots"
+                                   aria-hidden="true"></i><span>Blog</span>
+                            </a>
+                        </li>
+                        <li id="menu-item-525"
+                            class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-525 icon-added"
+                            data-balloon-pos="down" data-balloon="News">
+                            <a href="#">
+                                <i class="_mi _before bb-icon-l buddyboss bb-icon-album"
+                                   aria-hidden="true"></i><span>News</span>
+                            </a>
+                        </li>
+                        @if(User.IsInRole("Admin")){
+                            <li id="menu-item-600"
+                            class="menu-item menu-item-type-post_type menu-item-object-page menu-item-600 icon-added"
+                            data-balloon-pos="down" data-balloon="Admin">
+                                <a asp-controller="Posts" asp-action="Index">
+                                    <i class="_mi _before bb-icon-l buddyboss bb-icon-user-avatar"
+                                   aria-hidden="true"></i><span>Admin</span>
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                    <div id="navbar-collapse">
+                        <a class="more-button" href="#"><i class="bb-icon-f bb-icon-ellipsis-h"></i></a>
+                        <div class="sub-menu">
+                            <div class="wrapper">
+                                <ul id="navbar-extend" class="sub-menu-inner"></ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <div id="header-aside" class="header-aside name_and_avatar">
+                <div class="header-aside-inner">
+                    <partial name="_LoginPartial" />
+                </div>
+            </div>
+        </div>
+        <div class="bb-mobile-header-wrapper ">
+                <div class="bb-mobile-header flex align-items-center">
+                    <div class="bb-left-panel-icon-wrap">
+                        <a href="#" class="push-left bb-left-panel-mobile"><i class="bb-icon-l bb-icon-bars"></i></a>
+                    </div>
+                    <div class="flex-1 mobile-logo-wrapper" style="display: flex; justify-content: flex-start;">
+                        <div class="site-title">
+                            <a  asp-controller="Home" asp-action="Index" >
+                                <img src="https://vuainnhanh.com/wp-content/uploads/2023/02/logo-chu-thap-do.png"
+                                class="bb-logo" alt="" decoding="async" loading="lazy" /> <span>| Doctor</span>
+                            </a>
+                        </div>
+                    </div>
+                     <partial name="_LoginPartial" />
+                </div>
+            </div>
+            <div class="bb-mobile-panel-wrapper left light closed">
+                <div class="bb-mobile-panel-inner">
+                    <div class="bb-mobile-panel-header">
+                        <div class="user-wrap">
+                            <a href=""><img alt=''
+                                    src='https://vuainnhanh.com/wp-content/uploads/2023/02/logo-chu-thap-do.png'
+                                    class='avatar avatar-100 photo' height='100' width='100' loading='lazy' /></a>
+                            <div>
+                                <a href="https://demos.buddyboss.com/online-communities/members/john/">
+                                    <span class="user-name">Admin</span>
+                                </a>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <nav class="main-navigation" data-menu-space="120">
+                        <ul id="menu-buddypanel" class="bb-primary-menu mobile-menu buddypanel-menu side-panel-menu">
+                            <li
+                                class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5672 bb-menu-section">
+                                <a asp-area="" asp-controller="Home" asp-action="Index" aria-current="page">
+                                    <i class='_mi _before bb-icon-l buddyboss bb-icon-activity'></i><span
+                                        class='link-text'>Activity</span></a>
+                            </li>
+                            
+                            <li
+                                class="bp-menu bp-profile-nav menu-item menu-item-type-custom menu-item-object-custom menu-item-52">
+                                <a asp-area="" asp-controller="Home" asp-action="Member">
+                                    <i class="_mi _before bb-icon-l buddyboss bb-icon-user-friends-alt"
+                                        aria-hidden="true"></i><span>Members</span></a>
+                            </li>
+
+                            <li
+                                class="bp-menu bp-activity-nav menu-item menu-item-type-custom menu-item-object-custom menu-item-54">
+                                <a href=""><i
+                                        class="_mi _before bb-icon-l buddyboss bb-icon-comment-square-dots"
+                                        aria-hidden="true"></i><span>Forums</span></a>
+                            </li>
+                            
+                            <li
+                                class="bp-menu bp-groups-nav menu-item menu-item-type-custom menu-item-object-custom menu-item-55">
+                                <a href=""><i
+                                        cclass="_mi _before bb-icon-l buddyboss bb-icon-album"
+                                        aria-hidden="true"></i><span>News</span></a>
+                            </li>
+                            <li
+                                class="bp-menu bp-friends-nav menu-item menu-item-type-custom menu-item-object-custom menu-item-3327">
+                                <a href=""><i
+                                        class="_mi _before bb-icon-l buddyboss bb-icon-user-avatar"
+                                        aria-hidden="true"></i><span>Admin</span></a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+    </header>
+    <div class="container" >
+        <main role="main" class="pb-3" style="padding-top:50px;">
+            @RenderBody()
+        </main>
+    </div>
+
+    
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+    <script>
+        jQuery(document).ready(function () {
+            setTimeout(function () {
+                if (jQuery('.home-page.directory.activity .screen-content #activity-stream .activity-list li').length === 0) {
+                    jQuery('#activity-favorites a').trigger('click');
+                    jQuery('#activity-all a').trigger('click');
+                }
+            }, 500);
+        });
+    </script>
+    <script type="text/javascript">
+        jQuery(document).ready(function ($) {
+            const header_profile_ul = $('#header-aside > ul.sub-menu');
+            const toolbar_menu = $('#wp-admin-bar-my-account-buddypress > li.menupop').clone();
+
+            $(header_profile_ul).children('.menupop').remove();
+            $(header_profile_ul).children('li:first-child').append(toolbar_menu);
+        });
+    </script>
+    <script> /* <![CDATA[ */var tribe_l10n_datatables = { "aria": { "sort_ascending": ": activate to sort column ascending", "sort_descending": ": activate to sort column descending" }, "length_menu": "Show _MENU_ entries", "empty_table": "No data available in table", "info": "Showing _START_ to _END_ of _TOTAL_ entries", "info_empty": "Showing 0 to 0 of 0 entries", "info_filtered": "(filtered from _MAX_ total entries)", "zero_records": "No matching records found", "search": "Search:", "all_selected_text": "All items on this page were selected. ", "select_all_link": "Select all pages", "clear_selection": "Clear Selection.", "pagination": { "all": "All", "next": "Next", "previous": "Previous" }, "select": { "rows": { "0": "", "_": ": Selected %d rows", "1": ": Selected 1 row" } }, "datepicker": { "dayNames": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"], "dayNamesShort": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"], "dayNamesMin": ["S", "M", "T", "W", "T", "F", "S"], "monthNames": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"], "monthNamesShort": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"], "monthNamesMin": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"], "nextText": "Next", "prevText": "Prev", "currentText": "Today", "closeText": "Done", "today": "Today", "clear": "Clear" } };/* ]]> */ </script>
+    <script type="text/template" id="tmpl-elementor-templates-modal__header">
+	<div class="elementor-templates-modal__header__logo-area"></div>
+	<div class="elementor-templates-modal__header__menu-area"></div>
+	<div class="elementor-templates-modal__header__items-area">
+		<# if ( closeType ) { #>
+			<div class="elementor-templates-modal__header__close elementor-templates-modal__header__close--{{{ closeType }}} elementor-templates-modal__header__item">
+				<# if ( 'skip' === closeType ) { #>
+				<span>Skip</span>
+				<# } #>
+				<i class="eicon-close" aria-hidden="true" title="Close"></i>
+				<span class="elementor-screen-only">Close</span>
+			</div>
+		<# } #>
+		<div id="elementor-template-library-header-tools"></div>
+	</div>
+</script>
+    <script type="text/template" id="tmpl-elementor-templates-modal__header__logo">
+	<span class="elementor-templates-modal__header__logo__icon-wrapper e-logo-wrapper">
+		<i class="eicon-elementor"></i>
+	</span>
+	<span class="elementor-templates-modal__header__logo__title">{{{ title }}}</span>
+</script>
+    <script type="text/template" id="tmpl-elementor-finder">
+	<div id="elementor-finder__search">
+		<i class="eicon-search"></i>
+		<input id="elementor-finder__search__input" placeholder="Type to find anything in Elementor" autocomplete="off">
+	</div>
+	<div id="elementor-finder__content"></div>
+</script>
+    <script type="text/template" id="tmpl-elementor-finder-results-container">
+	<div id="elementor-finder__no-results">No Results Found</div>
+	<div id="elementor-finder__results"></div>
+</script>
+    <script type="text/template" id="tmpl-elementor-finder__results__category">
+	<div class="elementor-finder__results__category__title">{{{ title }}}</div>
+	<div class="elementor-finder__results__category__items"></div>
+</script>
+    <script type="text/template" id="tmpl-elementor-finder__results__item">
+	<a href="{{ url }}" class="elementor-finder__results__item__link">
+		<div class="elementor-finder__results__item__icon">
+			<i class="eicon-{{{ icon }}}"></i>
+		</div>
+		<div class="elementor-finder__results__item__title">{{{ title }}}</div>
+		<# if ( description ) { #>
+			<div class="elementor-finder__results__item__description">- {{{ description }}}</div>
+		<# } #>
+
+		<# if ( lock ) { #>
+		<div class="elementor-finder__results__item__badge"><i class="{{{ lock.badge.icon }}}"></i>{{ lock.badge.text }}</div>
+		<# } #>
+	</a>
+	<# if ( actions.length ) { #>
+		<div class="elementor-finder__results__item__actions">
+		<# jQuery.each( actions, function() { #>
+			<a class="elementor-finder__results__item__action elementor-finder__results__item__action--{{ this.name }}" href="{{ this.url }}" target="_blank">
+				<i class="eicon-{{{ this.icon }}}"></i>
+			</a>
+		<# } ); #>
+		</div>
+	<# } #>
+</script>
+    <script type="text/javascript">
+        (function () {
+            var c = document.body.className;
+            c = c.replace(/woocommerce-no-js/, 'woocommerce-js');
+            document.body.className = c;
+        })();
+    </script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-includes/js/hoverintent-js.min.js?ver=2.2.1'
+        id='hoverintent-js-js'></script>
+    <script type='text/javascript' src='https://demos.buddyboss.com/online-communities/wp-includes/js/admin-bar.min.js'
+        id='admin-bar-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/plugins/buddyboss-platform/bp-core/js/vendor/isInViewport.min.js?ver=2.3.3'
+        id='isInViewport-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/plugins/buddyboss-platform/bp-core/js/vendor/moment-js/moment.min.js?ver=2.3.3'
+        id='bp-moment-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/plugins/buddyboss-platform/bp-core/js/vendor/livestamp.min.js?ver=2.3.3'
+        id='bp-livestamp-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/plugins/buddyboss-platform/bp-core/js/vendor/jquery.caret.min.js?ver=2.3.3'
+        id='jquery-caret-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/plugins/buddyboss-platform/bp-core/js/vendor/jquery.atwho.min.js?ver=2.3.3'
+        id='jquery-atwho-js'></script>
+    <script type='text/javascript' id='bp-mentions-js-extra'>
+       
+    </script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/plugins/buddyboss-platform/bp-core/js/mentions.min.js?ver=2.3.3'
+        id='bp-mentions-js'></script>
+    <script
+        src='https://demos.buddyboss.com/online-communities/wp-content/plugins/the-events-calendar/common/src/resources/js/underscore-before.js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-includes/js/underscore.min.js?ver=1.13.4'
+        id='underscore-js'></script>
+    <script
+        src='https://demos.buddyboss.com/online-communities/wp-content/plugins/the-events-calendar/common/src/resources/js/underscore-after.js'></script>
+    <script type='text/javascript' id='wp-util-js-extra'>
+        /* <![CDATA[ */
+        var _wpUtilSettings = { "ajax": { "url": "\/online-communities\/wp-admin\/admin-ajax.php" } };
+/* ]]> */
+    </script>
+    <script type='text/javascript' src='https://demos.buddyboss.com/online-communities/wp-includes/js/wp-util.min.js'
+        id='wp-util-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-includes/js/dist/vendor/wp-polyfill-inert.min.js?ver=3.1.2'
+        id='wp-polyfill-inert-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-includes/js/dist/vendor/regenerator-runtime.min.js?ver=0.13.11'
+        id='regenerator-runtime-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-includes/js/dist/vendor/wp-polyfill.min.js?ver=3.15.0'
+        id='wp-polyfill-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-includes/js/dist/hooks.min.js?ver=4169d3cf8e8d95a3d6d5'
+        id='wp-hooks-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-includes/js/dist/i18n.min.js?ver=9e794f35a71bb98672ae'
+        id='wp-i18n-js'></script>
+    <script type='text/javascript' id='wp-i18n-js-after'>
+        wp.i18n.setLocaleData({ 'text direction\u0004ltr': ['ltr'] });
+    </script>
+    <script type='text/javascript' id='bp-nouveau-js-extra'>
+        /* <![CDATA[ */
+        var BP_Nouveau = { "ajaxurl": "https:\/\/demos.buddyboss.com\/online-communities\/wp-admin\/admin-ajax.php", "only_admin_notice": "As you are the only organizer of this group, you cannot leave it. You can either delete the group or promote another member to be an organizer first and then leave the group.", "is_friend_confirm": "Are you sure you want to remove your connection with this member?", "confirm": "Are you sure?", "confirm_delete_set": "Are you sure you want to delete this set? This cannot be undone.", "show_x_comments": "View previous comments", "unsaved_changes": "Your profile has unsaved changes. If you leave the page, the changes will be lost.", "object_nav_parent": "#buddypress", "anchorPlaceholderText": "Paste or type a link", "empty_field": "New Field", "close": "Close", "objects": ["activity", "members", "groups", "blogs", "xprofile", "friends", "media", "document", "video", "messages", "settings", "notifications", "search", "moderation", "group_members", "group_requests", "group_subgroups"], "nonces": { "activity": "3646f509e3", "members": "beaa48e893", "groups": "d17e161c0e", "blogs": "3853894410", "xprofile": "785dc5a87d", "friends": "aa017310a7", "media": "5aa6837600", "document": "3b648dd83b", "video": "a108fceebf", "messages": "e1afe5b34f", "settings": "0c491a0d28", "notifications": "95bfb9dfd9", "search": "8cff9831b5", "moderation": "05bc013d2e" }, "modbypass": null, "forums": { "params": { "bb_current_user_id": 2 }, "nonces": { "post_topic_reply_draft": "311213cc56" }, "strings": { "discardButton": "Discard Draft" }, "draft": [] }, "newest": "Load Newest", "pulse": "15", "nonce": { "bp_moderation_content_nonce": "2223473e6a" }, "current": { "message_user_id": 2 }, "archived_threads": [], "activity": { "params": { "user_id": 2, "object": "user", "backcompat": false, "post_nonce": "05242e9740", "post_draft_nonce": "d81dc51839", "excluded_hosts": [], "user_can_post": true, "is_activity_edit": false, "displayed_user_id": 0, "errors": { "empty_post_update": "Sorry, Your update cannot be empty.", "post_fail": "An error occurred while saving your post.", "media_fail": "To change the media type, remove existing media from your post." }, "avatar_url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-content\/sandbox183188-uploads\/avatars\/2\/621e2ce4392dd-bpthumb.png", "avatar_width": 150, "avatar_height": 150, "user_display_name": "John", "user_domain": "https:\/\/demos.buddyboss.com\/online-communities\/members\/john\/", "avatar_alt": "Profile photo of John", "autoload": true, "link_preview": true, "objects": { "profile": { "text": "Post in: Profile", "autocomplete_placeholder": "", "priority": 5 }, "group": { "text": "Post in: Group", "autocomplete_placeholder": "Search groups", "priority": 10, "loading_group_placeholder": "Loading groups...", "finding_group_placeholder": "Finding groups...", "no_groups_found": "No groups found." }, "group_list": [{ "id": 2, "name": "Architecture", "avatar_url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-content\/sandbox183188-uploads\/group-avatars\/2\/5cc94b988929c-bpthumb.jpg", "object_type": "group", "is_public": true, "group_media": true, "group_document": true, "group_video": true }, { "id": 16, "name": "Aviation Leaders", "avatar_url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-content\/sandbox183188-uploads\/group-avatars\/16\/6217b8d86f86c-bpthumb.jpg", "object_type": "group", "is_public": true, "group_media": true, "group_document": true, "group_video": true }, { "id": 17, "name": "Business Meet", "avatar_url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-content\/sandbox183188-uploads\/group-avatars\/17\/5cd550ef9ce38-bpthumb.jpg", "object_type": "group", "is_public": false, "group_media": true, "group_document": true, "group_video": true }, { "id": 5, "name": "Coffee Addicts", "avatar_url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-content\/sandbox183188-uploads\/group-avatars\/5\/6217b6f2ad2b3-bpthumb.jpg", "object_type": "group", "is_public": true, "group_media": true, "group_document": true, "group_video": true }, { "id": 6, "name": "Foodie\u2019s Group", "avatar_url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-content\/sandbox183188-uploads\/group-avatars\/6\/6217b91521415-bpthumb.jpg", "object_type": "group", "is_public": true, "group_media": true, "group_document": true, "group_video": true }, { "id": 3, "name": "Graphic Design", "avatar_url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-content\/sandbox183188-uploads\/group-avatars\/3\/6217b7531d9e9-bpthumb.jpg", "object_type": "group", "is_public": true, "group_media": true, "group_document": true, "group_video": true }, { "id": 9, "name": "Innovation Club", "avatar_url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-content\/sandbox183188-uploads\/group-avatars\/9\/6217b79762368-bpthumb.jpg", "object_type": "group", "is_public": false, "group_media": true, "group_document": true, "group_video": true }, { "id": 1, "name": "Mountain Riders", "avatar_url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-content\/sandbox183188-uploads\/group-avatars\/1\/6217b894ac1f8-bpthumb.png", "object_type": "group", "is_public": true, "group_media": true, "group_document": true, "group_video": true }, { "id": 4, "name": "Nature Lovers", "avatar_url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-content\/sandbox183188-uploads\/group-avatars\/4\/5cc94170e0998-bpthumb.jpg", "object_type": "group", "is_public": false, "group_media": true, "group_document": true, "group_video": true }, { "id": 8, "name": "Pet Lovers", "avatar_url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-content\/sandbox183188-uploads\/group-avatars\/8\/6217ba17c99dc-bpthumb.jpg", "object_type": "group", "is_public": true, "group_media": true, "group_document": true, "group_video": true }], "group_count": 14, "group_total_page": 2 }, "draft_activity": "", "access_control_settings": { "can_create_activity": true, "can_create_activity_media": true, "can_create_activity_document": true } }, "strings": { "whatsnewPlaceholder": "Share what's on your mind...", "whatsnewLabel": "Post what&#039;s new", "whatsnewpostinLabel": "Post in", "postUpdateButton": "Post", "updatePostButton": "Update Post", "cancelButton": "Cancel", "commentLabel": "%d Comment", "commentsLabel": "%d Comments", "loadingMore": "Loading...", "discardButton": "Discard Draft" } }, "group_messages": { "page": 1, "type_message": "Type message", "group_no_member": "There are no other members in this group. Please add some members before sending a message.", "group_no_member_pro": "You are not allowed to send private messages to any member of this group.", "loading": "Loading members. Please wait.", "remove_recipient": "Remove Member", "add_recipient": "Add Member", "no_content": "Please add some content to your message.", "no_recipient": "Please add at least one recipient.", "select_default_text": "All Group Members", "select_default_value": "all", "no_member": "No members were found. Try another filter.", "invites_form_all": "This message will be delivered to all members of this group you can message.", "invites_form_separate": "Select group members to message by clicking the + button next to each member. Once you've made a selection, click \"Send Message\" to create a new group message.", "invites_form_reset": "Group invitations cleared. Please use one of the available tabs to select members to invite.", "invites_sending": "Sending group invitations. Please wait.", "removeUserInvite": "Cancel invitation %s", "feedback_select_all": "This message will be delivered to all members of this group you can message.", "feedback_individual": "Select individual recipients by clicking the + button next to each member.", "group_id": 0, "is_group_create": false, "nonces": { "unmessage": "95572b7471", "send_messages": "3fdeb4adff", "retrieve_group_members": "c71e829280", "send_messages_users": "47b962da9c" } }, "media": { "max_upload_size": 5, "profile_media": true, "profile_album": true, "group_media": true, "group_album": true, "messages_media": true, "messages_media_active": true, "dropzone_media_message": "<strong>Add Photos<\/strong> Or drag and drop", "media_select_error": "This file type is not supported for photo uploads.", "empty_media_type": "Empty media file will not be uploaded.", "invalid_media_type": "Unable to upload the file", "media_size_error_header": "File too large ", "media_size_error_description": "This file type is too large.", "dictFileTooBig": "File size is too big ({{filesize}} MB). Max file size: {{maxFilesize}} MB.", "cover_photo_size_error_header": "Unable to reposition the image ", "cover_photo_size_error_description": "To reposition your cover photo, please upload a larger image and then try again.", "maxFiles": 10, "is_media_directory": "no", "create_album_error_title": "Please enter title of album", "current_album": 0, "current_type": "", "move_to_id_popup": 2, "media_dict_file_exceeded": "You are allowed to upload only 10 photos at a time.", "can_manage_media": true, "create_album_title": "Create Album", "dictCancelUploadConfirmation": "Are you sure you want to cancel this upload?", "connection_lost_error": "Connection lost with the server.", "emoji": { "profile": true, "groups": true, "messages": true, "forums": true, "document": true }, "emoji_filter_url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-content\/plugins\/buddyboss-platform\/bp-core\/images\/emojifilter\/", "gif": { "profile": true, "groups": true, "messages": true, "forums": true, "document": true }, "gif_api_key": "f2Hc3ZwPo2qGb95zF1fmoX84xQ2XcmrY", "i18n_strings": { "select": "Select", "unselect": "Unselect", "selectall": "Select All", "unselectall": "Unselect All", "no_photos_found": "Sorry, no photos were found", "upload": "Upload", "uploading": "Uploading", "upload_status": "%1$d out of %2$d uploaded", "album_delete_confirm": "Are you sure you want to delete this album? Photos in this album will also be deleted.", "album_delete_error": "There was a problem deleting the album.", "media_delete_confirm": "Are you sure you want to delete this media?", "folder_delete_confirm": "Are you sure you want to delete this folder? Documents in this folder will also be deleted?", "document_delete_confirm": "Are you sure you want to delete this document?", "folder_delete_error": "There was a problem deleting the folder.", "folder_move_error": "Please select destination folder." }, "profile_document": true, "group_document": true, "messages_document": true, "messages_document_active": true, "document_type": "application\/x-abiword,text\/xml,application\/x-ace-compressed,application\/postscript,application\/pdf,application\/vnd.android.package-archive,application\/java-archive,text\/css,text\/plain,text\/csv,application\/msword,application\/vnd.ms-word.document.macroenabled.12,application\/vnd.openxmlformats-officedocument.wordprocessingml.document,application\/vnd.ms-word.template.macroenabled.12,image\/x-eps,image\/gif,application\/x-gzip,application\/gzip,text\/html,image\/x-icon,text\/calendar,application\/octet-stream,image\/jpeg,application\/javascript,audio\/mpeg,application\/vnd.oasis.opendocument.spreadsheet,application\/vnd.oasis.opendocument.text,image\/png,application\/vnd.ms-powerpoint.template.macroenabled.12,application\/vnd.openxmlformats-officedocument.presentationml.template,application\/vnd.openxmlformats-officedocument.presentationml.presentation,application\/vnd.ms-powerpoint,application\/vnd.openxmlformats-officedocument.presentationml.slideshow,application\/vnd.ms-powerpoint.presentation.macroenabled.12,image\/vnd.adobe.photoshop,application\/x-rar-compressed,application\/x-rar,application\/rss+xml,application\/rtf,application\/x-sqlite3,image\/svg+xml,application\/x-tar,image\/tiff,text\/x-vcard,text\/vcard,audio\/x-wav,application\/vnd.ms-excel.sheet.binary.macroenabled.12,application\/vnd.ms-excel,application\/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application\/vnd.ms-excel.sheet.macroenabled.12,application\/vnd.ms-excel.template.macroenabled.12,application\/vnd.openxmlformats-officedocument.spreadsheetml.template,text\/yaml,application\/zip,application\/x-7z-compressed,video\/mp4,video\/webm,video\/ogg,video\/quicktime,.abw,.ace,.ai,.apk,.css,.csv,.doc,.docm,.docx,.dotm,.dotx,.eps,.gif,.gz,.gzip,.htm,.html,.ico,.ics,.ipa,.jar,.jpeg,.jpg,.js,.mp3,.ods,.odt,.pdf,.png,.potm,.potx,.pps,.ppsx,.ppt,.pptm,.pptx,.psd,.rar,.rss,.rtf,.sketch,.svg,.tar,.tiff,.txt,.vcf,.wav,.xlam,.xls,.xlsb,.xlsm,.xlsx,.xltm,.xltx,.xml,.yaml,.zip,.7z,.mp4,.webm,.ogg,.mov", "empty_document_type": "Empty documents will not be uploaded.", "current_folder": 0, "current_user_id": 2, "current_group_id": 0, "target_text": "Documents", "create_folder_error_title": "Please enter title of folder", "invalid_file_type": "Unable to upload the file", "document_select_error": "Please upload only the following file types: <br \/><div class=\"bb-allowed-file-types\">.abw, .ace, .ai, .apk, .css, .csv, .doc, .docm, .docx, .dotm, .dotx, .eps, .gif, .gz, .gzip, .htm, .html, .ico, .ics, .ipa, .jar, .jpeg, .jpg, .js, .mp3, .ods, .odt, .pdf, .png, .potm, .potx, .pps, .ppsx, .ppt, .pptm, .pptx, .psd, .rar, .rss, .rtf, .sketch, .svg, .tar, .tiff, .txt, .vcf, .wav, .xlam, .xls, .xlsb, .xlsm, .xlsx, .xltm, .xltx, .xml, .yaml, .zip, .7z, .mp4, .webm, .ogg, .mov<\/div>", "dropzone_document_message": "<strong>Add Files<\/strong> Or drag and drop", "is_document_directory": "no", "document_preview_error": "Sorry! something went wrong we are not able to preview.", "move_to_folder": "Move folder to...", "move_to_file": "Move document to...", "copy_to_clip_board_text": "Copied to Clipboard", "download_button": "Download", "document_size_error_header": "File too large ", "document_size_error_description": "This file type is too large.", "sidebar_download_text": "Download", "sidebar_view_text": "View", "create_folder": "Create Folder", "document_dict_file_exceeded": "You are allowed to upload only 10 documents at a time.", "can_manage_document": true }, "video": { "max_upload_size": 20, "video_type": "video\/mp4,video\/webm,video\/ogg,video\/quicktime,.mp4,.webm,.ogg,.mov", "profile_video": true, "profile_album": true, "group_video": true, "group_album": true, "messages_video": true, "messages_video_active": true, "dropzone_video_message": "<strong>Add Videos<\/strong> Or drag and drop", "dropzone_video_thumbnail_message": "Upload thumbnail", "video_select_error": "This file type is not supported for video uploads.", "empty_video_type": "Empty video file will not be uploaded.", "invalid_video_type": "Unable to upload the file", "video_size_error_header": "File too large ", "video_size_error_description": "This file type is too large.", "dictFileTooBig": "File is too large ({{filesize}} MB). Max filesize: {{maxFilesize}} MB.", "maxFiles": 5, "is_video_directory": "no", "create_album_error_title": "Please enter title of album", "cover_video_size_error_header": "Unable to reposition the image ", "cover_video_size_error_description": "To reposition your cover video, please upload a larger image and then try again.", "current_album": 0, "current_type": "", "move_to_id_popup": 2, "video_dict_file_exceeded": "You are allowed to upload only 5 videos at a time.", "thumb_dict_file_exceeded": "You are allowed to upload only 1 thumb at a time.", "dictInvalidFileType": "Please upload only the following file types: <br \/><div class=\"bb-allowed-file-types\">video\/mp4, video\/webm, video\/ogg, video\/quicktime, .mp4, .webm, .ogg, .mov<\/div>", "is_ffpmeg_installed": true, "generating_thumb": "Generating thumbnail\u2026", "dictCancelUploadConfirmation": "Are you sure you want to cancel this upload?", "i18n_strings": { "select": "Select", "unselect": "Unselect", "selectall": "Select All", "unselectall": "Unselect All", "no_videos_found": "Sorry, no videos were found", "upload": "Upload", "upload_thumb": "Change Thumbnail", "uploading": "Uploading", "upload_status": "%1$d out of %2$d uploaded", "album_delete_confirm": "Are you sure you want to delete this album? Videos in this album will also be deleted.", "album_delete_error": "There was a problem deleting the album.", "video_delete_confirm": "Are you sure you want to delete this video?", "video_enlarge_text": "Enlarge", "video_fullscreen_text": "Full screen", "video_play_text": "Play", "video_pause_text": "Pause", "video_uploaded_text": "Uploaded", "video_volume_text": "Volume", "video_miniplayer_text": "Miniplayer", "video_speed_text": "Speed", "video_skip_back_text": "Step Back (5)", "video_skip_forward_text": "Step Forward (5)", "video_picture_in_text": "This video is playing in the miniplayer." } }, "moderation": { "unblock_user_msg": "Are you sure you want to unblock this member?", "no_user_msg": "No blocked members found." }, "document": { "dictInvalidFileType": "Please upload only the following file types: <br \/><div class=\"bb-allowed-file-types\">.abw, .ace, .ai, .apk, .css, .csv, .doc, .docm, .docx, .dotm, .dotx, .eps, .gif, .gz, .gzip, .htm, .html, .ico, .ics, .ipa, .jar, .jpeg, .jpg, .js, .mp3, .ods, .odt, .pdf, .png, .potm, .potx, .pps, .ppsx, .ppt, .pptm, .pptx, .psd, .rar, .rss, .rtf, .sketch, .svg, .tar, .tiff, .txt, .vcf, .wav, .xlam, .xls, .xlsb, .xlsm, .xlsx, .xltm, .xltx, .xml, .yaml, .zip, .7z, .mp4, .webm, .ogg, .mov<\/div>", "max_upload_size": 5, "maxFiles": 10, "mp3_preview_extension": "mp3,wav,ogg" } };
+        var BP_Forums_Nouveau = { "media": [] };
+        var BB_Nouveau_Presence = { "heartbeat_enabled": "1", "presence_interval": "60", "presence_default_interval": "60", "presence_time_span": "20", "idle_inactive_span": "180", "rest_nonce": "04de10b0c8", "native_presence": "1", "native_presence_url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-content\/plugins\/buddyboss-platform\/bp-core\/bb-core-native-presence.php", "presence_rest_url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-json\/buddyboss\/v1\/members\/presence" };
+        var BP_Forums_Nouveau = { "media": [] };
+/* ]]> */
+    </script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/plugins/buddyboss-platform/bp-templates/bp-nouveau/js/buddypress-nouveau.min.js?ver=2.3.3'
+        id='bp-nouveau-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/plugins/buddyboss-platform/bp-templates/bp-nouveau/js/jquery.guillotine.min.js?ver=2.3.3'
+        id='guillotine-js-js'></script>
+    <script type='text/javascript' id='heartbeat-js-extra'>
+        /* <![CDATA[ */
+        var heartbeatSettings = { "ajaxurl": "\/online-communities\/wp-admin\/admin-ajax.php", "nonce": "e3862f70da" };
+/* ]]> */
+    </script>
+    <script type='text/javascript' src='https://demos.buddyboss.com/online-communities/wp-includes/js/heartbeat.min.js'
+        id='heartbeat-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-includes/js/backbone.min.js?ver=1.4.1'
+        id='backbone-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-includes/js/wp-backbone.min.js'
+        id='wp-backbone-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/plugins/buddyboss-platform/bp-templates/bp-nouveau/js/buddypress-activity.min.js?ver=2.3.3'
+        id='bp-nouveau-activity-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/plugins/buddyboss-platform/bp-templates/bp-nouveau/js/buddypress-activity-post-form.min.js?ver=2.3.3'
+        id='bp-nouveau-activity-post-form-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/plugins/buddyboss-platform/bp-core/js/vendor/giphy.min.js?ver=2.3.3'
+        id='giphy-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/plugins/buddyboss-platform/bp-core/js/emojione-edited.js?ver=2.3.3'
+        id='emojione-js'></script>
+    <script type='text/javascript' id='emojionearea-js-extra'>
+        /* <![CDATA[ */
+        var bp_emojionearea = { "recent": "Recent", "smileys_people": "Smileys & People", "animals_nature": "Animals & Nature", "food_drink": "Food & Drink", "activity": "Activity", "travel_places": "Travel & Places", "objects": "Objects", "symbols": "Symbols", "flags": "Flags", "tones": "Diversity", "searchPlaceholder": "Search" };
+/* ]]> */
+    </script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/plugins/buddyboss-platform/bp-core/js/emojionearea-edited.js?ver=2.3.3'
+        id='emojionearea-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/plugins/buddyboss-platform/bp-core/js/vendor/codemirror.min.js?ver=2.3.3'
+        id='bp-nouveau-codemirror-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/plugins/buddyboss-platform/bp-core/js/vendor/css.min.js?ver=2.3.3'
+        id='bp-nouveau-codemirror-css-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/plugins/buddyboss-platform/bp-templates/bp-nouveau/js/buddypress-media.min.js?ver=2.3.3'
+        id='bp-nouveau-media-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/plugins/buddyboss-platform/bp-templates/bp-nouveau/js/buddypress-video.min.js?ver=2.3.3'
+        id='bp-nouveau-video-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-includes/js/jquery/ui/core.min.js?ver=1.13.2'
+        id='jquery-ui-core-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-includes/js/jquery/ui/menu.min.js?ver=1.13.2'
+        id='jquery-ui-menu-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-includes/js/dist/dom-ready.min.js?ver=392bdd43726760d1f3ca'
+        id='wp-dom-ready-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-includes/js/dist/a11y.min.js?ver=ecce20f002eda4c19664'
+        id='wp-a11y-js'></script>
+    <script type='text/javascript' id='jquery-ui-autocomplete-js-extra'>
+        /* <![CDATA[ */
+        var uiAutocompleteL10n = { "noResults": "No results found.", "oneResult": "1 result found. Use up and down arrow keys to navigate.", "manyResults": "%d results found. Use up and down arrow keys to navigate.", "itemSelected": "Item selected." };
+/* ]]> */
+    </script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-includes/js/jquery/ui/autocomplete.min.js?ver=1.13.2'
+        id='jquery-ui-autocomplete-js'></script>
+    <script type='text/javascript' id='bp-nouveau-search-js-extra'>
+        /* <![CDATA[ */
+        var BP_SEARCH = { "nonce": "38f8531fd7", "action": "bp_search_ajax", "debug": "1", "ajaxurl": "https:\/\/demos.buddyboss.com\/online-communities\/wp-admin\/admin-ajax.php", "loading_msg": "Loading suggestions...", "enable_ajax_search": "1", "per_page": "5", "autocomplete_selector": ".header-search-wrap .search-form", "form_selector": ".widget_search .search-form", "forums_autocomplete": "1" };
+/* ]]> */
+    </script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/plugins/buddyboss-platform/bp-templates/bp-nouveau/js/buddypress-search.min.js?ver=2.3.3'
+        id='bp-nouveau-search-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/plugins/buddyboss-platform/bp-templates/bp-nouveau/js/buddypress-moderation.min.js?ver=2.3.3'
+        id='bp-nouveau-moderation-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/themes/buddyboss-theme/assets/js/vendors/draggabilly.min.js?ver=2.2.9'
+        id='draggabilly-js-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/themes/buddyboss-theme/assets/js/plugins/bbp-scrubber.js?ver=2.2.9'
+        id='buddyboss-theme-bbp-scrubber-js-js'></script>
+    <script type='text/javascript' id='buddyboss-bbpress-reply-ajax-js-extra'>
+        /* <![CDATA[ */
+        var bbpReplyAjaxJS = { "bbp_ajaxurl": "https:\/\/demos.buddyboss.com\/online-communities\/?bbp-ajax=true", "generic_ajax_error": "Something went wrong. Refresh your browser and try again.", "is_user_logged_in": "1", "reply_nonce": "6b8d866a99", "topic_id": "5", "reply_form_html": "\n\n\n\t\n\t\n\t<div id=\"new-reply-5\" class=\"bbp-reply-form bb-modal bb-modal-box\">\n\n\t\t<form id=\"new-post\" name=\"new-post\" method=\"post\" action=\"https:\/\/demos.buddyboss.com\/online-communities\/\">\n\n\t\t\t\n\t\t\t<fieldset class=\"bbp-form\">\n\t\t\t\t<legend>\n\t\t\t\t\tReply to: <span id=\"bbp-reply-to-user\">John<\/span>\n\t\t\t\t\t<div id=\"bbp-reply-exerpt\"><\/div>\n\t\t\t\t\t<a href=\"#\" id=\"bbp-close-btn\" class=\"js-modal-close bb-model-close-button\">\n\t\t\t\t\t\t<span class=\"bb-icon bb-icon-close\"><\/span>\n\t\t\t\t\t\t<span class=\"screen-reader-text\">Cancel<\/span>\n\t\t\t\t\t<\/a>\n\t\t\t\t<\/legend>\n\n\t\t\t\t<div id=\"bbp-template-notices\">\n\t\t\t\t\t\t\t\t\t<\/div>\n\n\t\t\t\t<div>\n\n\t\t\t\t\t\n\n\t\t\t\t\t\n\t\t\t\t\t<div class=\"bbp-the-content-wrapper\">\t\t\t<div id=\"bbp_editor_reply_content_forums_editor_1\" class=\"bbp-the-content bbp_editor_reply_content\" tabindex=\"101\" data-key=\"forums_editor_1\" ><\/div>\n\t\t\t<input type=\"hidden\" id=\"bbp_reply_content\" name=\"bbp_reply_content\" value=\"\" \/>\n\t\t\t<\/div>\n\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\n\n<div id=\"whats-new-attachments\">\n\n\t\t\t<div class=\"dropzone closed media-dropzone\" id=\"forums-post-media-uploader\" data-key=\"forums_media_uploader_2\"><\/div>\n\t\t<input name=\"bbp_media\" id=\"bbp_media\" type=\"hidden\" value=\"\"\/>\n\t\t<div class=\"forum-post-media-template\" style=\"display:none;\">\n\t\t\t<div class=\"dz-preview\">\n\t\t\t\t<div class=\"dz-image\">\n\t\t\t\t\t<img data-dz-thumbnail \/>\n\t\t\t\t<\/div>\n\t\t\t\t<div class=\"dz-error-title\">Upload Failed<\/div>\n\t\t\t\t<div class=\"dz-details\">\n\t\t\t\t\t<div class=\"dz-filename\"><span data-dz-name><\/span><\/div>\n\t\t\t\t\t<div class=\"dz-size\" data-dz-size><\/div>\n\t\t\t\t<\/div>\n\t\t\t\t<div class=\"dz-progress-ring-wrap\">\n\t\t\t\t\t<i class=\"bb-icon-f bb-icon-camera\"><\/i>\n\t\t\t\t\t<svg class=\"dz-progress-ring\" width=\"54\" height=\"54\">\n\t\t\t\t\t\t<circle class=\"progress-ring__circle\" stroke=\"white\" stroke-width=\"3\" fill=\"transparent\" r=\"24.5\" cx=\"27\" cy=\"27\" stroke-dasharray=\"185.354, 185.354\" stroke-dashoffset=\"185\" \/>\n\t\t\t\t\t<\/svg>\n\t\t\t\t<\/div>\n\t\t\t\t<div class=\"dz-error-message\"><span data-dz-errormessage><\/span><\/div>\n\t\t\t\t<div class=\"dz-error-mark\">\n\t\t\t\t\t<svg width=\"54px\" height=\"54px\" viewBox=\"0 0 54 54\" version=\"1.1\" xmlns=\"http:\/\/www.w3.org\/2000\/svg\" xmlns:xlink=\"http:\/\/www.w3.org\/1999\/xlink\"><title>Error<\/title>\n\t\t\t\t\t\t<g stroke=\"none\" stroke-width=\"1\" fill=\"none\" fill-rule=\"evenodd\">\n\t\t\t\t\t\t\t<g stroke=\"#747474\" stroke-opacity=\"0.198794158\" fill=\"#FFFFFF\" fill-opacity=\"0.816519475\">\n\t\t\t\t\t\t\t\t<path d=\"M32.6568542,29 L38.3106978,23.3461564 C39.8771021,21.7797521 39.8758057,19.2483887 38.3137085,17.6862915 C36.7547899,16.1273729 34.2176035,16.1255422 32.6538436,17.6893022 L27,23.3431458 L21.3461564,17.6893022 C19.7823965,16.1255422 17.2452101,16.1273729 15.6862915,17.6862915 C14.1241943,19.2483887 14.1228979,21.7797521 15.6893022,23.3461564 L21.3431458,29 L15.6893022,34.6538436 C14.1228979,36.2202479 14.1241943,38.7516113 15.6862915,40.3137085 C17.2452101,41.8726271 19.7823965,41.8744578 21.3461564,40.3106978 L27,34.6568542 L32.6538436,40.3106978 C34.2176035,41.8744578 36.7547899,41.8726271 38.3137085,40.3137085 C39.8758057,38.7516113 39.8771021,36.2202479 38.3106978,34.6538436 L32.6568542,29 Z M27,53 C41.3594035,53 53,41.3594035 53,27 C53,12.6405965 41.3594035,1 27,1 C12.6405965,1 1,12.6405965 1,27 C1,41.3594035 12.6405965,53 27,53 Z\"><\/path>\n\t\t\t\t\t\t\t<\/g>\n\t\t\t\t\t\t<\/g>\n\t\t\t\t\t<\/svg>\n\t\t\t\t<\/div>\n\t\t\t<\/div>\n\t\t<\/div>\n\t\t\t\t<div class=\"forums-attached-gif-container closed\" data-key=\"forums_attached_gif_container_3\">\n\t\t\t<div class=\"gif-image-container\">\n\t\t\t\t<img src=\"\" alt=\"\">\n\t\t\t<\/div>\n\t\t\t<div class=\"gif-image-remove gif-image-overlay\">\n\t\t\t\t<i class=\"bb-icon-l bb-icon-times\"><\/i>\n\t\t\t<\/div>\n\t\t<\/div>\n\t\t<input name=\"bbp_media_gif\" id=\"bbp_media_gif\" type=\"hidden\" value=\"\"\/>\n\t\t\t\t<div class=\"dropzone closed document-dropzone\" id=\"forums-post-document-uploader\" data-key=\"forums_document_uploader_1\"><\/div>\n\t\t<input name=\"bbp_document\" id=\"bbp_document\" type=\"hidden\" value=\"\"\/>\n\t\t<div class=\"forum-post-document-template\" style=\"display:none;\">\n\t\t\t<div class=\"dz-preview dz-file-preview\">\n\t\t\t\t<div class=\"dz-error-title\">Upload Failed<\/div>\n\t\t\t\t<div class=\"dz-details\">\n\t\t\t\t\t<div class=\"dz-icon\"><span class=\"bb-icon-l bb-icon-file\"><\/span><\/div>\n\t\t\t\t\t<div class=\"dz-filename\"><span data-dz-name><\/span><\/div>\n\t\t\t\t\t<div class=\"dz-size\" data-dz-size><\/div>\n\t\t\t\t<\/div>\n\t\t\t\t<div class=\"dz-progress-ring-wrap\">\n\t\t\t\t\t<i class=\"bb-icon-f bb-icon-file-attach\"><\/i>\n\t\t\t\t\t<svg class=\"dz-progress-ring\" width=\"54\" height=\"54\">\n\t\t\t\t\t<circle class=\"progress-ring__circle\" stroke=\"white\" stroke-width=\"3\" fill=\"transparent\" r=\"24.5\" cx=\"27\" cy=\"27\" stroke-dasharray=\"185.354, 185.354\" stroke-dashoffset=\"185\" \/>\n\t\t\t\t<\/svg>\n\t\t\t\t<\/div>\n\t\t\t\t<div class=\"dz-error-message\"><span data-dz-errormessage><\/span><\/div>\n\t\t\t\t<div class=\"dz-error-mark\">\n\t\t\t\t\t<svg width=\"54px\" height=\"54px\" viewBox=\"0 0 54 54\" version=\"1.1\" xmlns=\"http:\/\/www.w3.org\/2000\/svg\" xmlns:xlink=\"http:\/\/www.w3.org\/1999\/xlink\"><title>Error<\/title>\n\t\t\t\t\t\t<g stroke=\"none\" stroke-width=\"1\" fill=\"none\" fill-rule=\"evenodd\">\n\t\t\t\t\t\t\t<g stroke=\"#747474\" stroke-opacity=\"0.198794158\" fill=\"#FFFFFF\" fill-opacity=\"0.816519475\">\n\t\t\t\t\t\t\t\t<path d=\"M32.6568542,29 L38.3106978,23.3461564 C39.8771021,21.7797521 39.8758057,19.2483887 38.3137085,17.6862915 C36.7547899,16.1273729 34.2176035,16.1255422 32.6538436,17.6893022 L27,23.3431458 L21.3461564,17.6893022 C19.7823965,16.1255422 17.2452101,16.1273729 15.6862915,17.6862915 C14.1241943,19.2483887 14.1228979,21.7797521 15.6893022,23.3461564 L21.3431458,29 L15.6893022,34.6538436 C14.1228979,36.2202479 14.1241943,38.7516113 15.6862915,40.3137085 C17.2452101,41.8726271 19.7823965,41.8744578 21.3461564,40.3106978 L27,34.6568542 L32.6538436,40.3106978 C34.2176035,41.8744578 36.7547899,41.8726271 38.3137085,40.3137085 C39.8758057,38.7516113 39.8771021,36.2202479 38.3106978,34.6538436 L32.6568542,29 Z M27,53 C41.3594035,53 53,41.3594035 53,27 C53,12.6405965 41.3594035,1 27,1 C12.6405965,1 1,12.6405965 1,27 C1,41.3594035 12.6405965,53 27,53 Z\"><\/path>\n\t\t\t\t\t\t\t<\/g>\n\t\t\t\t\t\t<\/g>\n\t\t\t\t\t<\/svg>\n\t\t\t\t<\/div>\n\t\t\t<\/div>\n\t\t<\/div>\n\t\n\t\t\t<div class=\"dropzone closed video-dropzone\" id=\"forums-post-video-uploader\" data-key=\"forums_video_uploader_4\"><\/div>\n\t\t<input name=\"bbp_video\" id=\"bbp_video\" type=\"hidden\" value=\"\"\/>\n\t\t<div class=\"forum-post-video-template\" style=\"display:none;\">\n\t\t<div class=\"dz-preview dz-file-preview well\" id=\"dz-preview-template\">\n\t\t\t<div class=\"dz-details\">\n\t\t\t\t<div class=\"dz-filename\"><span data-dz-name><\/span><\/div>\n\t\t\t<\/div>\n\t\t\t<div class=\"dz-error-title\">Upload Failed<\/div>\n\t\t\t<div class=\"dz-progress-ring-wrap\">\n\t\t\t\t<i class=\"bb-icon-f bb-icon-video\"><\/i>\n\t\t\t\t<svg class=\"dz-progress-ring\" width=\"54\" height=\"54\">\n\t\t\t\t\t<circle class=\"progress-ring__circle\" stroke=\"white\" stroke-width=\"3\" fill=\"transparent\" r=\"24.5\" cx=\"27\" cy=\"27\" stroke-dasharray=\"185.354, 185.354\" stroke-dashoffset=\"185\" \/>\n\t\t\t\t<\/svg>\n\t\t\t<\/div>\n\t\t\t<!-- <div class=\"dz-progress\"><span class=\"dz-upload\" data-dz-uploadprogress><\/span><\/div> -->\n\t\t\t<div class=\"dz-error-message\"><span data-dz-errormessage><\/span><\/div>\n\t\t\t<div class=\"dz-success-mark\">\n\t\t\t\t<svg width=\"54px\" height=\"54px\" viewBox=\"0 0 54 54\" version=\"1.1\" xmlns=\"http:\/\/www.w3.org\/2000\/svg\" xmlns:xlink=\"http:\/\/www.w3.org\/1999\/xlink\"><title>Check<\/title>\n\t\t\t\t\t<g stroke=\"none\" stroke-width=\"1\" fill=\"none\" fill-rule=\"evenodd\">\n\t\t\t\t\t\t<path d=\"M23.5,31.8431458 L17.5852419,25.9283877 C16.0248253,24.3679711 13.4910294,24.366835 11.9289322,25.9289322 C10.3700136,27.4878508 10.3665912,30.0234455 11.9283877,31.5852419 L20.4147581,40.0716123 C20.5133999,40.1702541 20.6159315,40.2626649 20.7218615,40.3488435 C22.2835669,41.8725651 24.794234,41.8626202 26.3461564,40.3106978 L43.3106978,23.3461564 C44.8771021,21.7797521 44.8758057,19.2483887 43.3137085,17.6862915 C41.7547899,16.1273729 39.2176035,16.1255422 37.6538436,17.6893022 L23.5,31.8431458 Z M27,53 C41.3594035,53 53,41.3594035 53,27 C53,12.6405965 41.3594035,1 27,1 C12.6405965,1 1,12.6405965 1,27 C1,41.3594035 12.6405965,53 27,53 Z\" stroke-opacity=\"0.198794158\" stroke=\"#747474\" fill-opacity=\"0.816519475\" fill=\"#FFFFFF\"><\/path>\n\t\t\t\t\t<\/g>\n\t\t\t\t<\/svg>\n\t\t\t<\/div>\n\t\t\t<div class=\"dz-error-mark\">\n\t\t\t\t<svg width=\"54px\" height=\"54px\" viewBox=\"0 0 54 54\" version=\"1.1\" xmlns=\"http:\/\/www.w3.org\/2000\/svg\" xmlns:xlink=\"http:\/\/www.w3.org\/1999\/xlink\"><title>Error<\/title>\n\t\t\t\t\t<g stroke=\"none\" stroke-width=\"1\" fill=\"none\" fill-rule=\"evenodd\">\n\t\t\t\t\t\t<g stroke=\"#747474\" stroke-opacity=\"0.198794158\" fill=\"#FFFFFF\" fill-opacity=\"0.816519475\">\n\t\t\t\t\t\t\t<path d=\"M32.6568542,29 L38.3106978,23.3461564 C39.8771021,21.7797521 39.8758057,19.2483887 38.3137085,17.6862915 C36.7547899,16.1273729 34.2176035,16.1255422 32.6538436,17.6893022 L27,23.3431458 L21.3461564,17.6893022 C19.7823965,16.1255422 17.2452101,16.1273729 15.6862915,17.6862915 C14.1241943,19.2483887 14.1228979,21.7797521 15.6893022,23.3461564 L21.3431458,29 L15.6893022,34.6538436 C14.1228979,36.2202479 14.1241943,38.7516113 15.6862915,40.3137085 C17.2452101,41.8726271 19.7823965,41.8744578 21.3461564,40.3106978 L27,34.6568542 L32.6538436,40.3106978 C34.2176035,41.8744578 36.7547899,41.8726271 38.3137085,40.3137085 C39.8758057,38.7516113 39.8771021,36.2202479 38.3106978,34.6538436 L32.6568542,29 Z M27,53 C41.3594035,53 53,41.3594035 53,27 C53,12.6405965 41.3594035,1 27,1 C12.6405965,1 1,12.6405965 1,27 C1,41.3594035 12.6405965,53 27,53 Z\"><\/path>\n\t\t\t\t\t\t<\/g>\n\t\t\t\t\t<\/g>\n\t\t\t\t<\/svg>\n\t\t\t<\/div>\n\t\t\t<div class=\"dz-progress-count\">0% Uploaded<\/span><\/div>\n\t\t\t<div class=\"dz-video-thumbnail\"><\/span><\/div>\n\t\t<\/div>\n\t<\/div>\n\t\n<\/div>\n\n<div id=\"whats-new-toolbar\" class=\" \">\n\n\t\t\t<div class=\"post-elements-buttons-item show-toolbar\" data-bp-tooltip-pos=\"down-left\" data-bp-tooltip=\"Show formatting\" data-bp-tooltip-hide=\"Hide formatting\" data-bp-tooltip-show=\"Show formatting\">\n\t\t\t<a href=\"#\" id=\"show-toolbar-button\" class=\"toolbar-button bp-tooltip\">\n\t\t\t\t<span class=\"bb-icon-l bb-icon-font\"><\/span>\n\t\t\t<\/a>\n\t\t<\/div>\n\t\t\t\t<div class=\"post-elements-buttons-item post-media media-support\">\n\t\t\t<a href=\"#\" id=\"forums-media-button\" class=\"toolbar-button bp-tooltip\" data-bp-tooltip-pos=\"down-left\" data-bp-tooltip=\"Attach photo\">\n\t\t\t\t<i class=\"bb-icon-l bb-icon-camera\"><\/i>\n\t\t\t<\/a>\n\t\t<\/div>\n\n\t\t\t\t<div class=\"post-elements-buttons-item post-video video-support\">\n\t\t\t<a href=\"#\" id=\"forums-video-button\" class=\"toolbar-button bp-tooltip\" data-bp-tooltip-pos=\"down-left\" data-bp-tooltip=\"Attach video\">\n\t\t\t\t<i class=\"bb-icon-l bb-icon-video\"><\/i>\n\t\t\t<\/a>\n\t\t<\/div>\n\t\t\n\t\t<div class=\"post-elements-buttons-item post-media document-support\">\n\t\t\t<a href=\"#\" id=\"forums-document-button\" class=\"toolbar-button bp-tooltip\" data-bp-tooltip-pos=\"down-left\" data-bp-tooltip=\"Attach document\">\n\t\t\t\t<i class=\"bb-icon-l bb-icon-attach\"><\/i>\n\t\t\t<\/a>\n\t\t<\/div>\n\n\t\t\t\t<div class=\"post-elements-buttons-item post-gif\">\n\t\t\t<div class=\"gif-media-search\">\n\t\t\t\t<a href=\"#\" id=\"forums-gif-button\" class=\"toolbar-button bp-tooltip\" data-bp-tooltip-pos=\"down-left\" data-bp-tooltip=\"Choose a GIF\">\n\t\t\t\t\t<i class=\"bb-icon-l bb-icon-gif\"><\/i>\n\t\t\t\t<\/a>\n\t\t\t\t<div class=\"gif-media-search-dropdown\">\n\t\t\t\t\t<div class=\"gif-search-content\">\n\t\t\t\t\t\t<div class=\"gif-search-query\">\n\t\t\t\t\t\t\t<input type=\"search\" placeholder=\"Search GIPHY...\" class=\"search-query-input\" \/>\n\t\t\t\t\t\t\t<span class=\"search-icon\"><\/span>\n\t\t\t\t\t\t<\/div>\n\t\t\t\t\t\t<div class=\"gif-search-results\" id=\"gif-search-results\">\n\t\t\t\t\t\t\t<ul class=\"gif-search-results-list\" >\n\t\t\t\t\t\t\t<\/ul>\n\t\t\t\t\t\t\t<div class=\"gif-alert gif-no-results\">\n\t\t\t\t\t\t\t\t<i class=\"bb-icon-l bb-icon-image-slash\"><\/i>\n\t\t\t\t\t\t\t\t<p>No results found<\/p>\n\t\t\t\t\t\t\t<\/div>\n\n\t\t\t\t\t\t\t<div class=\"gif-alert gif-no-connection\">\n\t\t\t\t\t\t\t\t<i class=\"bb-icon-l bb-icon-cloud-slash\"><\/i>\n\t\t\t\t\t\t\t\t<p>Could not connect to GIPHY<\/p>\n\t\t\t\t\t\t\t<\/div>\n\t\t\t\t\t\t<\/div>\n\t\t\t\t\t<\/div>\n\t\t\t\t<\/div>\n\t\t\t<\/div>\n\t\t<\/div>\n\t\t\t\t<div class=\"post-elements-buttons-item post-emoji bp-tooltip\" data-bp-tooltip-pos=\"down-left\" data-bp-tooltip=\"Emoji\"><\/div>\n\t\n<\/div>\n\n\n\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t<p class=\"bbp_topic_tags_wrapper\">\n\t\t\t\t\t\t\t<input type=\"hidden\" value=\"\" name=\"bbp_topic_tags\" class=\"bbp_topic_tags\" id=\"bbp_topic_tags\" >\n\t\t\t\t\t\t\t<select name=\"bbp_topic_tags_dropdown[]\" class=\"bbp_topic_tags_dropdown\" id=\"bbp_topic_tags_dropdown\" placeholder=\"Type one or more tags, comma separated\" autocomplete=\"off\" multiple=\"multiple\" style=\"width: 100%\" tabindex=\"102\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<\/select>\n\t\t\t\t\t\t<\/p>\n\n\t\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t<div class=\"bb-form-select-fields flex\">\n\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t<div class=\"bb_subscriptions_active\">\n\n\t\t\t\t\t\t\t\t\t<input name=\"bbp_topic_subscription\" id=\"bbp_topic_subscription\" class=\"bs-styled-checkbox\" type=\"checkbox\" value=\"bbp_subscribe\" tabindex=\"103\" \/>\n\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<label for=\"bbp_topic_subscription\">Notify me of new replies<\/label>\n\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t<\/div>\n\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t<div class=\"bbp-submit-wrapper\">\n\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t<a rel=\"nofollow\" id=\"bbp-cancel-reply-to-link\" href=\"\/online-communities\/?boss-preview=direct#post-0\" style=\"display:none;\">Cancel<\/a>\n\t\t\t\t\t\t\t<button type=\"button\" tabindex=\"104\" id=\"bb_reply_discard_draft\" name=\"bb_reply_discard_draft\" class=\"button outline discard small bb_discard_topic_reply_draft\">Discard Draft<\/button>\n\n\t\t\t\t\t\t\t<button type=\"submit\" tabindex=\"105\" id=\"bbp_reply_submit\" name=\"bbp_reply_submit\" class=\"button submit small\">\n\t\t\t\t\t\t\t\tPost\t\t\t\t\t\t\t\t<i class=\"bb-icon-l bb-icon-spinner animate-spin\"><\/i>\n\t\t\t\t\t\t\t<\/button>\n\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t<\/div>\n\n\t\t\t\t\t\t\n\t\t\t\t\t<\/div>\n\n\t\t\t\t<\/div>\n\n\t\t\t\t\n\t\t<input type=\"hidden\" name=\"bbp_topic_id\"    id=\"bbp_topic_id\"    value=\"5\" \/>\n\t\t<input type=\"hidden\" name=\"bbp_reply_to\"    id=\"bbp_reply_to\"    value=\"0\" \/>\n\t\t<input type=\"hidden\" name=\"action\"          id=\"bbp_post_action\" value=\"bbp-new-reply\" \/>\n\n\t\t<input type=\"hidden\" id=\"_bbp_unfiltered_html_reply\" name=\"_bbp_unfiltered_html_reply\" value=\"3f6ee2da29\" \/>\n\t\t<input type=\"hidden\" id=\"_wpnonce\" name=\"_wpnonce\" value=\"7b05c547f0\" \/><input type=\"hidden\" name=\"_wp_http_referer\" value=\"\/online-communities\/?boss-preview=direct\" \/>\n\t\t\t<\/fieldset>\n\n\t\t\t\n\t\t<\/form>\n\t<\/div>\n\n\n  ,"threaded_re  :"1  ,"threaded_reply_de  :"2  ,"reply_to_t  :"Reply to  ,"type_reply_here_t  :"Type your reply here     "};
+/* ]]> */
+    </script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/themes/buddyboss-theme/assets/js/plugins/bbp-reply-ajax.js?ver=2.2.9'
+        id='buddyboss-bbpress-reply-ajax-js'></script>
+    <script type='text/javascript' id='bbpress-editor-js-extra'>
+        /* <![CDATA[ */
+        var bbpEditorJsStrs = { "description": "Explain what the forum is about", "type_reply": "Type your reply here", "type_topic": "Type your discussion content here" };
+        var bbpEditorJsStrs = { "description": "Explain what the forum is about", "type_reply": "Type your reply here", "type_topic": "Type your discussion content here" };
+/* ]]> */
+    </script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/plugins/buddyboss-platform/bp-forums/templates/default/js/editor.js?ver=2.3.3'
+        id='bbpress-editor-js'></script>
+    <script type='text/javascript' id='bbpress-topic-js-extra'>
+        /* <![CDATA[ */
+        var bbpTopicJS = { "bbp_ajaxurl": "https:\/\/demos.buddyboss.com\/online-communities\/?bbp-ajax=true", "generic_ajax_error": "Something went wrong. Refresh your browser and try again.", "is_user_logged_in": "1", "fav_nonce": "bc56f95683", "subs_nonce": "a3b2c2e7f6" };
+        var bbpTopicJS = { "bbp_ajaxurl": "https:\/\/demos.buddyboss.com\/online-communities\/?bbp-ajax=true", "generic_ajax_error": "Something went wrong. Refresh your browser and try again.", "is_user_logged_in": "1", "fav_nonce": "bc56f95683", "subs_nonce": "a3b2c2e7f6" };
+/* ]]> */
+    </script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/plugins/buddyboss-platform/bp-forums/templates/default/js/topic.js?ver=2.3.3'
+        id='bbpress-topic-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/plugins/buddyboss-platform/bp-forums/templates/default/js/reply.js?ver=2.3.3'
+        id='bbpress-reply-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/plugins/buddyboss-platform/bp-forums/templates/default/js/topic-reply-draft.js?ver=2.3.3'
+        id='bb-topic-reply-draft-js'></script>
+    <script type='text/javascript' id='bbpress-common-js-extra'>
+        /* <![CDATA[ */
+        var bbpCommonJsData = { "loading_text": "Loading", "ajax_url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-admin\/admin-ajax.php", "nonce": "808430f6f3", "load": "", "tag_text": "Add Tags:" };
+        var bbpCommonJsData = { "loading_text": "Loading", "ajax_url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-admin\/admin-ajax.php", "nonce": "808430f6f3", "load": "", "tag_text": "Add Tags:" };
+/* ]]> */
+    </script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/plugins/buddyboss-platform/bp-forums/templates/default/js/common.js?ver=2.3.3'
+        id='bbpress-common-js'></script>
+    <script type='text/javascript' id='gamipress-js-js-extra'>
+        /* <![CDATA[ */
+        var gamipress = { "ajaxurl": "\/online-communities\/wp-admin\/admin-ajax.php", "nonce": "515f556d4a", "achievement_fields": ["id", "title", "title_size", "link", "thumbnail", "thumbnail_size", "points_awarded", "points_awarded_thumbnail", "excerpt", "times_earned", "global_times_earned", "steps", "toggle", "heading", "heading_size", "unlock_button", "earners", "earners_limit", "layout", "align"] };
+/* ]]> */
+    </script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/plugins/gamipress/assets/js/gamipress.min.js?ver=2.5.9.1'
+        id='gamipress-js-js'></script>
+    <script type='text/javascript' id='gamipress-events-js-js-extra'>
+        /* <![CDATA[ */
+        var gamipress_events = { "ajaxurl": "\/online-communities\/wp-admin\/admin-ajax.php", "nonce": "515f556d4a", "user_id": "2", "post_id": "5", "server_date": "2023-05-08", "debug_mode": "" };
+/* ]]> */
+    </script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/plugins/gamipress/assets/js/gamipress-events.min.js?ver=2.5.9.1'
+        id='gamipress-events-js-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/plugins/woocommerce/assets/js/jquery-blockui/jquery.blockUI.min.js?ver=2.7.0-wc.7.6.1'
+        id='jquery-blockui-js'></script>
+    <script type='text/javascript' id='wc-add-to-cart-js-extra'>
+        /* <![CDATA[ */
+        var wc_add_to_cart_params = { "ajax_url": "\/online-communities\/wp-admin\/admin-ajax.php", "wc_ajax_url": "\/online-communities\/?wc-ajax=%%endpoint%%", "i18n_view_cart": "View cart", "cart_url": "https:\/\/demos.buddyboss.com\/online-communities\/cart\/", "is_cart": "", "cart_redirect_after_add": "yes" };
+/* ]]> */
+    </script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/plugins/woocommerce/assets/js/frontend/add-to-cart.min.js?ver=7.6.1'
+        id='wc-add-to-cart-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/plugins/woocommerce/assets/js/js-cookie/js.cookie.min.js?ver=2.1.4-wc.7.6.1'
+        id='js-cookie-js'></script>
+    <script type='text/javascript' id='woocommerce-js-extra'>
+        /* <![CDATA[ */
+        var woocommerce_params = { "ajax_url": "\/online-communities\/wp-admin\/admin-ajax.php", "wc_ajax_url": "\/online-communities\/?wc-ajax=%%endpoint%%" };
+/* ]]> */
+    </script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/plugins/woocommerce/assets/js/frontend/woocommerce.min.js?ver=7.6.1'
+        id='woocommerce-js'></script>
+    <script type='text/javascript' id='wc-cart-fragments-js-extra'>
+        /* <![CDATA[ */
+        var wc_cart_fragments_params = { "ajax_url": "\/online-communities\/wp-admin\/admin-ajax.php", "wc_ajax_url": "\/online-communities\/?wc-ajax=%%endpoint%%", "cart_hash_key": "wc_cart_hash_4ea6996a79e74fb49c5e6197e4a48d13", "fragment_name": "wc_fragments_4ea6996a79e74fb49c5e6197e4a48d13", "request_timeout": "5000" };
+/* ]]> */
+    </script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/plugins/woocommerce/assets/js/frontend/cart-fragments.min.js?ver=7.6.1'
+        id='wc-cart-fragments-js'></script>
+    <script type='text/javascript' id='learndash-front-js-extra'>
+        /* <![CDATA[ */
+        var ldVars = { "postID": "5", "videoReqMsg": "You must watch the video before accessing this content", "ajaxurl": "https:\/\/demos.buddyboss.com\/online-communities\/wp-admin\/admin-ajax.php" };
+/* ]]> */
+    </script>
+    <script type='text/javascript'
+        src='//demos.buddyboss.com/online-communities/wp-content/plugins/sfwd-lms/themes/ld30/assets/js/learndash.js?ver=4.5.1.2'
+        id='learndash-front-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-includes/js/jquery/ui/mouse.min.js?ver=1.13.2'
+        id='jquery-ui-mouse-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-includes/js/jquery/ui/draggable.min.js?ver=1.13.2'
+        id='jquery-ui-draggable-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/plugins/elementor/assets/lib/backbone/backbone.marionette.min.js?ver=2.4.5.e1'
+        id='backbone-marionette-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/plugins/elementor/assets/lib/backbone/backbone.radio.min.js?ver=1.0.4'
+        id='backbone-radio-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/plugins/elementor/assets/js/common-modules.min.js?ver=3.12.2'
+        id='elementor-common-modules-js'></script>
+    <script type='text/javascript' id='elementor-web-cli-js-before'>
+        var elementorWebCliConfig = { "isDebug": false, "urls": { "rest": "https:\/\/demos.buddyboss.com\/online-communities\/wp-json\/", "assets": "https:\/\/demos.buddyboss.com\/online-communities\/wp-content\/plugins\/elementor\/assets\/" }, "nonce": "04de10b0c8", "version": "3.12.2" };
+        var elementorWebCliConfig = { "isDebug": false, "urls": { "rest": "https:\/\/demos.buddyboss.com\/online-communities\/wp-json\/", "assets": "https:\/\/demos.buddyboss.com\/online-communities\/wp-content\/plugins\/elementor\/assets\/" }, "nonce": "04de10b0c8", "version": "3.12.2" };
+    </script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/plugins/elementor/assets/js/web-cli.min.js?ver=3.12.2'
+        id='elementor-web-cli-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/plugins/elementor/assets/lib/dialog/dialog.min.js?ver=4.9.0'
+        id='elementor-dialog-js'></script>
+    <script type='text/javascript' id='wp-api-request-js-extra'>
+        /* <![CDATA[ */
+        var wpApiSettings = { "root": "https:\/\/demos.buddyboss.com\/online-communities\/wp-json\/", "nonce": "04de10b0c8", "versionString": "wp\/v2\/" };
+/* ]]> */
+    </script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-includes/js/api-request.min.js'
+        id='wp-api-request-js'></script>
+    <script type='text/javascript' id='elementor-dev-tools-js-before'>
+        var elementorDevToolsConfig = { "isDebug": false, "urls": { "assets": "https:\/\/demos.buddyboss.com\/online-communities\/wp-content\/plugins\/elementor\/assets\/" }, "deprecation": { "soft_notices": [], "soft_version_count": 4, "hard_version_count": 8, "current_version": "3.12.2" } };
+        var elementorDevToolsConfig = { "isDebug": false, "urls": { "assets": "https:\/\/demos.buddyboss.com\/online-communities\/wp-content\/plugins\/elementor\/assets\/" }, "deprecation": { "soft_notices": [], "soft_version_count": 4, "hard_version_count": 8, "current_version": "3.12.2" } };
+        var elementorDevToolsConfig = { "isDebug": false, "urls": { "assets": "https:\/\/demos.buddyboss.com\/online-communities\/wp-content\/plugins\/elementor\/assets\/" }, "deprecation": { "soft_notices": [], "soft_version_count": 4, "hard_version_count": 8, "current_version": "3.12.2" } };
+    </script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/plugins/elementor/assets/js/dev-tools.min.js?ver=3.12.2'
+        id='elementor-dev-tools-js'></script>
+    <script type='text/javascript' id='elementor-common-js-before'>
+        var elementorCommonConfig = { "version": "3.12.2", "isRTL": false, "isDebug": false, "isElementorDebug": false, "activeModules": ["ajax", "finder", "connect", "event-tracker"], "experimentalFeatures": { "a11y_improvements": true, "additional_custom_breakpoints": true, "theme_builder_v2": true, "landing-pages": true, "page-transitions": true, "form-submissions": true, "e_scroll_snap": true }, "urls": { "assets": "https:\/\/demos.buddyboss.com\/online-communities\/wp-content\/plugins\/elementor\/assets\/", "rest": "https:\/\/demos.buddyboss.com\/online-communities\/wp-json\/" }, "filesUpload": { "unfilteredFiles": true }, "library_connect": { "is_connected": true, "subscription_plans": [{ "label": null, "promotion_url": null, "color": null }, { "label": "Pro", "promotion_url": "https:\/\/elementor.com\/pro\/?utm_source=template-library&utm_medium=wp-dash&utm_campaign=gopro", "color": "#92003B" }], "base_access_level": 0, "current_access_level": 0 }, "ajax": { "url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-admin\/admin-ajax.php", "nonce": "16e291fa6b" }, "finder": { "data": { "edit": { "title": "Edit", "dynamic": true, "name": "edit" }, "general": { "title": "General", "dynamic": false, "items": { "saved-templates": { "title": "Saved Templates", "icon": "library-save", "url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-admin\/edit.php?post_type=elementor_library&tabs_group=library", "keywords": ["template", "section", "page", "library"] }, "system-info": { "title": "System Info", "icon": "info-circle-o", "url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-admin\/admin.php?page=elementor-system-info", "keywords": ["system", "info", "environment", "elementor"] }, "role-manager": { "title": "Role Manager", "icon": "person", "url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-admin\/admin.php?page=elementor-role-manager", "keywords": ["role", "manager", "user", "elementor"] }, "knowledge-base": { "title": "Knowledge Base", "url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-admin\/admin.php?page=go_knowledge_base_site", "keywords": ["help", "knowledge", "docs", "elementor"] }, "theme-builder": { "title": "Theme Builder", "icon": "library-save", "url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-admin\/admin.php?page=elementor-app&ver=3.12.2#\/site-editor", "keywords": ["template", "header", "footer", "single", "archive", "search", "404", "library"] }, "kit-library": { "title": "Kit Library", "icon": "kit-parts", "url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-admin\/admin.php?page=elementor-app&ver=3.12.2#\/kit-library", "keywords": ["kit library", "kit", "library", "site parts", "parts", "assets", "templates"] }, "popups": { "title": "Popups", "icon": "library-save", "url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-admin\/edit.php?post_type=elementor_library&tabs_group=popup&elementor_library_type=popup", "keywords": ["template", "popup", "library"] } }, "name": "general" }, "create": { "title": "Create", "dynamic": false, "items": { "page": { "title": "Add New Page Template", "icon": "plus-circle-o", "url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-admin\/edit.php?action=elementor_new_post&post_type=elementor_library&template_type=page&_wpnonce=ca8c18387b", "keywords": ["Add New Page Template", "post", "page", "template", "new", "create"] }, "section": { "title": "Add New Section", "icon": "plus-circle-o", "url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-admin\/edit.php?action=elementor_new_post&post_type=elementor_library&_wpnonce=ca8c18387b&template_type=section", "keywords": ["Add New Section", "post", "page", "template", "new", "create"] }, "wp-post": { "title": "Add New Post", "icon": "plus-circle-o", "url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-admin\/edit.php?action=elementor_new_post&post_type=post&template_type=wp-post&_wpnonce=ca8c18387b", "keywords": ["Add New Post", "post", "page", "template", "new", "create"] }, "wp-page": { "title": "Add New Page", "icon": "plus-circle-o", "url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-admin\/edit.php?action=elementor_new_post&post_type=page&template_type=wp-page&_wpnonce=ca8c18387b", "keywords": ["Add New Page", "post", "page", "template", "new", "create"] }, "landing-page": { "title": "Add New Landing Page", "icon": "plus-circle-o", "url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-admin\/edit.php?action=elementor_new_post&post_type=e-landing-page&template_type=landing-page&_wpnonce=ca8c18387b#library", "keywords": ["Add New Landing Page", "post", "page", "template", "new", "create"] }, "popup": { "title": "Add New Popup", "icon": "plus-circle-o", "url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-admin\/edit.php?action=elementor_new_post&post_type=elementor_library&_wpnonce=ca8c18387b&template_type=stack", "keywords": ["Add New Popup", "post", "page", "template", "new", "create"] }, "header": { "title": "Add New Header", "icon": "plus-circle-o", "url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-admin\/edit.php?action=elementor_new_post&post_type=elementor_library&_wpnonce=ca8c18387b&template_type=header", "keywords": ["Add New Header", "post", "page", "template", "new", "create"] }, "footer": { "title": "Add New Footer", "icon": "plus-circle-o", "url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-admin\/edit.php?action=elementor_new_post&post_type=elementor_library&_wpnonce=ca8c18387b&template_type=footer", "keywords": ["Add New Footer", "post", "page", "template", "new", "create"] }, "single": { "title": "Add New Single", "icon": "plus-circle-o", "url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-admin\/edit.php?action=elementor_new_post&post_type=elementor_library&_wpnonce=ca8c18387b&template_type=single", "keywords": ["Add New Single", "post", "page", "template", "new", "create"] }, "single-post": { "title": "Add New Single Post", "icon": "plus-circle-o", "url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-admin\/edit.php?action=elementor_new_post&post_type=elementor_library&_wpnonce=ca8c18387b&template_type=single-post", "keywords": ["Add New Single Post", "post", "page", "template", "new", "create"] }, "single-page": { "title": "Add New Single Page", "icon": "plus-circle-o", "url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-admin\/edit.php?action=elementor_new_post&post_type=elementor_library&_wpnonce=ca8c18387b&template_type=single-page&_elementor_template_sub_type=page", "keywords": ["Add New Single Page", "post", "page", "template", "new", "create"] }, "archive": { "title": "Add New Archive", "icon": "plus-circle-o", "url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-admin\/edit.php?action=elementor_new_post&post_type=elementor_library&_wpnonce=ca8c18387b&template_type=archive", "keywords": ["Add New Archive", "post", "page", "template", "new", "create"] }, "search-results": { "title": "Add New Search Results", "icon": "plus-circle-o", "url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-admin\/edit.php?action=elementor_new_post&post_type=elementor_library&_wpnonce=ca8c18387b&template_type=archive&_elementor_template_sub_type=search", "keywords": ["Add New Search Results", "post", "page", "template", "new", "create"] }, "error-404": { "title": "Add New Error 404", "icon": "plus-circle-o", "url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-admin\/edit.php?action=elementor_new_post&post_type=elementor_library&_wpnonce=ca8c18387b&template_type=error-404&_elementor_template_sub_type=not_found404", "keywords": ["Add New Error 404", "post", "page", "template", "new", "create"] }, "code_snippet": { "title": "Add New Custom Code", "icon": "plus-circle-o", "url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-admin\/edit.php?action=elementor_new_post&post_type=elementor_library&_wpnonce=ca8c18387b&template_type=stack", "keywords": ["Add New Custom Code", "post", "page", "template", "new", "create"] }, "product-post": { "title": "Add New Product Post", "icon": "plus-circle-o", "url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-admin\/edit.php?action=elementor_new_post&post_type=product&template_type=wp-post&_wpnonce=ca8c18387b", "keywords": ["Add New Product Post", "post", "page", "template", "new", "create"] }, "product": { "title": "Add New Single Product", "icon": "plus-circle-o", "url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-admin\/edit.php?action=elementor_new_post&post_type=elementor_library&_wpnonce=ca8c18387b&template_type=product", "keywords": ["Add New Single Product", "post", "page", "template", "new", "create"] }, "product-archive": { "title": "Add New Products Archive", "icon": "plus-circle-o", "url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-admin\/edit.php?action=elementor_new_post&post_type=elementor_library&_wpnonce=ca8c18387b&template_type=product-archive", "keywords": ["Add New Products Archive", "post", "page", "template", "new", "create"] }, "job_listing": { "title": "Add New Job", "icon": "plus-circle-o", "url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-admin\/edit.php?action=elementor_new_post&post_type=job_listing&_wpnonce=ca8c18387b", "keywords": ["Add New Job", "post", "page", "template", "new", "create"] }, "popups": { "title": "Add New Popup", "icon": "plus-circle-o", "url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-admin\/edit.php?post_type=elementor_library&tabs_group=popup&elementor_library_type=popup#add_new", "keywords": ["template", "theme", "popup", "new", "create"] }, "theme-template": { "title": "Add New Theme Template", "icon": "plus-circle-o", "url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-admin\/admin.php?page=elementor-app&ver=3.12.2#\/site-editor\/add-new", "keywords": ["template", "theme", "new", "create"] } }, "name": "create" }, "site": { "title": "Site", "dynamic": false, "items": { "homepage": { "title": "Homepage", "url": "https:\/\/demos.buddyboss.com\/online-communities", "icon": "home-heart", "keywords": ["home", "page"] }, "wordpress-dashboard": { "title": "Dashboard", "icon": "dashboard", "url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-admin\/", "keywords": ["dashboard", "wordpress"] }, "wordpress-menus": { "title": "Menus", "icon": "wordpress", "url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-admin\/nav-menus.php", "keywords": ["menu", "wordpress"] }, "wordpress-themes": { "title": "Themes", "icon": "wordpress", "url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-admin\/themes.php", "keywords": ["themes", "wordpress"] }, "wordpress-customizer": { "title": "Customizer", "icon": "wordpress", "url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-admin\/customize.php", "keywords": ["customizer", "wordpress"] }, "wordpress-plugins": { "title": "Plugins", "icon": "wordpress", "url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-admin\/plugins.php", "keywords": ["plugins", "wordpress"] }, "wordpress-users": { "title": "Users", "icon": "wordpress", "url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-admin\/users.php", "keywords": ["users", "profile", "wordpress"] } }, "name": "site" }, "settings": { "title": "Settings", "dynamic": false, "items": { "general-settings": { "title": "General Settings", "url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-admin\/admin.php?page=elementor", "keywords": ["general", "settings", "elementor"] }, "advanced": { "title": "Advanced", "url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-admin\/admin.php?page=elementor#tab-advanced", "keywords": ["advanced", "settings", "elementor"] }, "experiments": { "title": "Experiments", "url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-admin\/admin.php?page=elementor#tab-experiments", "keywords": ["settings", "elementor", "experiments"] }, "custom-fonts": { "title": "Custom Fonts", "icon": "typography", "url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-admin\/edit.php?post_type=elementor_font", "keywords": ["custom", "fonts", "elementor"] }, "custom-icons": { "title": "Custom Icons", "icon": "favorite", "url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-admin\/edit.php?post_type=elementor_icons", "keywords": ["custom", "icons", "elementor"] } }, "name": "settings" }, "tools": { "title": "Tools", "dynamic": false, "items": { "tools": { "title": "Tools", "icon": "tools", "url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-admin\/admin.php?page=elementor-tools", "keywords": ["tools", "regenerate css", "safe mode", "debug bar", "sync library", "elementor"] }, "replace-url": { "title": "Replace URL", "icon": "tools", "url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-admin\/admin.php?page=elementor-tools#tab-replace_url", "keywords": ["tools", "replace url", "domain", "elementor"] }, "maintenance-mode": { "title": "Maintenance Mode", "icon": "tools", "url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-admin\/admin.php?page=elementor-tools#tab-maintenance_mode", "keywords": ["tools", "maintenance", "coming soon", "elementor"] }, "import-export": { "title": "Import Export", "icon": "import-export", "url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-admin\/admin.php?page=elementor-tools#tab-import-export-kit", "keywords": ["tools", "import export", "import", "export", "kit"] } }, "name": "tools" } } }, "connect": [], "event-tracker": { "isUserDataShared": true } };
+    </script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/plugins/elementor/assets/js/common.min.js?ver=3.12.2'
+        id='elementor-common-js'></script>
+    <script type='text/javascript' id='elementor-app-loader-js-before'>
+        var elementorAppConfig = { "menu_url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-admin\/admin.php?page=elementor-app&ver=3.12.2#\/site-editor", "assets_url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-content\/plugins\/elementor\/assets\/", "return_url": "https:\/\/demos.buddyboss.com\/online-communities\/", "hasPro": true, "admin_url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-admin\/", "login_url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-login.php", "base_url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-admin\/admin.php?page=elementor-app&ver=3.12.2", "site-editor": [], "import-export": [], "kit-library": [], "onboarding": [] };
+    </script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/plugins/elementor/assets/js/app-loader.min.js?ver=3.12.2'
+        id='elementor-app-loader-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/plugins/buddyboss-platform-pro/assets/js/vendor/jquery.mask.js?ver=5.0.4'
+        id='bp-zoom-mask-js-js'></script>
+    <script type='text/javascript' id='bp-zoom-js-js-extra'>
+        /* <![CDATA[ */
+        var bp_zoom_vars = { "ajax_url": "https:\/\/demos.buddyboss.com\/online-communities\/wp-admin\/admin-ajax.php", "home_url": "https:\/\/demos.buddyboss.com\/online-communities", "is_single_meeting": "", "is_single_webinar": "", "group_id": "", "group_meetings_url": "", "group_meetings_past_url": "", "group_webinars_url": "", "group_webinar_past_url": "", "bp_staple": "", "meeting_delete_nonce": "f263e1a570", "meeting_confirm_msg": "Are you sure you want to delete this meeting?", "webinar_delete_nonce": "bdfb3163fd", "webinar_confirm_msg": "Are you sure you want to delete this webinar?", "user": { "name": "John", "email": "guest183188@buddyboss.com" }, "scripts": ["https:\/\/demos.buddyboss.com\/online-communities\/wp-content\/plugins\/buddyboss-platform-pro\/includes\/integrations\/zoom\/assets\/js\/zoom-web-sdk\/react.production.min.js", "https:\/\/demos.buddyboss.com\/online-communities\/wp-content\/plugins\/buddyboss-platform-pro\/includes\/integrations\/zoom\/assets\/js\/zoom-web-sdk\/react-dom.production.min.js", "https:\/\/demos.buddyboss.com\/online-communities\/wp-content\/plugins\/buddyboss-platform-pro\/includes\/integrations\/zoom\/assets\/js\/zoom-web-sdk\/redux.min.js", "https:\/\/demos.buddyboss.com\/online-communities\/wp-content\/plugins\/buddyboss-platform-pro\/includes\/integrations\/zoom\/assets\/js\/zoom-web-sdk\/redux-thunk.min.js", "https:\/\/demos.buddyboss.com\/online-communities\/wp-content\/plugins\/buddyboss-platform-pro\/includes\/integrations\/zoom\/assets\/js\/zoom-web-sdk\/lodash.min.js", "https:\/\/demos.buddyboss.com\/online-communities\/wp-content\/plugins\/buddyboss-platform-pro\/includes\/integrations\/zoom\/assets\/js\/zoom-web-sdk\/jquery.min.js", "https:\/\/demos.buddyboss.com\/online-communities\/wp-content\/plugins\/buddyboss-platform-pro\/includes\/integrations\/zoom\/assets\/js\/zoom-web-sdk\/zoom-meeting-2.4.0.min.js"], "styles": ["https:\/\/demos.buddyboss.com\/online-communities\/wp-content\/plugins\/buddyboss-platform-pro\/includes\/integrations\/zoom\/assets\/js\/zoom-web-sdk\/bootstrap.css", "https:\/\/demos.buddyboss.com\/online-communities\/wp-content\/plugins\/buddyboss-platform-pro\/includes\/integrations\/zoom\/assets\/js\/zoom-web-sdk\/react-select.css"], "strings": { "day": "day", "month": "month", "week": "week" } };
+/* ]]> */
+    </script>
+    <script type='text/javascript' id='bp-zoom-js-js-before'>
+        var $ = jQuery; var daysStr = "Days"; var hoursStr = "Hours"; var minutesStr = "Minutes"; var secondsStr = "Seconds";
+    </script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/plugins/buddyboss-platform-pro/includes/integrations/zoom/assets/js/bp-zoom.min.js?ver=2.3.0'
+        id='bp-zoom-js-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/plugins/buddyboss-platform-pro/assets/js/vendor/jquery.countdown.min.js?ver=1.0.1'
+        id='jquery-countdown-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-includes/js/imagesloaded.min.js?ver=4.1.4'
+        id='imagesloaded-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-includes/js/masonry.min.js?ver=4.2.2'
+        id='masonry-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/themes/buddyboss-theme/assets/js/vendors/menu.js?ver=2.2.9'
+        id='boss-menu-js-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/themes/buddyboss-theme/assets/js/vendors/fitvids.js?ver=2.2.9'
+        id='boss-fitvids-js-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/themes/buddyboss-theme/assets/js/vendors/slick.min.js?ver=2.2.9'
+        id='boss-slick-js-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/themes/buddyboss-theme/assets/js/vendors/panelslider.min.js?ver=2.2.9'
+        id='boss-panelslider-js-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/themes/buddyboss-theme/assets/js/vendors/sticky-kit.js?ver=2.2.9'
+        id='boss-sticky-js-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/themes/buddyboss-theme/assets/js/vendors/jssocials.min.js?ver=2.2.9'
+        id='boss-jssocials-js-js'></script>
+    <script type='text/javascript' id='buddyboss-theme-main-js-js-extra'>
+        /* <![CDATA[ */
+        var bs_data = { "jm_ajax": "https:\/\/demos.buddyboss.com\/online-communities\/jm-ajax\/", "ajaxurl": "https:\/\/demos.buddyboss.com\/online-communities\/wp-admin\/admin-ajax.php", "show_notifications": "1", "show_messages": "1", "facebook_label": "Share on Facebook", "twitter_label": "Tweet", "translation": { "comment_posted": "Your comment has been posted.", "comment_btn_loading": "Please Wait...", "choose_a_file_label": "Choose a file" }, "learndash": { "nonce_get_courses": "92a6ad0a73", "course_archive_url": "https:\/\/demos.buddyboss.com\/online-communities\/courses\/" } };
+/* ]]> */
+    </script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/themes/buddyboss-theme/assets/js/main.js?ver=2.2.9'
+        id='buddyboss-theme-main-js-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/themes/buddyboss-theme/assets/js/vendors/validate.min.js?ver=2.2.9'
+        id='boss-validate-js-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/themes/buddyboss-theme/assets/js/vendors/select2.full.min.js?ver=2.2.9'
+        id='select2-js-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/themes/buddyboss-theme/assets/js/vendors/progressbar.min.js?ver=2.2.9'
+        id='progressbar-js-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/themes/buddyboss-theme/assets/js/vendors/mousewheel.min.js?ver=2.2.9'
+        id='mousewheel-js-js'></script>
+    <script type='text/javascript' id='buddyboss-theme-learndash-js-js-extra'>
+        /* <![CDATA[ */
+        var BBTHEME_LEARNDASH_FRONT_VIDEO = { "hide_wrapper": "show", "video_progression_enabled": "off", "video_type": "" };
+/* ]]> */
+    </script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/themes/buddyboss-theme/assets/js/plugins/learndash.js?ver=2.2.9'
+        id='buddyboss-theme-learndash-js-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/themes/buddyboss-theme/assets/js/plugins/bb-woocommerce.js?ver=2.2.9'
+        id='buddyboss-theme-woocommerce-js-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/themes/buddyboss-theme/assets/js/plugins/bb-wpjobmanager.js?ver=2.2.9'
+        id='buddyboss-theme-wpjobmanager-js-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/themes/buddyboss-theme/assets/js/plugins/bb-tec.js?ver=2.2.9'
+        id='buddyboss-theme-tec-js-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/themes/buddyboss-theme/assets/js/plugins/gamipress.js?ver=2.2.9'
+        id='buddyboss-theme-gamipress-js-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/themes/buddyboss-theme/assets/js/plugins/elementor.js?ver=2.2.9'
+        id='buddyboss-theme-elementor-js-js'></script>
+    <script type='text/javascript'
+        src='https://demos.buddyboss.com/online-communities/wp-content/themes/buddyboss-theme-demo/assets/js/scripts.js'
+        id='custom-scripts-js-js'></script>
+</body>
+</html>

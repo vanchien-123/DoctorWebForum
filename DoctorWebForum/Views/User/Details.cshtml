@@ -1,0 +1,481 @@
+﻿@using DoctorWebForum.DTOs;
+@model UserDisplayModel
+
+<div id="page" class="site">
+    <div id="item-header" role="complementary" data-bp-item-id="2" data-bp-item-component="members"
+         class="users-header single-headers">
+        <div id="cover-image-container" class="centered network_profiles my_profile bb-cover-image-container">
+            <div id="header-cover-image" class="cover-small width-default has-cover-image">
+                <img class="header-cover-img" style="width:1500px;height:300px" src="~/Uploads/itachi.jfif" alt="">
+            </div>
+            <div id="item-header-cover-image" class="item-header-wrap bb-enable-cover-img" style="padding:50px 0 0 50px">
+                <div id="item-header-avatar" class="">
+                    <img src="~/Uploads/@Model.ProfilePicture"
+                         class="avatar user-2-avatar avatar-300 photo" style="height:150px; width=150px;"
+                         alt="Profile photo of John" />
+                </div>
+                <div id="item-header-content" style="margin-top:-30px">
+                    <div class="flex">
+                        <div class="bb-user-content-wrap">
+                            <div class="flex align-items-center member-title-wrap">
+                                <h2 class="user-nicename">@Html.DisplayFor(model => model.Name)</h2>
+                                @if (@Model.IsDoctor == true)
+                                {
+                                    <p class="item-meta member-type only-list-view" style="padding: 8px 0 0 10px;"><span class="bp-member-type bb-current-member-admins">Doctor</span></p>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="content" class="site-content">
+        <div class="container">
+            <div class="bb-grid site-content-grid">
+                <div id="primary" class="content-area bs-bp-container">
+                    <main id="main" class="site-main">
+                        <article id="post-6"
+                                 class="bp_members type-bp_members post-6 page type-page status-publish hentry">
+                            <div class="entry-content">
+                                <div id="buddypress"
+                                     class="buddypress-wrap admins bp-single-plain-nav bp-dir-hori-nav">
+                                    <div class="bp-wrap ">
+                                        <div class="bb-profile-grid bb-grid">
+                                            <div id="item-body" class="item-body">
+                                                <div class="item-body-inner">
+                                                    <h2 class="bp-screen-reader-text">Post Update</h2>
+                                                    <div id="bp-nouveau-activity-form-placeholder"
+                                                         class="bp-nouveau-activity-form-placeholder- "></div>
+                                                    <div id="bp-nouveau-activity-form"
+                                                         class="activity-update-form ">
+                                                    </div>
+
+                                                    <div class="subnav-filters filters no-ajax" id="subnav-filters">
+                                                        <div class="subnav-search clearfix">
+                                                        </div>
+                                                    </div>
+                                                    <div id="activity-stream" class="activity single-user"
+                                                         data-bp-list="activity">
+                                                        <div id="bp-ajax-loader">
+                                                            @*<aside class="bp-feedback bp-messages loading">
+                                                                <span class="bp-icon" aria-hidden="true"></span>
+                                                                <p>Loading your updates. Please wait.</p>
+                                                                
+                                                            </aside>*@
+                                                            <ul class="activity-list item-list bp-list">
+                                                                @foreach (var post in Model.Posts)
+                                                                {
+                                                                    <partial name="_PostCard" model="post" />
+                                                                }
+                                                            </ul>
+                                                        </div>
+                                                        <ul class="item-list activity-list bp-list">
+                                                        </ul>
+                                                    </div>
+                                                    <div class="bb-media-model-wrapper bb-internal-model video video-theatre"
+                                                         style="display: none;" id="buddypress">
+                                                        <a data-balloon-pos="left" data-balloon="Close"
+                                                           class="bb-close-media-theatre bb-close-model"
+                                                           href="#">
+                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                 width="14" height="14">
+                                                                <path fill="none" stroke="#FFF"
+                                                                      stroke-linecap="round" stroke-linejoin="round"
+                                                                      stroke-width="2" d="M13 1L1 13m12 0L1 1"
+                                                                      opacity=".7" />
+                                                            </svg>
+                                                        </a>
+                                                        <div id="bb-media-model-container"
+                                                             class="bb-media-model-container">
+                                                            <div class="bb-media-model-inner">
+                                                                <div class="bb-media-section">
+                                                                    <a class="theater-command bb-prev-media"
+                                                                       href="#previous">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                             width="16" height="30">
+                                                                            <path fill="none" stroke="#FFF"
+                                                                                  stroke-linecap="round"
+                                                                                  stroke-linejoin="round"
+                                                                                  stroke-width="2"
+                                                                                  d="M15 29L1 15 15 1" opacity=".7" />
+                                                                        </svg>
+                                                                    </a>
+                                                                    <a class="theater-command bb-next-media"
+                                                                       href="#next">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                             width="16" height="30">
+                                                                            <path fill="none" stroke="#FFF"
+                                                                                  stroke-linecap="round"
+                                                                                  stroke-linejoin="round"
+                                                                                  stroke-width="2" d="M1 1l14 14L1 29"
+                                                                                  opacity=".7" />
+                                                                        </svg>
+                                                                    </a>
+                                                                    <figure class="">
+                                                                        <img src="" alt="" />
+                                                                    </figure>
+                                                                    <div class="bb-dropdown-wrap bb-media-only-privacy">
+                                                                        <div class="bb-media-privacy-wrap"
+                                                                             style="display: none;">
+                                                                            <span class="bp-tooltip privacy-wrap"
+                                                                                  data-bp-tooltip-pos="left"
+                                                                                  data-bp-tooltip="">
+                                                                                <span class="privacy selected"></span>
+                                                                            </span>
+                                                                            <ul class="media-privacy">
+                                                                                <li data-value="public"
+                                                                                    class="public">Public</li>
+                                                                                <li data-value="loggedin"
+                                                                                    class="loggedin">
+                                                                                    All Members
+                                                                                </li>
+                                                                                <li data-value="friends"
+                                                                                    class="friends">
+                                                                                    My Connections
+                                                                                </li>
+                                                                                <li data-value="onlyme"
+                                                                                    class="onlyme">Only Me</li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="bb-media-info-section media">
+                                                                    <ul class="activity-list item-list bp-list">
+                                                                        <span>
+                                                                            <i class="bb-icon-spin5 animate-spin"></i>
+                                                                        </span>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="bb-media-model-wrapper bb-internal-model media media-theatre"
+                                                         style="display: none;" id="buddypress">
+                                                        <a data-balloon-pos="left" data-balloon="Close"
+                                                           class="bb-close-media-theatre bb-close-model"
+                                                           href="#">
+                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                 width="14" height="14">
+                                                                <path fill="none" stroke="#FFF"
+                                                                      stroke-linecap="round" stroke-linejoin="round"
+                                                                      stroke-width="2" d="M13 1L1 13m12 0L1 1"
+                                                                      opacity=".7" />
+                                                            </svg>
+                                                        </a>
+                                                        <div id="bb-media-model-container"
+                                                             class="bb-media-model-container">
+                                                            <div class="bb-media-model-inner">
+                                                                <div class="bb-media-section">
+                                                                    <a class="theater-command bb-prev-media"
+                                                                       href="#previous">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                             width="16" height="30">
+                                                                            <path fill="none" stroke="#FFF"
+                                                                                  stroke-linecap="round"
+                                                                                  stroke-linejoin="round"
+                                                                                  stroke-width="2"
+                                                                                  d="M15 29L1 15 15 1" opacity=".7" />
+                                                                        </svg>
+                                                                    </a>
+                                                                    <a class="theater-command bb-next-media"
+                                                                       href="#next">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                             width="16" height="30">
+                                                                            <path fill="none" stroke="#FFF"
+                                                                                  stroke-linecap="round"
+                                                                                  stroke-linejoin="round"
+                                                                                  stroke-width="2" d="M1 1l14 14L1 29"
+                                                                                  opacity=".7" />
+                                                                        </svg>
+                                                                    </a>
+                                                                    <figure class="">
+                                                                        <img src="" alt="" />
+                                                                    </figure>
+                                                                    <div class="bb-dropdown-wrap bb-media-only-privacy">
+                                                                        <div class="bb-media-privacy-wrap"
+                                                                             style="display: none;">
+                                                                            <span class="bp-tooltip privacy-wrap"
+                                                                                  data-bp-tooltip-pos="left"
+                                                                                  data-bp-tooltip="">
+                                                                                <span class="privacy selected"></span>
+                                                                            </span>
+                                                                            <ul class="media-privacy">
+                                                                                <li data-value="public"
+                                                                                    class="public">Public</li>
+                                                                                <li data-value="loggedin"
+                                                                                    class="loggedin">
+                                                                                    All Members
+                                                                                </li>
+                                                                                <li data-value="friends"
+                                                                                    class="friends">
+                                                                                    My Connections
+                                                                                </li>
+                                                                                <li data-value="onlyme"
+                                                                                    class="onlyme">Only Me</li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="bb-media-info-section media">
+                                                                    <ul class="activity-list item-list bp-list">
+                                                                        <span>
+                                                                            <i class="bb-icon-spin5 animate-spin"></i>
+                                                                        </span>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="bb-media-model-wrapper bb-internal-model document document-theatre"
+                                                         style="display: none;" id="buddypress">
+                                                        <a data-balloon-pos="left" data-balloon="Close"
+                                                           class="bb-close-media-theatre bb-close-model bb-close-document-theatre"
+                                                           href="#">
+                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                 width="14" height="14">
+                                                                <path fill="none" stroke="#FFF"
+                                                                      stroke-linecap="round" stroke-linejoin="round"
+                                                                      stroke-width="2" d="M13 1L1 13m12 0L1 1"
+                                                                      opacity=".7" />
+                                                            </svg>
+                                                        </a>
+                                                        <div id="bb-media-model-container"
+                                                             class="bb-media-model-container bb-document-theater">
+                                                            <div class="bb-media-model-inner">
+                                                                <div class="bb-media-section bb-document-section">
+                                                                    <a class="theater-command bb-prev-document"
+                                                                       href="#previous">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                             width="16" height="30">
+                                                                            <path fill="none" stroke="#FFF"
+                                                                                  stroke-linecap="round"
+                                                                                  stroke-linejoin="round"
+                                                                                  stroke-width="2"
+                                                                                  d="M15 29L1 15 15 1" opacity=".7" />
+                                                                        </svg>
+                                                                    </a>
+                                                                    <a class="theater-command bb-next-document"
+                                                                       href="#next">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                             width="16" height="30">
+                                                                            <path fill="none" stroke="#FFF"
+                                                                                  stroke-linecap="round"
+                                                                                  stroke-linejoin="round"
+                                                                                  stroke-width="2" d="M1 1l14 14L1 29"
+                                                                                  opacity=".7" />
+                                                                        </svg>
+                                                                    </a>
+                                                                    <div class="document-preview"></div>
+                                                                    <div class="bb-dropdown-wrap bb-media-only-privacy">
+                                                                        <div class="bb-document-privacy-wrap"
+                                                                             style="display: none;">
+                                                                            <span class="bp-tooltip privacy-wrap"
+                                                                                  data-bp-tooltip-pos="left"
+                                                                                  data-bp-tooltip="">
+                                                                                <span class="privacy selected"></span>
+                                                                            </span>
+                                                                            <ul class="document-privacy">
+                                                                                <li data-value="public"
+                                                                                    class="public">Public</li>
+                                                                                <li data-value="loggedin"
+                                                                                    class="loggedin">
+                                                                                    All Members
+                                                                                </li>
+                                                                                <li data-value="friends"
+                                                                                    class="friends">
+                                                                                    My Connections
+                                                                                </li>
+                                                                                <li data-value="onlyme"
+                                                                                    class="onlyme">Only Me</li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="bb-media-info-section document">
+                                                                    <ul class="activity-list item-list bp-list">
+                                                                        <span>
+                                                                            <i class="bb-icon-spin5 animate-spin"></i>
+                                                                        </span>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <script type="text/html"
+                                                            id="tmpl-activity-comments-loading-message">
+                                                            <div id="bp-activity-comments-ajax-loader">
+                                                        <aside class="bp-feedback bp-messages loading">
+
+                                                            <span class="bp-icon" aria-hidden="true"></span>
+                                                            <p>Loading activity comments. Please wait.</p>
+                                                            </aside></div>
+                                                    </script>
+                                                </div>
+                                            </div>
+                                            <div id="user-activity" class="widget-area" role="complementary">
+                                                <div class="bb-sticky-sidebar">
+                                                    <div class="group-separator-block">
+                                                        <header class="entry-header profile-loop-header profile-header flex align-items-center">
+                                                            <h1 class="entry-title bb-profile-title">
+                                                                General
+                                                                Information
+                                                            </h1>
+                                                            @*<a href="" class="push-right button outline small">Edit</a>*@
+                                                        </header>
+                                                        <div class="bp-widget general-information">
+                                                            <table class="profile-fields bp-tables-user"
+                                                                   style="padding: 10px;">
+                                                                <tbody>
+                                                                    @if (@Model.IsShow == true || @Model.currentId == @Model.Id)
+                                                                    {
+                                                                        <tr class="field_2 field_name field_order_0 required-field visibility-public alt field_type_textbox">
+                                                                            <td class="label">Email</td>
+                                                                            <td class="data">
+                                                                                <p>@Html.DisplayFor(model => model.Email)</p>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr class="field_3 field_nickname field_order_0 required-field visibility-public field_type_textbox">
+                                                                            <td class="label">Phone</td>
+                                                                            <td class="data">
+                                                                                <p>@Html.DisplayFor(model => model.PhoneNumber)</p>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr class="field_20 field_location field_order_1 required-field visibility-public alt field_type_datebox">
+                                                                            <td class="label">Location</td>
+                                                                            <td class="data">
+                                                                                <p>@Html.DisplayFor(model => model.Location)</p>
+                                                                            </td>
+                                                                        </tr>
+                                                                        @if (Model.IsDoctor == true)
+                                                                        {
+                                                                            <tr class="field_20 field_birth-date field_order_1 required-field visibility-public alt field_type_datebox">
+                                                                                <td class="label">Qualification</td>
+                                                                                <td class="data">
+                                                                                    <p>@Html.DisplayFor(model => model.Qualification.Name)</p>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr class="field_21 field_exper field_order_2 required-field visibility-public field_type_gender">
+                                                                                <td class="label">Experience</td>
+                                                                                <td class="data">
+                                                                                    <p>@Html.DisplayFor(model => model.Experience.Years)</p>
+                                                                                </td>
+                                                                            </tr>
+                                                                        }
+                                                                    }
+                                                                    
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </article>
+                    </main>
+                </div>
+                <div id="secondary" class="widget-area sm-grid-1-1 profile-widget-area" role="complementary">
+                    <div class="bb-sticky-sidebar">
+                        <aside id="bp_xprofile_profile_completion_widget-3"
+                               class="widget widget_bp_profile_completion_widget widget buddypress">
+                            <h2 class="widget-title">Complete Your Profile</h2>
+                            <div class="profile_completion_wrap">
+                                <div class="pc_progress_wrap">
+                                    <svg class="pc_progress_graph " width="146" height="73" viewBox="0 0 146 73"
+                                         fill="none">
+                                        <path d="M143 73C143 34.3401 111.66 3 73 3C34.3401 3 3 34.3401 3 73"
+                                              stroke="#F1F3F5" stroke-width="6" />
+                                        <path stroke-dasharray="73, 100" stroke-dashoffset="-27"
+                                              class="pc_progress_rate"
+                                              d="M143 73C143 34.3401 111.66 3 73 3C34.3401 3 3 34.3401 3 73"
+                                              stroke="#F1F3F5" stroke-width="6" pathLength="100" />
+                                    </svg>
+                                    <div class="progress_text_wrap">
+                                        <h3>
+                                            <span class="progress_text_value">73</span><span class="progress_text_unit">%</span>
+                                        </h3>
+                                        <span class="progress_text_label">Complete</span>
+                                    </div>
+                                </div>
+                                <div class="pc_detailed_progress_wrap">
+                                    <ul class="pc_detailed_progress">
+                                        <li class="single_section_wrap
+					incomplete 					">
+                                            <span class="section_ico"><i class="bb-icon-l bb-icon-check"></i></span>
+                                            <span class="section_number">
+                                                1
+                                            </span>
+                                            <span class="section_name">
+                                                <a href=""
+                                                   class="group_link">General Information</a>
+                                            </span>
+                                            <span class="progress">
+                                                <span class="completed_staus">
+                                                    <span class="completed_steps">5</span>/<span class="total_steps">6</span>
+                                                </span>
+                                            </span>
+                                        </li>
+                                        <li class="single_section_wrap
+					incomplete 					">
+                                            <span class="section_ico"><i class="bb-icon-l bb-icon-check"></i></span>
+                                            <span class="section_number">
+                                                2
+                                            </span>
+                                            <span class="section_name">
+                                                <a href=""
+                                                   class="group_link">Work Experience</a>
+                                            </span>
+                                            <span class="progress">
+                                                <span class="completed_staus">
+                                                    <span class="completed_steps">1</span>/<span class="total_steps">3</span>
+                                                </span>
+                                            </span>
+                                        </li>
+                                        <li class="single_section_wrap
+					completed 					">
+                                            <span class="section_ico"><i class="bb-icon-l bb-icon-check"></i></span>
+                                            <span class="section_number">
+                                                3
+                                            </span>
+                                            <span class="section_name">
+                                                <a href=""
+                                                   class="group_link">Profile Photo</a>
+                                            </span>
+                                            <span class="progress">
+                                                <span class="completed_staus">
+                                                    <span class="completed_steps">1</span>/<span class="total_steps">1</span>
+                                                </span>
+                                            </span>
+                                        </li>
+                                        <li class="single_section_wrap
+            completed 					">
+                                            <span class="section_ico"><i class="bb-icon-l bb-icon-check"></i></span>
+                                            <span class="section_number">
+                                                4
+                                            </span>
+                                            <span class="section_name">
+                                                <a href="#"
+                                                   class="group_link">Cover Photo</a>
+                                            </span>
+                                            <span class="progress">
+                                                <span class="completed_staus">
+                                                    <span class="completed_steps">1</span>/<span class="total_steps">1</span>
+                                                </span>
+                                            </span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </aside>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

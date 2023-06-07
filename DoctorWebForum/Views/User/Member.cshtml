@@ -1,0 +1,227 @@
+﻿@model DoctorWebForum.DTOs.UserDisplayModel
+
+<div id="page" class="site">
+    <div id="content" class="site-content">
+        <div class="container">
+            <div class="bb-grid site-content-grid">
+                <div id="primary" class="content-area bs-bp-container">
+                    <main id="main" class="site-main">
+                        <article id="post-6" class="post-6 page type-page status-publish hentry">
+                            <header class="entry-header">
+                                <h1 class="entry-title">Members</h1>
+                            </header>
+                            <div class="entry-content">
+                                <div id="buddypress" class="buddypress-wrap bp-single-plain-nav bp-dir-hori-nav">
+                                    <div class="members-directory-wrapper">
+                                        <div class="members-directory-container">
+                                            <nav class="members-type-navs main-navs bp-navs dir-navs  bp-subnavs"
+                                                 role="navigation" aria-label="Directory menu">
+                                                <ul class="component-navigation members-nav">
+                                                    <li id="members-all" class="" data-bp-scope="all"
+                                                        data-bp-object="members">
+                                                        <a href="https://demos.buddyboss.com/online-communities/members/">
+                                                            <div class="bb-component-nav-item-point">
+                                                                All Members
+                                                            </div>
+                                                            @*<span class="count">22</span>*@
+                                                        </a>
+                                                    </li>
+
+                                                </ul>
+                                            </nav>
+                                            <div class="flex bp-secondary-header align-items-center">
+                                                <div class="push-right flex">
+                                                    <div class="bp-profile-filter-wrap subnav-filters filters no-ajax">
+                                                    </div>
+                                                    <div class="bp-members-filter-wrap subnav-filters filters no-ajax">
+                                                        <div id="dir-filters" class="component-filters clearfix">
+                                                            <div id="members-order-select" class="last filter">
+                                                                <label class="bp-screen-reader-text"
+                                                                       for="members-order-by">
+                                                                    <span>Order By:</span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div class="screen-content members-directory-content">
+                                                <div id="members-dir-list" class="members dir-list"
+                                                     data-bp-list="members">
+                                                    <ul id="members-list" class="item-list members-list bp-list list">
+                                                        @foreach (var user in Model.Users)
+                                                        {
+                                                            <li class="item-entry even member-type-students"
+                                                            data-bp-item-id="5" data-bp-item-component="members">
+                                                                <div class="list-wrap footer-buttons-on follow-active secondary-buttons primary-button">
+                                                                    <div class="list-wrap-inner">
+                                                                        <div class="item-avatar">
+                                                                            <a href=""
+                                                                           class="">
+                                                                                <span class="member-status offline"
+                                                                                  data-bb-user-id="5"
+                                                                                  data-bb-user-presence="offline"></span><img src="~/Uploads/@user.ProfilePicture"
+                                                                                                                              class="avatar user-5-avatar avatar-300 photo"
+                                                                                                                              width="300" style="height:60px;"
+                                                                                                                              alt="Profile photo of Admin">
+                                                                            </a>
+                                                                        </div>
+                                                                        <div class="item">
+
+                                                                            <div class="item-block">
+
+                                                                                <h2 class="list-title member-name">
+                                                                                    <a asp-controller="User" asp-action="Details" asp-route-id="@user.Id">@user.Name</a>
+                                                                                </h2>
+                                                                                @if(user.IsDoctor == true)
+                                                                                {
+                                                                                    <p class="item-meta member-type only-list-view"><span class="bp-member-type bb-current-member-admins">Doctor</span></p>
+                                                                                }
+                                                                                <p class="item-meta last-activity">
+                                                                                    Joined Apr 2019
+                                                                                </p>
+                                                                            </div>
+
+                                                                            @*<div class="flex only-grid-view align-items-center primary-action justify-center">
+                                                                                <div id="send-private-message"
+                                                                                 class="generic-button">
+                                                                                    <a href=""
+                                                                                   class="send-message">
+                                                                                        <i></i>Send
+                                                                                        Message
+                                                                                    </a>
+                                                                                </div>
+                                                                            </div>*@
+                                                                        </div><!-- // .item -->
+
+                                                                        @*<div class="member-buttons-wrap">
+                                                                            <div class="flex only-list-view align-items-center primary-action justify-center">
+                                                                                <div id="send-private-message"
+                                                                                 class="generic-button">
+                                                                                    <a href=""
+                                                                                   class="send-message">
+                                                                                        <i></i>Send
+                                                                                        Message
+                                                                                    </a>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>*@
+                                                                        <!-- .member-buttons-wrap -->
+
+                                                                    </div>
+
+                                                                    <div class="bp-members-list-hook">
+                                                                        <div class="bp-members-list-hook-inner">
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="bb_more_options member-dropdown">
+                                                                        <a href="#"
+                                                                       class="bb_more_options_action bp-tooltip"
+                                                                       data-bp-tooltip-pos="up"
+                                                                       data-bp-tooltip="More Options">
+                                                                            <i class="bb-icon-menu-dots-h"></i>
+                                                                        </a>
+                                                                        <div class="bb_more_options_list">
+                                                                            @*<div class="switch-button edit generic-button"
+                                                                             id="switch-button-5">
+                                                                                <a asp-area="Identity" asp-page="/Account/Manage/Index" asp-route-id="@user.Id"
+                                                                               class="switch-button view-as start outline"
+                                                                               id="switch-5" rel="start">
+                                                                                    Edit
+                                                                                </a>
+                                                                            </div>*@
+                                                                            <div class="switch-button view-as generic-button"
+                                                                             id="switch-button-5">
+                                                                                <a asp-controller="User" asp-action="Details" asp-route-id="@user.Id"
+                                                                               class="switch-button view-as start outline"
+                                                                               id="switch-5" rel="start">
+                                                                                    View
+                                                                                    As
+                                                                                </a>
+                                                                            </div>
+                                                                            @*<div id="user-block-5"
+                                                                             class="generic-button">
+                                                                                <a id="report-content-user-5"
+                                                                               href="#block-member"
+                                                                               class="block-member"
+                                                                               data-bp-content-id="5"
+                                                                               data-bp-content-type="user"
+                                                                               data-bp-nonce="aa775a3cd6"
+                                                                               data-reported_type="Post">
+                                                                                    <span class="bp-screen-reader-text">Block</span><span class="report-label">Block</span>
+                                                                                </a>
+                                                                            </div>*@
+                                                                        </div>
+                                                                    </div><!-- .bb_more_options -->
+                                                                </div>
+                                                            </li>
+                                                        }
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <footer class="entry-footer">
+                                <span class="edit-link">
+                                    <a class="post-edit-link"
+                                       href="" ;action=edit">
+                                        Edit
+                                        <span class="screen-reader-text">Members</span>
+                                    </a>
+                                </span>
+                            </footer>
+                        </article>
+                    </main>
+                </div>
+                <div id="secondary" class="widget-area sm-grid-1-1" role="complementary">
+                    <aside id="bp-profile-search-form-outer" class="bp-profile-search-widget widget">
+                        <h2 class="bps-form-title widget-title">Filter Results</h2>
+                        <form asp-action="Member" class="bps-form standard-form">
+                            <div class="select-wrap">
+                                <label class="bps-label" for="qualificationId">Qualification</label>
+                                <select id="qualificationId" data-bp-filter="members" name="qualificationId">
+                                    <option selected>
+                                        All
+                                    </option>
+                                    @foreach (var qualification in Model.Qualifications)
+                                    {
+                                    <option selected="@(qualification.Id == Model.QualificationId)" value="@qualification.Id">@qualification.Name</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="select-wrap">
+                                <label class="bps-label" for="experienceId">Experience</label>
+                                <select id="experienceId" data-bp-filter="members" name="experienceId">
+                                    <option selected>
+                                        All
+                                    </option>
+                                    @foreach (var experience in Model.Experiences)
+                                    {
+                                    <option selected="@(experience.Id == Model.ExperienceId)" value="@experience.Id">@experience.Years</option>
+                                    }
+                                </select>
+                            </div>
+                            <div id="field_1_contains_wrap" class="bp-field-wrap bps-textbox">
+                                <label for="sTerm" class="bps-label">Name</label>
+                                <input type="search" id="sTerm" name="sTerm" value="@Model.STerm" placeholder="Search by name" />
+                            </div>
+
+                            <input type="hidden" name="bp_profile_search" value="77" />
+
+                            <div class="submit-wrapper">
+                               @*<p class="clear-form-wrap" style="">
+                                    <a asp-controller="User" asp-action="Member" style="cursor:pointer">Reset</a>
+                                </p>*@
+                                <button type="submit" class="btn btn-primary">Search</button>
+                            </div>
+                        </form>
+                    </aside>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

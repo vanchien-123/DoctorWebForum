@@ -1,0 +1,411 @@
+﻿@using DoctorWebForum.DTOs;
+
+@model HomeDisplayModel;
+
+
+<style>
+    #whats-new-avatar {
+        padding: 15px;
+    }
+
+    .whats-new-form-header {
+        display: flex;
+        align-items: center;
+    }
+
+    #whats-new-toolbar {
+        padding: 12px 16px;
+        background-color: #eaeaea;
+        border-top: 1px solid #eee;
+    }
+
+    .whats-new-placeholder {
+        border: none;
+        outline: none;
+    }
+
+    #whats-new-textarea {
+        margin-left: -20px;
+        padding: 25px 0 0 0;
+    }
+
+    .activity-post-name-status {
+        margin-top: 15px;
+        margin-left: -10px;
+    }
+
+    #whats-new {
+        padding: 0 0 0 40px;
+    }
+
+    .whats-new-form-header {
+        align-items: start
+    }
+
+    #bp-nouveau-activity-form {
+        display: none;
+    }
+
+        #bp-nouveau-activity-form.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+</style>
+
+
+<div id="content" class="site-content">
+    <div class="container">
+        <div class="bb-grid site-content-grid">
+            <!-- vietbai -->
+            <div id="primary" class="content-area bs-bp-container">
+                <main id="main" class="site-main">
+                    <article id="post-5"
+                             class="bp_activity type-bp_activity post-5 page type-page status-publish hentry">
+                        <header class="entry-header">
+                            <h1 class="entry-title">Activity Feed</h1>
+                        </header>
+                        <div class="entry-content">
+                            <div id="buddypress" class="buddypress-wrap bp-single-plain-nav bp-dir-hori-nav">
+                                <h2 class="bp-screen-reader-text">Post Update</h2>
+                                <div id="bp-nouveau-activity-form-placeholder" class="bp-nouveau-activity-form-placeholder" onclick="add()">
+                                    <form id="whats-new-form-placeholder" class="activity-form-placeholder">
+                                        <div class="whats-new-form-header">
+                                            <div id="user-status-huddle" class="bp-activity-huddle">
+                                                <div id="whats-new-avatar">
+                                                    <div class="activity-post-avatar-container">
+                                                        <a class="activity-post-avatar"
+                                                           href="">
+                                                            <img src="https://vuainnhanh.com/wp-content/uploads/2023/02/logo-chu-thap-do.png"
+                                                                 class="avatar user-2-avatar avatar-150 photo" width="150" height="150"
+                                                                 alt="Profile photo of John">
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div id="whats-new-heading" style="display:none;">
+
+                                                    <span class="activity-post-user-name-container">
+                                                        <h5>
+                                                            <a class="activity-post-user-name"
+                                                               href="">
+                                                                <span class="user-name">John</span>
+                                                            </a>
+                                                        </h5>
+                                                    </span>
+
+                                                </div>
+                                                <div id="whats-new-status" style="display:none;">
+                                                    <div id="bp-activity-privacy-point" class="public" data-bp-tooltip-pos="up"
+                                                         data-bp-tooltip="Set by album privacy">
+                                                        <span class="privacy-point-icon"></span>
+                                                        <span class="bp-activity-privacy-status">
+
+                                                            Public
+                                                        </span>
+                                                        <i class="bb-icon-f bb-icon-caret-down"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div id="whats-new-content-placeholder">
+                                                <div id="whats-new-textarea">
+                                                    <div name="whats-new" cols="50" rows="4" placeholder="Share what's on your mind..."
+                                                         aria-label="Post what&amp;#039;s new" contenteditable="true" autocorrect="off"
+                                                         data-suggestions-group-id="false" id="whats-new"
+                                                         class="bp-suggestions medium-editor-element medium-editor-placeholder"
+                                                         style="resize: none; height: 50px;" spellcheck="true" data-medium-editor-element="true"
+                                                         role="textbox" aria-multiline="true" data-medium-editor-editor-index="1"
+                                                         medium-editor-index="96ea3742-02c2-3485-1e44-4ae79bb3214b" data-placeholder=""></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="whats-new-toolbar" style="padding:12px 16px">
+
+                                            <div class="post-elements-buttons-item post-media media-support">
+                                                <a href="#" id="activity-media-button" class="toolbar-button bp-tooltip"
+                                                   data-bp-tooltip-pos="up-left" data-bp-tooltip="Attach photo">
+                                                    <i class="bb-icon-l bb-icon-camera"></i>
+                                                </a>
+                                            </div>
+                                            <div class="post-elements-buttons-item post-video video-support">
+                                                <a href="#" id="activity-video-button" class="toolbar-button bp-tooltip" data-bp-tooltip-pos="up"
+                                                   data-bp-tooltip="Attach video">
+                                                    <i class="bb-icon-l bb-icon-video"></i>
+                                                </a>
+                                            </div>
+                                            <div class="post-elements-buttons-item post-media document-support">
+                                                <a href="#" id="activity-document-button" class="toolbar-button bp-tooltip" data-bp-tooltip-pos="up"
+                                                   data-bp-tooltip="Attach document">
+                                                    <i class="bb-icon-l bb-icon-attach"></i>
+                                                </a>
+                                            </div>
+
+                                            <div class="post-elements-buttons-item post-gif">
+                                                <div class="gif-media-search">
+                                                    <a href="#" id="activity-gif-button" class="toolbar-button bp-tooltip" data-bp-tooltip-pos="up"
+                                                       data-bp-tooltip="Choose a GIF"><i class="bb-icon-l bb-icon-gif"></i></a>
+                                                    <div class="gif-media-search-dropdown"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <div id="bp-nouveau-activity-form" class="activity-update-form modal-popup">
+                                    <div class="activity-update-form-overlay" ></div>
+                                    <partial name="_PostPatrial"/>
+                                </div>
+
+                                <div class="flex actvity-head-bar">
+                                    <nav class="activity-type-navs main-navs bp-navs dir-navs  bp-subnavs"
+                                         role="navigation" aria-label="Directory menu">
+                                        <ul class="component-navigation activity-nav">
+                                            <li id="activity-all" class="dynamic selected loading" data-bp-scope="all"
+                                                data-bp-object="activity">
+                                                <a href="">
+                                                    <div class="bb-component-nav-item-point">All Updates</div>
+                                                </a>
+                                            </li>
+                                            @*<li id="activity-favorites" class="" data-bp-scope="favorites"
+                                            data-bp-object="activity">
+                                            <a href="">
+                                            <div class="bb-component-nav-item-point">Likes</div>
+                                            </a>
+                                            </li>*@
+                                        </ul>
+                                    </nav>
+
+                                    @*<div class="subnav-filters filters no-ajax" id="subnav-filters">
+                                        <div class="subnav-search clearfix">
+                                            <div class="dir-search activity-search bp-search" data-bp-search="activity">
+                                                <form action="" method="get" class="bp-dir-search-form"
+                                                      id="dir-activity-search-form" autocomplete="off">
+                                                    <button type="submit" id="dir-activity-search-submit"
+                                                            class="nouveau-search-submit" name="dir_activity_search_submit">
+                                                        <span class="dashicons dashicons-search"
+                                                              aria-hidden="true"></span>
+                                                        <span id="button-text"
+                                                              class="bp-screen-reader-text">Search</span>
+                                                    </button>
+                                                    <label for="dir-activity-search"
+                                                           class="bp-screen-reader-text">
+                                                        Search
+                                                        Feed…
+                                                    </label>
+                                                    <input id="dir-activity-search" name="activity_search" type="search"
+                                                           placeholder="Search Feed…">
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>*@
+                                </div>
+
+                                <div class="screen-content">
+                                    <div id="activity-stream" class="activity" data-bp-list="activity">
+                                        <div id="bp-ajax-loader">
+                                            <ul class="activity-list item-list bp-list">
+                                                @foreach (var post in Model.Posts)
+                                                {
+                                                    <partial name="_PostCard" model="post" />
+                                                }
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <footer class="entry-footer">
+                            <span class="edit-link">
+                                <a class="post-edit-link"
+                                   href=";action=edit">
+                                    Edit
+                                    <span class="screen-reader-text">Activity Feed</span>
+                                </a>
+                            </span>
+                        </footer>
+                    </article>
+                </main>
+            </div>
+
+            <div id="secondary" class="widget-area sm-grid-1-1 sidebar-left" role="complementary"
+                 style="min-height: 851.833px;">
+                <div class="bb-sticky-sidebar">
+                    <aside id="boss-recent-posts-6" class="widget bb_widget_recent_posts">
+                        <h2 class="widget-title">Blog</h2>
+                        <ul class="bb-recent-posts">
+                            <li>
+                                <a href=""
+                                   title="Permalink to OMA completes renovation of Sotheby’s New York galleries"
+                                   class="entry-media entry-img">
+                                    <img width="624" height="416"
+                                         src=""
+                                         class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt=""
+                                         decoding="async" loading="lazy"
+                                         srcset=" 1000w"
+                                         sizes="(max-width: 624px) 100vw, 624px">
+                                </a>
+                                <div class="">
+                                    <h4>
+                                        <a asp-controller="Home" asp-action="Blog"
+                                           class="bb-title">
+                                            5 Tips to stay healthy when eating out
+                                        </a>
+                                    </h4>
+                                    <span class="post-date">May 8, 2019</span>
+                                </div>
+                            </li>
+                        </ul>
+                        <div class="more-block">
+                            <a asp-controller="Home" asp-action="Blog"
+                               class="count-more">See all<i class="bb-icon-angle-right"></i></a>
+                        </div>
+                    </aside>
+                    <aside id="bp_core_members_widget-4"
+                           class="widget widget_bp_core_members_widget buddypress widget">
+                        <h2 class="widget-title">Members</h2>
+                        <div class="item-options" id="members-list-options">
+                            <a href=""
+                               id="newest-members" class="selected">All Member @Model.intCount</a>
+                            <span class="bp-separator" role="separator">|</span>
+                            <a href=""
+                               id="recently-active-members" >Active <span id="onlineUsersCount">@OnlineUsersMiddleware.GetOnlineUsersCount()</span></a>
+                        </div>
+
+                        <input type="hidden" id="_wpnonce-members" name="_wpnonce-members" value="2536a02fe3">
+                        <input type="hidden" name="members_widget_max" id="members_widget_max" value="6">
+                        <div class="more-block ">
+                            <a class="count-more" asp-area="" asp-controller="User" asp-action="Member">
+                                See all<i class="bb-icon-l bb-icon-angle-right"></i>
+                            </a>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+
+
+            <div id="secondary-right" class="widget-area sm-grid-1-1 sidebar-right" role="complementary">
+                <div class="bb-sticky-sidebar">
+
+                    <aside id="bp_xprofile_profile_completion_widget-2"
+                           class="widget widget_bp_profile_completion_widget widget buddypress">
+                        <h2 class="widget-title">Complete Your Profile</h2>
+                        <div class="profile_completion_wrap">
+                            <div class="pc_progress_wrap">
+                                <svg class="pc_progress_graph " width="146" height="73" viewBox="0 0 146 73"
+                                     fill="none">
+                                    <path d="M143 73C143 34.3401 111.66 3 73 3C34.3401 3 3 34.3401 3 73"
+                                          stroke="#F1F3F5" stroke-width="6"></path>
+                                    <path stroke-dasharray="73, 100" stroke-dashoffset="-27" class="pc_progress_rate"
+                                          d="M143 73C143 34.3401 111.66 3 73 3C34.3401 3 3 34.3401 3 73" stroke="#F1F3F5"
+                                          stroke-width="6" pathLength="100"></path>
+                                </svg>
+                                <div class="progress_text_wrap">
+                                    <h3>
+                                        <span class="progress_text_value">73</span><span class="progress_text_unit">%</span>
+                                    </h3>
+                                    <span class="progress_text_label">Complete</span>
+                                </div>
+                            </div>
+                            <div class="pc_detailed_progress_wrap">
+                                <ul class="pc_detailed_progress">
+                                    <li class="single_section_wrap
+            incomplete 					">
+                                        <span class="section_ico"><i class="bb-icon-l bb-icon-check"></i></span>
+                                        <span class="section_number">
+                                            1
+                                        </span>
+                                        <span class="section_name">
+                                            <a href=""
+                                               class="group_link">General Information</a>
+                                        </span>
+                                        <span class="progress">
+                                            <span class="completed_staus">
+                                                <span class="completed_steps">5</span>/<span class="total_steps">6</span>
+                                            </span>
+                                        </span>
+                                    </li>
+                                    <li class="single_section_wrap
+            incomplete 					">
+                                        <span class="section_ico"><i class="bb-icon-l bb-icon-check"></i></span>
+                                        <span class="section_number">
+                                            2
+                                        </span>
+                                        <span class="section_name">
+                                            <a href=""
+                                               class="group_link">Work Experience</a>
+                                        </span>
+                                        <span class="progress">
+                                            <span class="completed_staus">
+                                                <span class="completed_steps">1</span>/<span class="total_steps">3</span>
+                                            </span>
+                                        </span>
+                                    </li>
+                                    <li class="single_section_wrap
+            completed 					">
+                                        <span class="section_ico"><i class="bb-icon-l bb-icon-check"></i></span>
+                                        <span class="section_number">
+                                            3
+                                        </span>
+                                        <span class="section_name">
+                                            <a href="#"
+                                               class="group_link">Profile Photo</a>
+                                        </span>
+                                        <span class="progress">
+                                            <span class="completed_staus">
+                                                <span class="completed_steps">1</span>/<span class="total_steps">1</span>
+                                            </span>
+                                        </span>
+                                    </li>
+                                    <li class="single_section_wrap
+            completed 					">
+                                        <span class="section_ico"><i class="bb-icon-l bb-icon-check"></i></span>
+                                        <span class="section_number">
+                                            4
+                                        </span>
+                                        <span class="section_name">
+                                            <a href="#"
+                                               class="group_link">Cover Photo</a>
+                                        </span>
+                                        <span class="progress">
+                                            <span class="completed_staus">
+                                                <span class="completed_steps">1</span>/<span class="total_steps">1</span>
+                                            </span>
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </aside>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        let btn = document.querySelector("#bp-nouveau-activity-form-placeholder");
+        let sidebar = document.querySelector(".activity-update-form");
+        let cancel = document.querySelector(".bb-icon-times")
+        btn.onclick = function () {
+            sidebar.classList.toggle("active");
+        }
+        cancel.onclick = function () {
+            sidebar.classList.remove("active");
+        }
+    </script>
+
+    <script>
+        var connection = new signalR.HubConnectionBuilder().withUrl("/onlineUsersHub").build();
+
+        connection.on("UpdateOnlineUsers", function (count) {
+            document.getElementById("onlineUsersCount").innerText = count;
+        });
+
+        connection.start();
+    </script>
+}
+   
+
