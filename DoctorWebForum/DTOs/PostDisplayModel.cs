@@ -9,6 +9,7 @@ namespace DoctorWebForum.DTOs
         public string? Description { get; set; }
         public string? HtmlContent { get; set; }
         public string UserId { get; set; }
+        public bool IsDelete { get; set; }
         public ApplicationUser User { get; set; }
         public ICollection<Feedback> Feedbacks { get; set; }
         public string? currentUserId { get; set; }

@@ -69,6 +69,8 @@ namespace DoctorWebForum.Services
 
         public async Task<UserDisplayModel> GetUserById(string Id)
         {
+
+
             var user = await _context.ApplicationUser
                 .Include(x => x.Qualification)
                 .Include(x => x.Experience)
@@ -95,8 +97,9 @@ namespace DoctorWebForum.Services
                         Id = p.Id,
                         Title = p.Title,
                         User = p.User,
-                        UserId = p.UserId
-                    }),
+                        UserId = p.UserId,
+                        IsDelete = p.IsDelete
+                    }).Where(p => !p.IsDelete),
                     ProfilePicture = x.ProfilePicture,
                     Qualification = x.Qualification,
                     QualificationId = x.QualificationId,
