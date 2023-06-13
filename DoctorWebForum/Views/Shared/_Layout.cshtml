@@ -3,7 +3,8 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - DoctorWebForum</title>
+    <link rel="shortcut icon" type="image/x-icon" href="https://static.printler.com/cache/5/d/0/b/f/9/5d0bf9faf4f06d6c846c4fea4ba882536b4206a2.jpg">
+    <title> - DoctorWebForum</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/format.css" asp-append-version="true" />
@@ -1449,7 +1450,7 @@
                         <li id="menu-item-50"
                             class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-50 icon-added"
                             data-balloon-pos="down" data-balloon="Forums">
-                            <a asp-controller="Home" asp-action="Blog">
+                            <a asp-controller="Blog" asp-action="Index">
                                 <i class="_mi _before bb-icon-l buddyboss bb-icon-comment-square-dots"
                                    aria-hidden="true"></i><span>Blog</span>
                             </a>
@@ -1457,7 +1458,7 @@
                         <li id="menu-item-525"
                             class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-525 icon-added"
                             data-balloon-pos="down" data-balloon="News">
-                            <a href="#">
+                            <a asp-controller="News" asp-action="Index">
                                 <i class="_mi _before bb-icon-l buddyboss bb-icon-album"
                                    aria-hidden="true"></i><span>News</span>
                             </a>
@@ -1466,7 +1467,7 @@
                             <li id="menu-item-600"
                             class="menu-item menu-item-type-post_type menu-item-object-page menu-item-600 icon-added"
                             data-balloon-pos="down" data-balloon="Admin">
-                                <a asp-controller="Posts" asp-action="Index">
+                                <a asp-controller="Accounts" asp-action="Index">
                                     <i class="_mi _before bb-icon-l buddyboss bb-icon-user-avatar"
                                    aria-hidden="true"></i><span>Admin</span>
                                 </a>

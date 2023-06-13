@@ -136,22 +136,22 @@ namespace DoctorWebForum.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public static string HashPassword(string password)
-        {
-            using (var sha256 = SHA256.Create())
-            {
-                // Convert the password to bytes
-                byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
+        //public static string HashPassword(string password)
+        //{
+        //    using (var sha256 = SHA256.Create())
+        //    {
+        //        // Convert the password to bytes
+        //        byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
 
-                // Compute the hash
-                byte[] hashBytes = sha256.ComputeHash(passwordBytes);
+        //        // Compute the hash
+        //        byte[] hashBytes = sha256.ComputeHash(passwordBytes);
 
-                // Convert the hash to a string
-                string hash = BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
+        //        // Convert the hash to a string
+        //        string hash = BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
 
-                return hash;
-            }
-        }
+        //        return hash;
+        //    }
+        //}
 
 
 
